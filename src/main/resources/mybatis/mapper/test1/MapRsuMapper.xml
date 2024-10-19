@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.test1.MapRsuMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapRsu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="shebei_id" jdbcType="VARCHAR" property="shebeiId" />
+    <result column="changjia" jdbcType="VARCHAR" property="changjia" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="alt" jdbcType="DOUBLE" property="alt" />
+    <result column="zhuangtai" jdbcType="VARCHAR" property="zhuangtai" />
+    <result column="anzhuang_time" jdbcType="VARCHAR" property="anzhuangTime" />
+    <result column="fugaifanwei" jdbcType="VARCHAR" property="fugaifanwei" />
+    <result column="beizhu" jdbcType="VARCHAR" property="beizhu" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, shebei_id, changjia, lon, lat, alt, zhuangtai, anzhuang_time, fugaifanwei, beizhu
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_rsu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" parameterType="com.site.mountain.entity.MapRsu" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_rsu
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="shebeiId != null and shebeiId != ''">
+        and shebei_id = #{shebeiId}
+      </if>
+      <if test="changjia != null and changjia != ''">
+        and changjia = #{changjia}
+      </if>
+      <if test="zhuangtai != null and zhuangtai != ''">
+        and zhuangtai = #{zhuangtai}
+      </if>
+      <if test="anzhuangTime != null and anzhuangTime != ''">
+        and anzhuang_time = #{anzhuangTime}
+      </if>
+    </where>
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from map_rsu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapRsu">
+    insert into map_rsu (id, shebei_id, changjia, 
+      lon, lat, alt, zhuangtai, 
+      anzhuang_time, fugaifanwei, beizhu
+      )
+    values (#{id,jdbcType=INTEGER}, #{shebeiId,jdbcType=VARCHAR}, #{changjia,jdbcType=VARCHAR}, 
+      #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{alt,jdbcType=DOUBLE}, #{zhuangtai,jdbcType=VARCHAR}, 
+      #{anzhuangTime,jdbcType=VARCHAR}, #{fugaifanwei,jdbcType=VARCHAR}, #{beizhu,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapRsu">
+    insert into map_rsu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="shebeiId != null">
+        shebei_id,
+      </if>
+      <if test="changjia != null">
+        changjia,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="zhuangtai != null">
+        zhuangtai,
+      </if>
+      <if test="anzhuangTime != null">
+        anzhuang_time,
+      </if>
+      <if test="fugaifanwei != null">
+        fugaifanwei,
+      </if>
+      <if test="beizhu != null">
+        beizhu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shebeiId != null">
+        #{shebeiId,jdbcType=VARCHAR},
+      </if>
+      <if test="changjia != null">
+        #{changjia,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="zhuangtai != null">
+        #{zhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="anzhuangTime != null">
+        #{anzhuangTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fugaifanwei != null">
+        #{fugaifanwei,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        #{beizhu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapRsu">
+    update map_rsu
+    <set>
+      <if test="shebeiId != null">
+        shebei_id = #{shebeiId,jdbcType=VARCHAR},
+      </if>
+      <if test="changjia != null">
+        changjia = #{changjia,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        alt = #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="zhuangtai != null">
+        zhuangtai = #{zhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="anzhuangTime != null">
+        anzhuang_time = #{anzhuangTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fugaifanwei != null">
+        fugaifanwei = #{fugaifanwei,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        beizhu = #{beizhu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapRsu">
+    update map_rsu
+    set shebei_id = #{shebeiId,jdbcType=VARCHAR},
+      changjia = #{changjia,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      alt = #{alt,jdbcType=DOUBLE},
+      zhuangtai = #{zhuangtai,jdbcType=VARCHAR},
+      anzhuang_time = #{anzhuangTime,jdbcType=VARCHAR},
+      fugaifanwei = #{fugaifanwei,jdbcType=VARCHAR},
+      beizhu = #{beizhu,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

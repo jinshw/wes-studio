@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapMecDataMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapMecData">
+    <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="mec_id" jdbcType="BIGINT" property="mecId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+  </resultMap>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapMecData">
+    insert into map_mec_data (section_id, mec_id, "status",
+      opt_time, opt_person)
+    values (#{sectionId,jdbcType=VARCHAR}, #{mecId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER},
+      #{optTime,jdbcType=TIMESTAMP}, #{optPerson,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapMecData">
+    insert into map_mec_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="mecId != null">
+        mec_id,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="mecId != null">
+        #{mecId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.MapMecData" resultMap="BaseResultMap">
+    select mecd.* from map_mec mec,map_mec_data mecd
+    <where>
+      <if test="1==1">
+        and mec.mec_id = mecd.mec_id
+      </if>
+      <if test="mecId != '' and mecId != null">
+        and mecd.mec_id = #{mecId}
+      </if>
+    </where>
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from map_mec_data
+    where mec_id = #{mecId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteBySectionId" parameterType="java.lang.String">
+    delete from map_mec_data
+    where section_id = #{sectionId}
+  </delete>
+
+</mapper>

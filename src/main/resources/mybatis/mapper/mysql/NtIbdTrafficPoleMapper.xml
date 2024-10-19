@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtIbdTrafficPoleMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtIbdTrafficPole">
+    <id column="pole_id" jdbcType="VARCHAR" property="poleId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pole_code" jdbcType="VARCHAR" property="poleCode" />
+    <result column="pole_type" jdbcType="VARCHAR" property="poleType" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="cross_id" jdbcType="VARCHAR" property="crossId" />
+    <result column="device_id" jdbcType="BIGINT" property="deviceId" />
+    <result column="direction" jdbcType="VARCHAR" property="direction" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="alt" jdbcType="DOUBLE" property="alt" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="installation_time" jdbcType="TIMESTAMP" property="installationTime" />
+    <result column="is_status" jdbcType="VARCHAR" property="isStatus" />
+    <result column="datum" jdbcType="VARCHAR" property="datum" />
+    <result column="device_type" jdbcType="BIGINT" property="deviceType" />
+    <result column="coll_status" jdbcType="BIGINT" property="collStatus" />
+    <result column="info_source" jdbcType="BIGINT" property="infoSource" />
+    <result column="coll_location" jdbcType="VARCHAR" property="collLocation" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="modify_person" jdbcType="BIGINT" property="modifyPerson" />
+    <result column="pitch" jdbcType="DOUBLE" property="pitch" />
+    <result column="roll" jdbcType="DOUBLE" property="roll" />
+    <result column="heading" jdbcType="DOUBLE" property="heading" />
+    <result column="pole_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="pole_id" jdbcType="VARCHAR" property="id" />
+    <collection property="deviceList" column="{deviceId=device_id}" javaType="java.util.ArrayList" ofType="com.site.mountain.entity.MapDevice"
+                select="com.site.mountain.dao.mysql.MapDeviceMapper.selectListByDeviceId"></collection>
+    <collection property="hldList" column="{poleId=pole_id}" javaType="java.util.ArrayList" ofType="com.site.mountain.entity.NtIbdTrafficHld"
+                select="com.site.mountain.dao.mysql.NtIbdTrafficHldMapper.selectListByPoleId"></collection>
+    <collection property="imgList" column="{deviceId=pole_id}" javaType="java.util.ArrayList" ofType="com.site.mountain.entity.projectFile"
+                select="com.site.mountain.dao.mysql.ProjectFileDao.selectFileListByMasterId"></collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    pole_id, "name", pole_code, pole_type, num, is_del, opt_person, opt_time, create_time, 
+    "desc", cross_id, device_id, direction, lon, lat, alt, "location", manufacturer, 
+    installation_time, is_status, datum, device_type, coll_status, info_source, coll_location, 
+    modify_time, modify_person, pitch, roll, heading
+  </sql>
+  <select id="selectList" parameterType="com.site.mountain.entity.NtIbdTrafficPole" resultMap="BaseResultMap">
+    select
+    t.pole_id, t."name", t.pole_code, t.pole_type, t.num, t.is_del, t.opt_person, t.opt_time, t.create_time,
+    t."desc", t.cross_id, t.device_id, t.direction, t.lon, t.lat, t.alt, t."location", t.manufacturer,
+    t.installation_time, t.is_status, t.datum,t.device_type, t.coll_status, t.info_source, t.coll_location,
+    t.modify_time, t.modify_person, t.pitch, t.roll, t.heading,(select dt.type_code from nt_location_asset_dict dt where dt."type"='0') as typeCode
+    from nt_ibd_traffic_pole t
+    left join map_device_type y on t.device_type=y.dt_id
+    <where>
+      t.is_del = '1'
+      <if test="poleId != null and poleId != ''">
+        and t.pole_id = #{poleId}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND t."name" LIKE #{pattern}
+      </if>
+      <if test="crossId != null and crossId != ''">
+        and t.cross_id = #{crossId}
+      </if>
+      <if test="deviceTypeCode != null and deviceTypeCode != ''">
+        and y.code= #{deviceTypeCode}
+      </if>
+      <if test ="deviceTypeCodeList != null and deviceTypeCodeList.size() > 0">
+        and y.code in
+        <foreach collection="deviceTypeCodeList" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="collStatus != null and collStatus != ''">
+        and t.coll_status = #{collStatus}
+      </if>
+      <if test="infoSource != null and infoSource != ''">
+        and t.info_source = #{infoSource}
+      </if>
+      order by t.num desc
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_ibd_traffic_pole
+    where pole_id = #{poleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_ibd_traffic_pole
+    where pole_id = #{poleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtIbdTrafficPole">
+    insert into nt_ibd_traffic_pole (pole_id, "name", pole_code, 
+      pole_type, num, is_del, 
+      opt_person, opt_time, create_time, 
+      "desc", cross_id, device_id, 
+      direction, lon, lat, 
+      alt, "location", manufacturer, 
+      installation_time, is_status, datum, 
+      device_type, coll_status, info_source, 
+      coll_location, modify_time, modify_person, 
+      pitch, roll, heading)
+    values (#{poleId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{poleCode,jdbcType=VARCHAR}, 
+      #{poleType,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{isDel,jdbcType=VARCHAR}, 
+      #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{desc,jdbcType=VARCHAR}, #{crossId,jdbcType=VARCHAR}, #{deviceId,jdbcType=BIGINT}, 
+      #{direction,jdbcType=VARCHAR}, #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, 
+      #{alt,jdbcType=DOUBLE}, #{location,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, 
+      #{installationTime,jdbcType=TIMESTAMP}, #{isStatus,jdbcType=VARCHAR}, #{datum,jdbcType=VARCHAR}, 
+      #{deviceType,jdbcType=BIGINT}, #{collStatus,jdbcType=BIGINT}, #{infoSource,jdbcType=BIGINT}, 
+      #{collLocation,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyPerson,jdbcType=BIGINT}, 
+      #{pitch,jdbcType=DOUBLE}, #{roll,jdbcType=DOUBLE}, #{heading,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtIbdTrafficPole">
+    insert into nt_ibd_traffic_pole
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="poleId != null">
+        pole_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="poleCode != null">
+        pole_code,
+      </if>
+      <if test="poleType != null">
+        pole_type,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+      <if test="crossId != null">
+        cross_id,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="direction != null">
+        direction,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="location != null">
+        "location",
+      </if>
+      <if test="manufacturer != null">
+        manufacturer,
+      </if>
+      <if test="installationTime != null">
+        installation_time,
+      </if>
+      <if test="isStatus != null">
+        is_status,
+      </if>
+      <if test="datum != null">
+        datum,
+      </if>
+      <if test="deviceType != null">
+        device_type,
+      </if>
+      <if test="collStatus != null">
+        coll_status,
+      </if>
+      <if test="infoSource != null">
+        info_source,
+      </if>
+      <if test="collLocation != null">
+        coll_location,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="modifyPerson != null">
+        modify_person,
+      </if>
+      <if test="pitch != null">
+        pitch,
+      </if>
+      <if test="roll != null">
+        roll,
+      </if>
+      <if test="heading != null">
+        heading,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="poleId != null">
+        #{poleId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="poleCode != null">
+        #{poleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="poleType != null">
+        #{poleType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="crossId != null">
+        #{crossId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="direction != null">
+        #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null">
+        #{installationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        #{isStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="datum != null">
+        #{datum,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=BIGINT},
+      </if>
+      <if test="collStatus != null">
+        #{collStatus,jdbcType=BIGINT},
+      </if>
+      <if test="infoSource != null">
+        #{infoSource,jdbcType=BIGINT},
+      </if>
+      <if test="collLocation != null">
+        #{collLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null">
+        #{modifyPerson,jdbcType=BIGINT},
+      </if>
+      <if test="pitch != null">
+        #{pitch,jdbcType=DOUBLE},
+      </if>
+      <if test="roll != null">
+        #{roll,jdbcType=DOUBLE},
+      </if>
+      <if test="heading != null">
+        #{heading,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtIbdTrafficPole">
+    update nt_ibd_traffic_pole
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="poleCode != null">
+        pole_code = #{poleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="poleType != null">
+        pole_type = #{poleType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="crossId != null">
+        cross_id = #{crossId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="direction != null">
+        direction = #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        alt = #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="location != null">
+        "location" = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null">
+        installation_time = #{installationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        is_status = #{isStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="datum != null">
+        datum = #{datum,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null">
+        device_type = #{deviceType,jdbcType=BIGINT},
+      </if>
+      <if test="collStatus != null">
+        coll_status = #{collStatus,jdbcType=BIGINT},
+      </if>
+      <if test="infoSource != null">
+        info_source = #{infoSource,jdbcType=BIGINT},
+      </if>
+      <if test="collLocation != null">
+        coll_location = #{collLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null">
+        modify_person = #{modifyPerson,jdbcType=BIGINT},
+      </if>
+      <if test="pitch != null">
+        pitch = #{pitch,jdbcType=DOUBLE},
+      </if>
+      <if test="roll != null">
+        roll = #{roll,jdbcType=DOUBLE},
+      </if>
+      <if test="heading != null">
+        heading = #{heading,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where pole_id = #{poleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtIbdTrafficPole">
+    update nt_ibd_traffic_pole
+    set "name" = #{name,jdbcType=VARCHAR},
+      pole_code = #{poleCode,jdbcType=VARCHAR},
+      pole_type = #{poleType,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR},
+      cross_id = #{crossId,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=BIGINT},
+      direction = #{direction,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      alt = #{alt,jdbcType=DOUBLE},
+      "location" = #{location,jdbcType=VARCHAR},
+      manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      installation_time = #{installationTime,jdbcType=TIMESTAMP},
+      is_status = #{isStatus,jdbcType=VARCHAR},
+      datum = #{datum,jdbcType=VARCHAR},
+      device_type = #{deviceType,jdbcType=BIGINT},
+      coll_status = #{collStatus,jdbcType=BIGINT},
+      info_source = #{infoSource,jdbcType=BIGINT},
+      coll_location = #{collLocation,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_person = #{modifyPerson,jdbcType=BIGINT},
+      pitch = #{pitch,jdbcType=DOUBLE},
+      roll = #{roll,jdbcType=DOUBLE},
+      heading = #{heading,jdbcType=DOUBLE}
+    where pole_id = #{poleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateIsDelByPrimaryKey" parameterType="java.lang.String">
+    update nt_ibd_traffic_pole
+    set is_del = '2'
+    where pole_id = #{poleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

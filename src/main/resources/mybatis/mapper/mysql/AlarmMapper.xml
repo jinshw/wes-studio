@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.AlarmMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.Alarm">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="person" jdbcType="VARCHAR" property="person" />
+    <result column="phone" jdbcType="BIGINT" property="phone" />
+    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="hat_num" jdbcType="VARCHAR" property="hatNum" />
+    <result column="create_timestamp" jdbcType="TIMESTAMP" property="createTimestamp" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="modify_timestamp" jdbcType="TIMESTAMP" property="modifyTimestamp" />
+    <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
+    <result column="update_version" jdbcType="BIGINT" property="updateVersion" />
+    <result column="reading" jdbcType="BIT" property="reading" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.site.mountain.entity.Alarm">
+    <result column="point" jdbcType="BINARY" property="point" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `type`, person, phone, project_code, project_name, title, `time`, hat_num, create_timestamp, 
+    create_user, modify_timestamp, modify_user, update_version, reading
+  </sql>
+  <sql id="Blob_Column_List">
+    point
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    ,
+    x(point) as lon,
+    y(point) as lat
+    from alarm
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" parameterType="com.site.mountain.entity.Alarm" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    ,
+    x(point) as lon,
+    y(point) as lat
+    from alarm
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from alarm
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.Alarm">
+    insert into alarm (id, `type`, person, 
+      phone, project_code, project_name, 
+      title, `time`, hat_num, 
+      create_timestamp, create_user, modify_timestamp, 
+      modify_user, update_version, reading, 
+      point)
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=SMALLINT}, #{person,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=BIGINT}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{hatNum,jdbcType=VARCHAR}, 
+      #{createTimestamp,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{modifyTimestamp,jdbcType=TIMESTAMP}, 
+      #{modifyUser,jdbcType=VARCHAR}, #{updateVersion,jdbcType=BIGINT}, #{reading,jdbcType=BIT},
+            GeomFromText('POINT(${lon} ${lat})'))
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.Alarm">
+    insert into alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="person != null">
+        person,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="projectCode != null">
+        project_code,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="hatNum != null">
+        hat_num,
+      </if>
+      <if test="createTimestamp != null">
+        create_timestamp,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="modifyTimestamp != null">
+        modify_timestamp,
+      </if>
+      <if test="modifyUser != null">
+        modify_user,
+      </if>
+      <if test="updateVersion != null">
+        update_version,
+      </if>
+      <if test="reading != null">
+        reading,
+      </if>
+      <if test="point != null">
+        point,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="person != null">
+        #{person,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=BIGINT},
+      </if>
+      <if test="projectCode != null">
+        #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hatNum != null">
+        #{hatNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createTimestamp != null">
+        #{createTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTimestamp != null">
+        #{modifyTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null">
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateVersion != null">
+        #{updateVersion,jdbcType=BIGINT},
+      </if>
+      <if test="reading != null">
+        #{reading,jdbcType=BIT},
+      </if>
+      <if test="point != null">
+        #{point,jdbcType=BINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.Alarm">
+    update alarm
+    <set>
+      <if test="type != null">
+        `type` = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="person != null">
+        person = #{person,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=BIGINT},
+      </if>
+      <if test="projectCode != null">
+        project_code = #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hatNum != null">
+        hat_num = #{hatNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createTimestamp != null">
+        create_timestamp = #{createTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTimestamp != null">
+        modify_timestamp = #{modifyTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null">
+        modify_user = #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateVersion != null">
+        update_version = #{updateVersion,jdbcType=BIGINT},
+      </if>
+      <if test="reading != null">
+        reading = #{reading,jdbcType=BIT},
+      </if>
+      <if test="point != null">
+        point = #{point,jdbcType=BINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.site.mountain.entity.Alarm">
+    update alarm
+    set `type` = #{type,jdbcType=SMALLINT},
+      person = #{person,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=BIGINT},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=TIMESTAMP},
+      hat_num = #{hatNum,jdbcType=VARCHAR},
+      create_timestamp = #{createTimestamp,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      modify_timestamp = #{modifyTimestamp,jdbcType=TIMESTAMP},
+      modify_user = #{modifyUser,jdbcType=VARCHAR},
+      update_version = #{updateVersion,jdbcType=BIGINT},
+      reading = #{reading,jdbcType=BIT},
+      point = #{point,jdbcType=BINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.Alarm">
+    update alarm
+    set `type` = #{type,jdbcType=SMALLINT},
+      person = #{person,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=BIGINT},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=TIMESTAMP},
+      hat_num = #{hatNum,jdbcType=VARCHAR},
+      create_timestamp = #{createTimestamp,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      modify_timestamp = #{modifyTimestamp,jdbcType=TIMESTAMP},
+      modify_user = #{modifyUser,jdbcType=VARCHAR},
+      update_version = #{updateVersion,jdbcType=BIGINT},
+      reading = #{reading,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

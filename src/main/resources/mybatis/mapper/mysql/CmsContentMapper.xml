@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.CmsContentDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.CmsContent">
+        <result column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="short_title" property="shortTitle"/>
+		<result column="old_title" property="oldTitle"/>
+		<result column="author" property="author"/>
+		<result column="editor" property="editor"/>
+		<result column="column_id" property="columnId"/>
+		<result column="logo" property="logo"/>
+		<result column="content" property="content"/>
+		<result column="source" property="source"/>
+		<result column="status" property="status"/>
+		<result column="orders" property="orders"/>
+		<result column="is_top" property="isTop"/>
+		<result column="remark" property="remark"/>
+		<result column="publish_time" property="publishTime"/>
+		<result column="save_time" property="saveTime"/>
+		<result column="opt_person" property="optPerson"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `id`,
+		`title`,
+		`short_title`,
+		`old_title`,
+		`author`,
+		`editor`,
+		`column_id`,
+		`logo`,
+		`content`,
+		`source`,
+		`status`,
+		`orders`,
+		`is_top`,
+		`remark`,
+		`publish_time`,
+		`save_time`,
+		`opt_person`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO cms_content (
+		`id`,
+		`title`,
+		`short_title`,
+		`old_title`,
+		`author`,
+		`editor`,
+		`column_id`,
+		`logo`,
+		`content`,
+		`source`,
+		`status`,
+		`orders`,
+		`is_top`,
+		`remark`,
+		`publish_time`,
+		`save_time`,
+		`opt_person`
+
+	) VALUES ( 
+		#{id},
+		#{title},
+		#{shortTitle},
+		#{oldTitle},
+		#{author},
+		#{editor},
+		#{columnId},
+		#{logo},
+		#{content},
+		#{source},
+		#{status},
+		#{orders},
+		#{isTop},
+		#{remark},
+		#{publishTime},
+		#{saveTime},
+		#{optPerson}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO cms_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">`id`,</if> 
+			<if test="title!=null">`title`,</if> 
+			<if test="shortTitle!=null">`short_title`,</if> 
+			<if test="oldTitle!=null">`old_title`,</if> 
+			<if test="author!=null">`author`,</if> 
+			<if test="editor!=null">`editor`,</if> 
+			<if test="columnId!=null">`column_id`,</if> 
+			<if test="logo!=null">`logo`,</if> 
+			<if test="content!=null">`content`,</if> 
+			<if test="source!=null">`source`,</if> 
+			<if test="status!=null">`status`,</if> 
+			<if test="orders!=null">`orders`,</if> 
+			<if test="isTop!=null">`is_top`,</if> 
+			<if test="remark!=null">`remark`,</if> 
+			<if test="publishTime!=null">`publish_time`,</if> 
+			<if test="saveTime!=null">`save_time`,</if> 
+			<if test="optPerson!=null">`opt_person`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">#{id},</if> 
+			<if test="title!=null">#{title},</if> 
+			<if test="shortTitle!=null">#{shortTitle},</if> 
+			<if test="oldTitle!=null">#{oldTitle},</if> 
+			<if test="author!=null">#{author},</if> 
+			<if test="editor!=null">#{editor},</if> 
+			<if test="columnId!=null">#{columnId},</if> 
+			<if test="logo!=null">#{logo},</if> 
+			<if test="content!=null">#{content},</if> 
+			<if test="source!=null">#{source},</if> 
+			<if test="status!=null">#{status},</if> 
+			<if test="orders!=null">#{orders},</if> 
+			<if test="isTop!=null">#{isTop},</if> 
+			<if test="remark!=null">#{remark},</if> 
+			<if test="publishTime!=null">#{publishTime},</if> 
+			<if test="saveTime!=null">#{saveTime},</if> 
+			<if test="optPerson!=null">#{optPerson},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE cms_content
+        <trim prefix="set" suffixOverrides=",">
+            <if test="id!=null">`id`= #{id},</if> 
+			<if test="title!=null">`title`= #{title},</if> 
+			<if test="shortTitle!=null">`short_title`= #{shortTitle},</if> 
+			<if test="oldTitle!=null">`old_title`= #{oldTitle},</if> 
+			<if test="author!=null">`author`= #{author},</if> 
+			<if test="editor!=null">`editor`= #{editor},</if> 
+			<if test="columnId!=null">`column_id`= #{columnId},</if> 
+			<if test="logo!=null">`logo`= #{logo},</if> 
+			<if test="content!=null">`content`= #{content},</if> 
+			<if test="source!=null">`source`= #{source},</if> 
+			<if test="status!=null">`status`= #{status},</if> 
+			<if test="orders!=null">`orders`= #{orders},</if> 
+			<if test="isTop!=null">`is_top`= #{isTop},</if> 
+			<if test="remark!=null">`remark`= #{remark},</if> 
+			<if test="publishTime!=null">`publish_time`= #{publishTime},</if> 
+			<if test="saveTime!=null">`save_time`= #{saveTime},</if> 
+			<if test="optPerson!=null">`opt_person`= #{optPerson},</if> 
+
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.CmsContent" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from cms_content
+        <where>
+			<if test="title != null and title != ''">
+				<bind name="pattern" value="'%' + title + '%'"/>
+				AND title LIKE #{pattern}
+			</if>
+			<if test="shortTitle != null">AND short_title = #{shortTitle}</if>
+			<if test="oldTitle != null">AND old_title = #{oldTitle}</if>
+			<if test="author != null and author != ''">AND author = #{author}</if>
+			<if test="editor != null and editor != ''">AND editor = #{editor}</if>
+			<if test="columnId != null and columnId != ''">AND column_id = #{columnId}</if>
+
+        </where>
+		ORDER BY orders ASC
+    </select>
+    <select id="findListByPage" parameterType="com.site.mountain.entity.CmsContent" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from cms_content
+        <where>
+			<if test="columnId != null and columnId != ''">AND column_id = #{columnId}</if>
+        </where>
+		ORDER BY orders ASC
+		LIMIT ${(pageNo-1)*pageSize},${pageSize}
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.CmsContent">
+        DELETE from cms_content where id = #{id}
+    </delete>
+
+
+</mapper>

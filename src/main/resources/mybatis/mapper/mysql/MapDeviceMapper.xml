@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapDevice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="device_type" jdbcType="BIGINT" property="deviceType" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="device_model" jdbcType="VARCHAR" property="deviceModel" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="pole_code" jdbcType="VARCHAR" property="poleCode" />
+    <result column="orientation" jdbcType="VARCHAR" property="orientation" />
+    <result column="connect_mec" jdbcType="BIGINT" property="connectMec" />
+    <result column="road_loction" jdbcType="VARCHAR" property="roadLoction" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="alt" jdbcType="DOUBLE" property="alt" />
+    <result column="pitch" jdbcType="DOUBLE" property="pitch" />
+    <result column="roll" jdbcType="DOUBLE" property="roll" />
+    <result column="heading" jdbcType="DOUBLE" property="heading" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="mesh" jdbcType="VARCHAR" property="mesh" />
+    <result column="mask" jdbcType="VARCHAR" property="mask" />
+    <result column="gateway" jdbcType="VARCHAR" property="gateway" />
+    <result column="server_connect" jdbcType="VARCHAR" property="serverConnect" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="effective_radius" jdbcType="DOUBLE" property="effectiveRadius" />
+    <result column="play_address" jdbcType="VARCHAR" property="playAddress" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="obj_path" jdbcType="VARCHAR" property="objPath" />
+    <result column="gltf_path" jdbcType="VARCHAR" property="gltfPath" />
+    <result column="tileset_path" jdbcType="VARCHAR" property="tilesetPath" />
+    <result column="camera_property" jdbcType="VARCHAR" property="cameraProperty" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, device_code, device_type, brand, device_model, serial_number, pole_code, orientation, 
+    connect_mec, road_loction, lon, lat, alt, pitch, roll, heading, ip, mesh, mask, gateway, 
+    server_connect, status, effective_radius, play_address, is_del, opt_person, opt_time,
+    create_time,obj_path,gltf_path,tileset_path,camera_property
+  </sql>
+
+  <select id="selectListByDeviceType" parameterType="com.site.mountain.entity.MapDevice" resultMap="BaseResultMap">
+    select
+    d.id, d.device_code, d.device_type, d.brand, d.device_model, d.serial_number, d.pole_code, d.orientation,
+    d.connect_mec, d.road_loction, d.lon, d.lat, d.alt, d.pitch, d.roll, d.heading, d.ip, d.mesh, d.mask, d.gateway,
+    d.server_connect, d.status, d.effective_radius, d.play_address, d.is_del, d.opt_person, d.opt_time,
+    d.create_time,d.obj_path,d.gltf_path,d.tileset_path,d.camera_property
+    from map_device d
+    left join map_device_type y on d.device_type=y.dt_id
+    <where>
+      <if test="1==1">
+        and d.is_del = '0' and y.is_del='0'
+      </if>
+      <if test="deviceTypeCode != null and deviceTypeCode != ''">
+        and y.code = #{deviceTypeCode}
+      </if>
+      <if test ="deviceTypeCodeList != null and deviceTypeCodeList.size() > 0">
+        and y.code in
+        <foreach collection="deviceTypeCodeList" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="deviceType != null and deviceType != ''">
+        and d.device_type = #{deviceType}
+      </if>
+    </where>
+    order by d.device_code asc
+  </select>
+
+  <select id="selectDevicesByDeviceId" resultType="java.lang.Integer">
+    select
+      id
+    from map_device
+    where id= #{deviceId}
+  </select>
+  <select id="selectListByDeviceId" resultMap="BaseResultMap">
+    select
+      d.id, d.device_code, d.device_type, d.brand, d.device_model, d.serial_number, d.pole_code, d.orientation,
+      d.connect_mec, d.road_loction, d.lon, d.lat, d.alt, d.pitch, d.roll, d.heading, d.ip, d.mesh, d.mask, d.gateway,
+      d.server_connect, d.status, d.effective_radius, d.play_address, d.is_del, d.opt_person, d.opt_time,
+      d.create_time,d.obj_path,CONCAT(f.url, d.gltf_path) as gltf_path,d.tileset_path,d.camera_property
+    from map_device d,nt_file_proxy_dict f
+    where d.is_del = '0' and d.id = #{deviceId} and f.code='fileUrl'
+    order by d.device_code asc
+  </select>
+  <select id="selectListByDeviceTypes" parameterType="com.site.mountain.entity.MapDevice" resultMap="BaseResultMap">
+    select
+    d.id, d.device_code, d.device_type, d.brand, d.device_model, d.serial_number, d.pole_code, d.orientation,
+    d.connect_mec, d.road_loction, d.lon, d.lat, d.alt, d.pitch, d.roll, d.heading, d.ip, d.mesh, d.mask, d.gateway,
+    d.server_connect, d.status, d.effective_radius, d.play_address, d.is_del, d.opt_person, d.opt_time,
+    d.create_time,d.obj_path,CONCAT((select f.url from nt_file_proxy_dict f where f.code='fileUrl'), d.gltf_path) as gltf_path,d.tileset_path,d.camera_property
+    from map_device d
+    left join map_device_type y on d.device_type=y.dt_id
+    <where>
+      <if test="1==1">
+        and d.is_del = '0'
+      </if>
+      <if test="deviceTypeCode != null and deviceTypeCode != ''">
+        and y.code = #{deviceTypeCode}
+      </if>
+      <if test="deviceType != null and deviceType != ''">
+        and d.device_type = #{deviceType}
+      </if>
+    </where>
+    order by d.device_code asc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_device
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.MapDevice" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_device
+    <where>
+      <if test="1==1">
+        and is_del = '0'
+      </if>
+      <if test="deviceType != null">
+        and device_type = #{deviceType}
+      </if>
+      <if test="deviceCode != null and deviceCode != ''">
+        <bind name="pattern" value="'%' + deviceCode + '%'"/>
+        AND device_code LIKE #{pattern}
+      </if>
+    </where>
+    order by device_code asc
+  </select>
+  <select id="selectListMap" parameterType="com.site.mountain.entity.MapDevice" resultType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_device
+    <where>
+      <if test="1==1">
+        and is_del = '0'
+      </if>
+      <if test="deviceType != null">
+        and device_type = #{deviceType}
+      </if>
+      <if test="deviceCode != null and deviceCode != ''">
+        <bind name="pattern" value="'%' + deviceCode + '%'"/>
+        AND device_code LIKE #{pattern}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectGLTF" parameterType="com.site.mountain.entity.MapDevice" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_device
+    <where>
+      <if test="1==1">
+        and is_del = '0'
+        and obj_path &lt;&gt; '' and gltf_path &lt;&gt; ''
+      </if>
+      <if test="deviceType != null">
+        and device_type = #{deviceType}
+      </if>
+    </where>
+    order by device_type asc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_device
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapDevice">
+    insert into map_device ( device_code, device_type,
+      brand, device_model, serial_number, 
+      pole_code, orientation, connect_mec, 
+      road_loction, lon, lat, 
+      alt, pitch, roll, heading, 
+      ip, mesh, mask, gateway, 
+      server_connect, status, effective_radius, 
+      play_address, is_del, opt_person, 
+      opt_time, create_time,obj_path,gltf_path,tileset_path,camera_property)
+    values ( #{deviceCode,jdbcType=VARCHAR}, #{deviceType,jdbcType=BIGINT},
+      #{brand,jdbcType=VARCHAR}, #{deviceModel,jdbcType=VARCHAR}, #{serialNumber,jdbcType=VARCHAR}, 
+      #{poleCode,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, #{connectMec,jdbcType=BIGINT}, 
+      #{roadLoction,jdbcType=VARCHAR}, #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, 
+      #{alt,jdbcType=DOUBLE}, #{pitch,jdbcType=DOUBLE}, #{roll,jdbcType=DOUBLE}, #{heading,jdbcType=DOUBLE}, 
+      #{ip,jdbcType=VARCHAR}, #{mesh,jdbcType=VARCHAR}, #{mask,jdbcType=VARCHAR}, #{gateway,jdbcType=VARCHAR}, 
+      #{serverConnect,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{effectiveRadius,jdbcType=DOUBLE}, 
+      #{playAddress,jdbcType=VARCHAR}, #{isDel,jdbcType=VARCHAR}, #{optPerson,jdbcType=BIGINT}, 
+      #{optTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+             #{objPath,jdbcType=VARCHAR},#{gltfPath,jdbcType=VARCHAR},#{tilesetPath,jdbcType=VARCHAR},#{cameraProperty,jdbcType=VARCHAR}
+            )
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapDevice">
+    insert into map_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deviceCode != null">
+        device_code,
+      </if>
+      <if test="deviceType != null">
+        device_type,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="deviceModel != null">
+        device_model,
+      </if>
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="poleCode != null">
+        pole_code,
+      </if>
+      <if test="orientation != null">
+        orientation,
+      </if>
+      <if test="connectMec != null">
+        connect_mec,
+      </if>
+      <if test="roadLoction != null">
+        road_loction,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="pitch != null">
+        pitch,
+      </if>
+      <if test="roll != null">
+        roll,
+      </if>
+      <if test="heading != null">
+        heading,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="mesh != null">
+        mesh,
+      </if>
+      <if test="mask != null">
+        mask,
+      </if>
+      <if test="gateway != null">
+        gateway,
+      </if>
+      <if test="serverConnect != null">
+        server_connect,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="effectiveRadius != null">
+        effective_radius,
+      </if>
+      <if test="playAddress != null">
+        play_address,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="objPath != null">
+        obj_path,
+      </if>
+      <if test="gltfPath != null">
+        gltf_path,
+      </if>
+      <if test="tilesetPath != null">
+        tileset_path,
+      </if>
+      <if test="cameraProperty != null">
+        camera_property,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="deviceCode != null">
+        #{deviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=BIGINT},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceModel != null">
+        #{deviceModel,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="poleCode != null">
+        #{poleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null">
+        #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="connectMec != null">
+        #{connectMec,jdbcType=BIGINT},
+      </if>
+      <if test="roadLoction != null">
+        #{roadLoction,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="pitch != null">
+        #{pitch,jdbcType=DOUBLE},
+      </if>
+      <if test="roll != null">
+        #{roll,jdbcType=DOUBLE},
+      </if>
+      <if test="heading != null">
+        #{heading,jdbcType=DOUBLE},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mesh != null">
+        #{mesh,jdbcType=VARCHAR},
+      </if>
+      <if test="mask != null">
+        #{mask,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null">
+        #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="serverConnect != null">
+        #{serverConnect,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveRadius != null">
+        #{effectiveRadius,jdbcType=DOUBLE},
+      </if>
+      <if test="playAddress != null">
+        #{playAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="objPath != null">
+        #{objPath,jdbcType=VARCHAR},
+      </if>
+      <if test="gltfPath != null">
+        #{gltfPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesetPath != null">
+        #{tilesetPath,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraProperty != null">
+        #{cameraProperty,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapDevice">
+    update map_device
+    <set>
+      <if test="deviceCode != null and deviceCode !=''">
+        device_code = #{deviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceType != null">
+        device_type = #{deviceType,jdbcType=BIGINT},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceModel != null">
+        device_model = #{deviceModel,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null">
+        serial_number = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="poleCode != null">
+        pole_code = #{poleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null">
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="connectMec != null">
+        connect_mec = #{connectMec,jdbcType=BIGINT},
+      </if>
+      <if test="roadLoction != null">
+        road_loction = #{roadLoction,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        alt = #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="pitch != null">
+        pitch = #{pitch,jdbcType=DOUBLE},
+      </if>
+      <if test="roll != null">
+        roll = #{roll,jdbcType=DOUBLE},
+      </if>
+      <if test="heading != null">
+        heading = #{heading,jdbcType=DOUBLE},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mesh != null">
+        mesh = #{mesh,jdbcType=VARCHAR},
+      </if>
+      <if test="mask != null">
+        mask = #{mask,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null">
+        gateway = #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="serverConnect != null">
+        server_connect = #{serverConnect,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveRadius != null">
+        effective_radius = #{effectiveRadius,jdbcType=DOUBLE},
+      </if>
+      <if test="playAddress != null">
+        play_address = #{playAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="objPath != null">
+        obj_path = #{objPath,jdbcType=VARCHAR},
+      </if>
+      <if test="gltfPath != null">
+        gltf_path = #{gltfPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesetPath != null">
+        tileset_path = #{tilesetPath,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraProperty != null">
+        camera_property = #{cameraProperty,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapDevice">
+    update map_device
+    set device_code = #{deviceCode,jdbcType=VARCHAR},
+      device_type = #{deviceType,jdbcType=BIGINT},
+      brand = #{brand,jdbcType=VARCHAR},
+      device_model = #{deviceModel,jdbcType=VARCHAR},
+      serial_number = #{serialNumber,jdbcType=VARCHAR},
+      pole_code = #{poleCode,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=VARCHAR},
+      connect_mec = #{connectMec,jdbcType=BIGINT},
+      road_loction = #{roadLoction,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      alt = #{alt,jdbcType=DOUBLE},
+      pitch = #{pitch,jdbcType=DOUBLE},
+      roll = #{roll,jdbcType=DOUBLE},
+      heading = #{heading,jdbcType=DOUBLE},
+      ip = #{ip,jdbcType=VARCHAR},
+      mesh = #{mesh,jdbcType=VARCHAR},
+      mask = #{mask,jdbcType=VARCHAR},
+      gateway = #{gateway,jdbcType=VARCHAR},
+      server_connect = #{serverConnect,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      effective_radius = #{effectiveRadius,jdbcType=DOUBLE},
+      play_address = #{playAddress,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+
+      obj_path = #{objPath,jdbcType=VARCHAR},
+      gltf_path = #{gltfPath,jdbcType=VARCHAR},
+      tileset_path = #{tilesetPath,jdbcType=VARCHAR}
+      camera_property = #{cameraProperty,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

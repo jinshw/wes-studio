@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtIbdAssetSectionDirectionMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtIbdAssetSectionDirection">
+    <id column="direction_id" jdbcType="VARCHAR" property="directionId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="direction_code" jdbcType="VARCHAR" property="directionCode" />
+    <result column="direction_type" jdbcType="VARCHAR" property="directionType" />
+    <result column="polygon" jdbcType="VARCHAR" property="polygon" />
+    <result column="polygon_center" jdbcType="VARCHAR" property="polygonCenter" />
+    <result column="line_color" jdbcType="VARCHAR" property="lineColor" />
+    <result column="line_width" jdbcType="VARCHAR" property="lineWidth" />
+    <result column="line_style" jdbcType="VARCHAR" property="lineStyle" />
+    <result column="outline_color" jdbcType="VARCHAR" property="outlineColor" />
+    <result column="outline_width" jdbcType="VARCHAR" property="outlineWidth" />
+    <result column="outline_style" jdbcType="VARCHAR" property="outlineStyle" />
+    <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="direction_id" jdbcType="VARCHAR" property="id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    direction_id, "name", direction_code, direction_type, polygon, polygon_center, line_color, 
+    line_width, line_style, outline_color, outline_width, outline_style, section_id
+  </sql>
+  <select id="selectSectionDirectionById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_asset_section_direction
+    where section_id = #{sectionId}
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.NtIbdAssetSectionDirection" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_asset_section_direction
+    <where>
+      <if test="directionId != null and directionId != ''">
+        and direction_id = #{directionId}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND "name" LIKE #{pattern}
+      </if>
+      <if test="sectionId != null and sectionId != ''">
+        and section_id = #{sectionId}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_ibd_asset_section_direction
+    where direction_id = #{directionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_ibd_asset_section_direction
+    where direction_id = #{directionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtIbdAssetSectionDirection">
+    insert into nt_ibd_asset_section_direction (direction_id, "name", direction_code, 
+      direction_type, polygon, polygon_center, 
+      line_color, line_width, line_style, 
+      outline_color, outline_width, outline_style, 
+      section_id)
+    values (#{directionId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{directionCode,jdbcType=VARCHAR}, 
+      #{directionType,jdbcType=VARCHAR}, #{polygon,jdbcType=VARCHAR}, #{polygonCenter,jdbcType=VARCHAR}, 
+      #{lineColor,jdbcType=VARCHAR}, #{lineWidth,jdbcType=VARCHAR}, #{lineStyle,jdbcType=VARCHAR}, 
+      #{outlineColor,jdbcType=VARCHAR}, #{outlineWidth,jdbcType=VARCHAR}, #{outlineStyle,jdbcType=VARCHAR}, 
+      #{sectionId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtIbdAssetSectionDirection">
+    insert into nt_ibd_asset_section_direction
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="directionId != null">
+        direction_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="directionCode != null">
+        direction_code,
+      </if>
+      <if test="directionType != null">
+        direction_type,
+      </if>
+      <if test="polygon != null">
+        polygon,
+      </if>
+      <if test="polygonCenter != null">
+        polygon_center,
+      </if>
+      <if test="lineColor != null">
+        line_color,
+      </if>
+      <if test="lineWidth != null">
+        line_width,
+      </if>
+      <if test="lineStyle != null">
+        line_style,
+      </if>
+      <if test="outlineColor != null">
+        outline_color,
+      </if>
+      <if test="outlineWidth != null">
+        outline_width,
+      </if>
+      <if test="outlineStyle != null">
+        outline_style,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="directionId != null">
+        #{directionId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="directionCode != null">
+        #{directionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="directionType != null">
+        #{directionType,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="polygonCenter != null">
+        #{polygonCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtIbdAssetSectionDirection">
+    update nt_ibd_asset_section_direction
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="directionCode != null">
+        direction_code = #{directionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="directionType != null">
+        direction_type = #{directionType,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        polygon = #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="polygonCenter != null">
+        polygon_center = #{polygonCenter,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        line_color = #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        line_width = #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        line_style = #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        outline_color = #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where direction_id = #{directionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtIbdAssetSectionDirection">
+    update nt_ibd_asset_section_direction
+    set "name" = #{name,jdbcType=VARCHAR},
+      direction_code = #{directionCode,jdbcType=VARCHAR},
+      direction_type = #{directionType,jdbcType=VARCHAR},
+      polygon = #{polygon,jdbcType=VARCHAR},
+      polygon_center = #{polygonCenter,jdbcType=VARCHAR},
+      line_color = #{lineColor,jdbcType=VARCHAR},
+      line_width = #{lineWidth,jdbcType=VARCHAR},
+      line_style = #{lineStyle,jdbcType=VARCHAR},
+      outline_color = #{outlineColor,jdbcType=VARCHAR},
+      outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      section_id = #{sectionId,jdbcType=VARCHAR}
+    where direction_id = #{directionId,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="replaceSelectiveBatch" parameterType="list">
+    <if test="records != null and records.size() > 0">
+      <foreach collection="records" item="item" index="index" open="" close="" separator=";">
+        insert into nt_ibd_asset_section_direction (direction_id, "name", direction_code,
+        direction_type, polygon, polygon_center,
+        line_color, line_width, line_style,
+        outline_color, outline_width, outline_style,
+        section_id)
+        values (#{item.directionId,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.directionCode,jdbcType=VARCHAR},
+        #{item.directionType,jdbcType=VARCHAR}, #{item.polygon,jdbcType=VARCHAR}, #{item.polygonCenter,jdbcType=VARCHAR},
+        #{item.lineColor,jdbcType=VARCHAR}, #{item.lineWidth,jdbcType=VARCHAR}, #{item.lineStyle,jdbcType=VARCHAR},
+        #{item.outlineColor,jdbcType=VARCHAR}, #{item.outlineWidth,jdbcType=VARCHAR}, #{item.outlineStyle,jdbcType=VARCHAR},
+        #{item.sectionId,jdbcType=VARCHAR})
+        ON conflict (direction_id) do update set
+        "name" = #{item.name,jdbcType=VARCHAR},
+        direction_code = #{item.directionCode,jdbcType=VARCHAR},
+        direction_type = #{item.directionType,jdbcType=VARCHAR},
+        polygon = #{item.polygon,jdbcType=VARCHAR},
+        polygon_center = #{item.polygonCenter,jdbcType=VARCHAR},
+        line_color = #{item.lineColor,jdbcType=VARCHAR},
+        line_width = #{item.lineWidth,jdbcType=VARCHAR},
+        line_style = #{item.lineStyle,jdbcType=VARCHAR},
+        outline_color = #{item.outlineColor,jdbcType=VARCHAR},
+        outline_width = #{item.outlineWidth,jdbcType=VARCHAR},
+        outline_style = #{item.outlineStyle,jdbcType=VARCHAR},
+        section_id = #{item.sectionId,jdbcType=VARCHAR}
+      </foreach>
+    </if>
+  </insert>
+</mapper>

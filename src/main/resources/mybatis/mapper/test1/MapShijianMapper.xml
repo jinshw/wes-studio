@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.test1.MapShijianMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapShijian">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="shijian_id" jdbcType="VARCHAR" property="shijianId" />
+    <result column="leixing" jdbcType="VARCHAR" property="leixing" />
+    <result column="laiyuan" jdbcType="VARCHAR" property="laiyuan" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="alt" jdbcType="DOUBLE" property="alt" />
+    <result column="chedao" jdbcType="VARCHAR" property="chedao" />
+    <result column="kexindu" jdbcType="VARCHAR" property="kexindu" />
+    <result column="fugaibanjing" jdbcType="VARCHAR" property="fugaibanjing" />
+    <result column="beizhu" jdbcType="VARCHAR" property="beizhu" />
+    <result column="shijian_time" jdbcType="VARCHAR" property="shijianTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, shijian_id, leixing, laiyuan, lon, lat, alt, chedao, kexindu, fugaibanjing, beizhu, 
+    shijian_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_shijian
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" parameterType="com.site.mountain.entity.MapShijian" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_shijian
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="shijianId != null and shijianId != ''">
+        and shijian_id = #{shijianId}
+      </if>
+      <if test="leixing != null and leixing != ''">
+        and leixing = #{leixing}
+      </if>
+      <if test="laiyuan != null and laiyuan != ''">
+        and laiyuan = #{laiyuan}
+      </if>
+      <if test="chedao != null and chedao != ''">
+        and chedao = #{chedao}
+      </if>
+      <if test="kexindu != null and kexindu != ''">
+        and kexindu = #{kexindu}
+      </if>
+      <if test="fugaibanjing != null and fugaibanjing != ''">
+        and fugaibanjing = #{fugaibanjing}
+      </if>
+    </where>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from map_shijian
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapShijian">
+    insert into map_shijian (id, shijian_id, leixing, 
+      laiyuan, lon, lat, alt, 
+      chedao, kexindu, fugaibanjing, 
+      beizhu, shijian_time)
+    values (#{id,jdbcType=INTEGER}, #{shijianId,jdbcType=VARCHAR}, #{leixing,jdbcType=VARCHAR}, 
+      #{laiyuan,jdbcType=VARCHAR}, #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{alt,jdbcType=DOUBLE}, 
+      #{chedao,jdbcType=VARCHAR}, #{kexindu,jdbcType=VARCHAR}, #{fugaibanjing,jdbcType=VARCHAR}, 
+      #{beizhu,jdbcType=VARCHAR}, #{shijianTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapShijian">
+    insert into map_shijian
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="shijianId != null">
+        shijian_id,
+      </if>
+      <if test="leixing != null">
+        leixing,
+      </if>
+      <if test="laiyuan != null">
+        laiyuan,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="chedao != null">
+        chedao,
+      </if>
+      <if test="kexindu != null">
+        kexindu,
+      </if>
+      <if test="fugaibanjing != null">
+        fugaibanjing,
+      </if>
+      <if test="beizhu != null">
+        beizhu,
+      </if>
+      <if test="shijianTime != null">
+        shijian_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shijianId != null">
+        #{shijianId,jdbcType=VARCHAR},
+      </if>
+      <if test="leixing != null">
+        #{leixing,jdbcType=VARCHAR},
+      </if>
+      <if test="laiyuan != null">
+        #{laiyuan,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="chedao != null">
+        #{chedao,jdbcType=VARCHAR},
+      </if>
+      <if test="kexindu != null">
+        #{kexindu,jdbcType=VARCHAR},
+      </if>
+      <if test="fugaibanjing != null">
+        #{fugaibanjing,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        #{beizhu,jdbcType=VARCHAR},
+      </if>
+      <if test="shijianTime != null">
+        #{shijianTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapShijian">
+    update map_shijian
+    <set>
+      <if test="shijianId != null">
+        shijian_id = #{shijianId,jdbcType=VARCHAR},
+      </if>
+      <if test="leixing != null">
+        leixing = #{leixing,jdbcType=VARCHAR},
+      </if>
+      <if test="laiyuan != null">
+        laiyuan = #{laiyuan,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        alt = #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="chedao != null">
+        chedao = #{chedao,jdbcType=VARCHAR},
+      </if>
+      <if test="kexindu != null">
+        kexindu = #{kexindu,jdbcType=VARCHAR},
+      </if>
+      <if test="fugaibanjing != null">
+        fugaibanjing = #{fugaibanjing,jdbcType=VARCHAR},
+      </if>
+      <if test="beizhu != null">
+        beizhu = #{beizhu,jdbcType=VARCHAR},
+      </if>
+      <if test="shijianTime != null">
+        shijian_time = #{shijianTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapShijian">
+    update map_shijian
+    set shijian_id = #{shijianId,jdbcType=VARCHAR},
+      leixing = #{leixing,jdbcType=VARCHAR},
+      laiyuan = #{laiyuan,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      alt = #{alt,jdbcType=DOUBLE},
+      chedao = #{chedao,jdbcType=VARCHAR},
+      kexindu = #{kexindu,jdbcType=VARCHAR},
+      fugaibanjing = #{fugaibanjing,jdbcType=VARCHAR},
+      beizhu = #{beizhu,jdbcType=VARCHAR},
+      shijian_time = #{shijianTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

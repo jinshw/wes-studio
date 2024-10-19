@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapServiceMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapService">
+    <id column="ms_id" jdbcType="BIGINT" property="msId" />
+    <result column="ms_type" jdbcType="VARCHAR" property="msType" />
+    <result column="ms_url" jdbcType="VARCHAR" property="msUrl" />
+    <result column="ms_version" jdbcType="VARCHAR" property="msVersion" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="data_id" jdbcType="BIGINT" property="dataId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_person" jdbcType="BIGINT" property="updatePerson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ms_id, ms_type, ms_url, ms_version, "status", data_id, update_time, update_person
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_service
+    where ms_id = #{msId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_service
+    where ms_id = #{msId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapService">
+    insert into map_service (ms_id, ms_type, ms_url, 
+      ms_version, "status", data_id, 
+      update_time, update_person)
+    values (#{msId,jdbcType=BIGINT}, #{msType,jdbcType=VARCHAR}, #{msUrl,jdbcType=VARCHAR}, 
+      #{msVersion,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{dataId,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapService">
+    insert into map_service
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        ms_id,
+      </if>
+      <if test="msType != null">
+        ms_type,
+      </if>
+      <if test="msUrl != null">
+        ms_url,
+      </if>
+      <if test="msVersion != null">
+        ms_version,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="dataId != null">
+        data_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="msId != null">
+        #{msId,jdbcType=BIGINT},
+      </if>
+      <if test="msType != null">
+        #{msType,jdbcType=VARCHAR},
+      </if>
+      <if test="msUrl != null">
+        #{msUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="msVersion != null">
+        #{msVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dataId != null">
+        #{dataId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapService">
+    update map_service
+    <set>
+      <if test="msType != null">
+        ms_type = #{msType,jdbcType=VARCHAR},
+      </if>
+      <if test="msUrl != null">
+        ms_url = #{msUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="msVersion != null">
+        ms_version = #{msVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        "status" = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dataId != null">
+        data_id = #{dataId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ms_id = #{msId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapService">
+    update map_service
+    set ms_type = #{msType,jdbcType=VARCHAR},
+      ms_url = #{msUrl,jdbcType=VARCHAR},
+      ms_version = #{msVersion,jdbcType=VARCHAR},
+      "status" = #{status,jdbcType=INTEGER},
+      data_id = #{dataId,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=BIGINT}
+    where ms_id = #{msId,jdbcType=BIGINT}
+  </update>
+</mapper>

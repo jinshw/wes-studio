@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtActplanAssetDictMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtActplanAssetDict">
+    <id column="asset_dict_id" jdbcType="VARCHAR" property="assetDictId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="english_name" jdbcType="VARCHAR" property="englishName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="entity_type" jdbcType="VARCHAR" property="entityType" />
+    <result column="entity_type_code" jdbcType="VARCHAR" property="entityTypeCode" />
+    <result column="checked" jdbcType="VARCHAR" property="checked" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    asset_dict_id, "name", english_name, "type", type_code, entity_type, entity_type_code, 
+    "checked", num, is_del, opt_person, opt_time, create_time, "desc"
+  </sql>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtActplanAssetDict" resultType="com.site.mountain.entity.NtActplanAssetDict">
+    select
+    <include refid="Base_Column_List" />
+    from nt_actplan_asset_dict
+    <where>
+      is_del = '1'
+      <if test="assetDictId != null and assetDictId != ''">
+        and asset_dict_id = #{assetDictId}
+      </if>
+      <if test="type != null and type != ''">
+        and "type" = #{type}
+      </if>
+      <if test="entityType != null and entityType != ''">
+        and entity_type = #{entityType}
+      </if>
+      <if test ="dictTypeList != null and dictTypeList.size() > 0">
+        and "type" in
+        <foreach collection="dictTypeList" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      order by num
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_actplan_asset_dict
+    where asset_dict_id = #{assetDictId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_actplan_asset_dict
+    where asset_dict_id = #{assetDictId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtActplanAssetDict">
+    insert into nt_actplan_asset_dict (asset_dict_id, "name", english_name, 
+      "type", type_code, entity_type, 
+      entity_type_code, "checked", num, 
+      is_del, opt_person, opt_time, 
+      create_time, "desc")
+    values (#{assetDictId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, #{entityType,jdbcType=VARCHAR}, 
+      #{entityTypeCode,jdbcType=VARCHAR}, #{checked,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
+      #{isDel,jdbcType=VARCHAR}, #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{desc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtActplanAssetDict">
+    insert into nt_actplan_asset_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assetDictId != null">
+        asset_dict_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="englishName != null">
+        english_name,
+      </if>
+      <if test="type != null">
+        "type",
+      </if>
+      <if test="typeCode != null">
+        type_code,
+      </if>
+      <if test="entityType != null">
+        entity_type,
+      </if>
+      <if test="entityTypeCode != null">
+        entity_type_code,
+      </if>
+      <if test="checked != null">
+        "checked",
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assetDictId != null">
+        #{assetDictId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null">
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="entityType != null">
+        #{entityType,jdbcType=VARCHAR},
+      </if>
+      <if test="entityTypeCode != null">
+        #{entityTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checked != null">
+        #{checked,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtActplanAssetDict">
+    update nt_actplan_asset_dict
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null">
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        "type" = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        type_code = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="entityType != null">
+        entity_type = #{entityType,jdbcType=VARCHAR},
+      </if>
+      <if test="entityTypeCode != null">
+        entity_type_code = #{entityTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checked != null">
+        "checked" = #{checked,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where asset_dict_id = #{assetDictId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtActplanAssetDict">
+    update nt_actplan_asset_dict
+    set "name" = #{name,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      "type" = #{type,jdbcType=VARCHAR},
+      type_code = #{typeCode,jdbcType=VARCHAR},
+      entity_type = #{entityType,jdbcType=VARCHAR},
+      entity_type_code = #{entityTypeCode,jdbcType=VARCHAR},
+      "checked" = #{checked,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR}
+    where asset_dict_id = #{assetDictId,jdbcType=VARCHAR}
+  </update>
+</mapper>

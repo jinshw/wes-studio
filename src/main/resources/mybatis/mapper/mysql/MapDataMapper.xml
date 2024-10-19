@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapDataMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapData">
+    <id column="data_id" jdbcType="BIGINT" property="dataId" />
+    <result column="data_name" jdbcType="VARCHAR" property="dataName" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="main_file" jdbcType="VARCHAR" property="mainFile" />
+    <result column="obj_path" jdbcType="VARCHAR" property="objPath" />
+    <result column="tiles_path" jdbcType="VARCHAR" property="tilesPath" />
+
+    <result column="obj_lon" jdbcType="DOUBLE" property="objLon" />
+    <result column="obj_lat" jdbcType="DOUBLE" property="objLat" />
+    <result column="obj_alt" jdbcType="DOUBLE" property="objAlt" />
+
+    <result column="mongo_id" jdbcType="VARCHAR" property="mongoId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_person" jdbcType="BIGINT" property="updatePerson" />
+    <result column="mec_data_status" jdbcType="INTEGER" property="mecDataStatus" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+  </resultMap>
+  <resultMap id="MapSectionDataMap" type="com.site.mountain.entity.MapSectionData">
+    <id column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="data_id" jdbcType="BIGINT" property="dataId" />
+    <result column="section_name" jdbcType="VARCHAR" property="sectionName" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_person" jdbcType="BIGINT" property="updatePerson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    data_id, data_name, version, "status", data_type, "path", main_file,obj_path,tiles_path,obj_lon,obj_lat,obj_alt, mongo_id, code,
+    update_time, update_person
+  </sql>
+
+  <select id="selectAll" parameterType="com.site.mountain.entity.MapData" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_data
+    <where>
+      <if test="dataId != null and dataId != ''">
+        and data_id = #{dataId}
+      </if>
+      <if test="code != null and code != ''">
+        and code = #{code}
+      </if>
+      <if test="dataName != null and dataName != ''">
+        <bind name="pattern" value="'%' + dataName + '%'"/>
+        AND data_name LIKE #{pattern}
+      </if>
+      <if test="version != null and version != ''">
+        and version = #{version}
+      </if>
+      <if test="dataType != null and dataType != ''">
+        and data_type = #{dataType}
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectMecDataList" parameterType="com.site.mountain.entity.MapMecData" resultMap="MapSectionDataMap">
+    select msd.*
+    from map_data d, map_mec_data mmd,map_section_data msd
+    <where>
+      <if test="1==1">
+        and msd.section_id = mmd.section_id and d.data_id = msd.data_id
+      </if>
+      <if test="mecId != null and mecId != ''">
+        and mmd.mec_id = #{mecId}
+      </if>
+      <if test="dataName != null and dataName != ''">
+        <bind name="pattern" value="'%' + dataName + '%'"/>
+        AND d.data_name LIKE #{pattern}
+      </if>
+    </where>
+    order by mmd.opt_time desc
+
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_data
+    where data_id = #{dataId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_data
+    where data_id = #{dataId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapData">
+    insert into map_data ( data_name, version,
+      "status", data_type, "path", 
+      main_file,obj_path,tiles_path,obj_lon,obj_lat,obj_alt, mongo_id, code,
+      update_time, update_person)
+    values ( #{dataName,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{dataType,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{mainFile,jdbcType=VARCHAR},#{objPath,jdbcType=VARCHAR},#{tilesPath,jdbcType=VARCHAR},
+      #{objLon,jdbcType=DOUBLE},#{objLat,jdbcType=DOUBLE},#{objAlt,jdbcType=DOUBLE},
+      #{mongoId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP}, #{updatePerson,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapData">
+    insert into map_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dataId != null">
+        data_id,
+      </if>
+      <if test="dataName != null">
+        data_name,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="path != null">
+        "path",
+      </if>
+      <if test="mainFile != null">
+        main_file,
+      </if>
+      <if test="objPath != null">
+        obj_path,
+      </if>
+      <if test="tilesPath != null">
+        tiles_path,
+      </if>
+      <if test="objLon != null">
+        obj_lon,
+      </if>
+      <if test="objLat != null">
+        obj_lat,
+      </if>
+      <if test="objAlt != null">
+        obj_alt,
+      </if>
+      <if test="mongoId != null">
+        mongo_id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dataId != null">
+        #{dataId,jdbcType=BIGINT},
+      </if>
+      <if test="dataName != null">
+        #{dataName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="mainFile != null">
+        #{mainFile,jdbcType=VARCHAR},
+      </if>
+      <if test="objPath != null">
+        #{objPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesPath != null">
+        #{tilesPath,jdbcType=VARCHAR},
+      </if>
+
+      <if test="objLon != null">
+        #{objLon,jdbcType=DOUBLE},
+      </if>
+      <if test="objLat != null">
+        #{objLat,jdbcType=DOUBLE},
+      </if>
+      <if test="objAlt != null">
+        #{objAlt,jdbcType=DOUBLE},
+      </if>
+
+
+      <if test="mongoId != null">
+        #{mongoId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapData">
+    update map_data
+    <set>
+      <if test="dataName != null">
+        data_name = #{dataName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        "status" = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        "path" = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="mainFile != null">
+        main_file = #{mainFile,jdbcType=VARCHAR},
+      </if>
+      <if test="objPath != null">
+        obj_path = #{objPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesPath != null">
+        tiles_path = #{tilesPath,jdbcType=VARCHAR},
+      </if>
+      <if test="objLon != null">
+        obj_lon = #{objLon,jdbcType=DOUBLE},
+      </if>
+      <if test="objLat != null">
+        obj_lat = #{objLat,jdbcType=DOUBLE},
+      </if>
+      <if test="objAlt != null">
+        obj_alt = #{objAlt,jdbcType=DOUBLE},
+      </if>
+      <if test="mongoId != null">
+        mongo_id = #{mongoId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=BIGINT},
+      </if>
+    </set>
+    where data_id = #{dataId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapData">
+    update map_data
+    set data_name = #{dataName,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      "status" = #{status,jdbcType=INTEGER},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      "path" = #{path,jdbcType=VARCHAR},
+      main_file = #{mainFile,jdbcType=VARCHAR},
+      obj_path = #{objPath,jdbcType=VARCHAR},
+      tiles_path = #{tilesPath,jdbcType=VARCHAR},
+
+      obj_lon = #{objLon,jdbcType=DOUBLE},
+      obj_lat = #{objLat,jdbcType=DOUBLE},
+      obj_alt = #{objAlt,jdbcType=DOUBLE},
+
+      mongo_id = #{mongoId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=BIGINT}
+    where data_id = #{dataId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectRelation" parameterType="java.lang.Long" resultType="java.util.Map">
+    select Count(*) as num from map_service where data_id = #{dataId}
+    union all
+    select Count(*) as num from map_service where data_id = #{dataId}
+  </select>
+</mapper>

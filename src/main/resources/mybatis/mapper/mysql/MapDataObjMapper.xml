@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapDataObjMapper">
+    <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapDataObj">
+        <id column="mdobj_id" jdbcType="BIGINT" property="mdobjId"/>
+        <result column="sheet_number" jdbcType="VARCHAR" property="sheetNumber"/>
+        <result column="x" jdbcType="VARCHAR" property="x"/>
+        <result column="y" jdbcType="VARCHAR" property="y"/>
+        <result column="z" jdbcType="VARCHAR" property="z"/>
+        <result column="data_id" jdbcType="BIGINT" property="dataId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_person" jdbcType="BIGINT" property="updatePerson"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        mdobj_id
+        , sheet_number, x, y, z, data_id, update_time, update_person
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from map_data_obj
+        where mdobj_id = #{mdobjId,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" parameterType="com.site.mountain.entity.MapDataObj" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from map_data_obj
+        <where>
+            <if test="mdobjId != null">
+                and mdobj_id = #{mdobjId}
+            </if>
+            <if test="dataId != null">
+                and data_id = #{dataId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from map_data_obj
+        where mdobj_id = #{mdobjId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.site.mountain.entity.MapDataObj">
+        insert into map_data_obj (sheet_number, x,
+                                  y, z, data_id, update_time,
+                                  update_person)
+        values (#{sheetNumber,jdbcType=VARCHAR}, #{x,jdbcType=VARCHAR},
+                #{y,jdbcType=VARCHAR}, #{z,jdbcType=VARCHAR}, #{dataId,jdbcType=BIGINT},
+                #{updateTime,jdbcType=TIMESTAMP},
+                #{updatePerson,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.site.mountain.entity.MapDataObj">
+        insert into map_data_obj
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sheetNumber != null">
+                sheet_number,
+            </if>
+            <if test="x != null">
+                x,
+            </if>
+            <if test="y != null">
+                y,
+            </if>
+            <if test="z != null">
+                z,
+            </if>
+            <if test="dataId != null">
+                data_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sheetNumber != null">
+                #{sheetNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="x != null">
+                #{x,jdbcType=VARCHAR},
+            </if>
+            <if test="y != null">
+                #{y,jdbcType=VARCHAR},
+            </if>
+            <if test="z != null">
+                #{z,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                #{dataId,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapDataObj">
+        update map_data_obj
+        <set>
+            <if test="sheetNumber != null">
+                sheet_number = #{sheetNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="x != null">
+                x = #{x,jdbcType=VARCHAR},
+            </if>
+            <if test="y != null">
+                y = #{y,jdbcType=VARCHAR},
+            </if>
+            <if test="z != null">
+                z = #{z,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                data_id = #{dataId,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=BIGINT},
+            </if>
+        </set>
+        where mdobj_id = #{mdobjId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapDataObj">
+        update map_data_obj
+        set sheet_number  = #{sheetNumber,jdbcType=VARCHAR},
+            x             = #{x,jdbcType=VARCHAR},
+            y             = #{y,jdbcType=VARCHAR},
+            z             = #{z,jdbcType=VARCHAR},
+            data_id       = #{dataId,jdbcType=BIGINT},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP},
+            update_person = #{updatePerson,jdbcType=BIGINT}
+        where mdobj_id = #{mdobjId,jdbcType=BIGINT}
+    </update>
+</mapper>

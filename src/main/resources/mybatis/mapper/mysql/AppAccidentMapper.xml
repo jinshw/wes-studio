@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.AppAccidentMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.AppAccident">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sgbh" jdbcType="VARCHAR" property="sgbh" />
+    <result column="sgfssj" jdbcType="TIMESTAMP" property="sgfssj" />
+    <result column="sf" jdbcType="VARCHAR" property="sf" />
+    <result column="ds" jdbcType="VARCHAR" property="ds" />
+    <result column="swrs" jdbcType="INTEGER" property="swrs" />
+    <result column="ssrs" jdbcType="INTEGER" property="ssrs" />
+    <result column="sgdd" jdbcType="VARCHAR" property="sgdd" />
+    <result column="rdyy" jdbcType="VARCHAR" property="rdyy" />
+    <result column="sgxt" jdbcType="VARCHAR" property="sgxt" />
+    <result column="cljsg" jdbcType="VARCHAR" property="cljsg" />
+    <result column="sgzr" jdbcType="VARCHAR" property="sgzr" />
+    <result column="shcd" jdbcType="VARCHAR" property="shcd" />
+    <result column="hphm" jdbcType="VARCHAR" property="hphm" />
+    <result column="clpp" jdbcType="VARCHAR" property="clpp" />
+    <result column="vin" jdbcType="VARCHAR" property="vin" />
+    <result column="cllx" jdbcType="VARCHAR" property="cllx" />
+    <result column="is_active" jdbcType="BIT" property="isActive" />
+    <result column="clxh" jdbcType="VARCHAR" property="clxh" />
+    <result column="xszt" jdbcType="VARCHAR" property="xszt" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.site.mountain.entity.AppAccident">
+    <result column="jyaq" jdbcType="LONGVARCHAR" property="jyaq" />
+  </resultMap>
+
+  <resultMap id="ValueResultMap" type="com.site.mountain.entity.AppAccidentValue">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sgbh, sgfssj, sf, ds, swrs, ssrs, sgdd, rdyy, sgxt, cljsg, sgzr, shcd, hphm, 
+    clpp, vin, cllx, is_active, clxh, xszt
+  </sql>
+  <sql id="Blob_Column_List">
+    jyaq
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from app_accident
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--  事故原因分析-->
+  <select id="selectSGYYFX" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    select * from (
+    SELECT rdyy as name,count(1) as value from app_accident
+    <where>
+        <if test="startDateStr != null and endDateStr != null ">
+          AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+        </if>
+    </where>
+    GROUP BY rdyy
+    ) t ORDER BY value desc;
+
+  </select>
+
+  <!--  事故形态分类：事故形态-->
+  <select id="selectSGXT" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    SELECT sgxt as name,count(1) as value from app_accident
+    <where>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+    GROUP BY sgxt;
+  </select>
+  <!--  事故形态分类：车辆间事故-->
+  <select id="selectCLJSG" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    SELECT cljsg as name,count(1) as value from app_accident
+    <where>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+    GROUP BY cljsg;
+  </select>
+  <!--  事故形态分类：单车事故-->
+  <select id="selectDCSG" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    SELECT sgxt as name,count(1) as value from app_accident
+    <where>
+        <if test="1==1">
+          sgxt in
+          (
+          '碰撞运动车辆',
+          '碰撞静止车辆',
+          '其他车辆间事故',
+          '刮撞行人',
+          '碾压行人',
+          '碰撞后碾压行人',
+          '其他车辆与行人事故',
+          '侧翻',
+          '滚翻',
+          '坠车',
+          '失火',
+          '撞固定物',
+          '撞非固定物',
+          '自身摺叠',
+          '乘员跌落或抛出',
+          '其他单车事故'
+          )
+        </if>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+    GROUP BY sgxt;
+  </select>
+
+  <!--  事故车辆品牌排名-->
+  <select id="selectSGCLPPPM" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    select * from (
+      SELECT clpp as name,count(1) as value from app_accident
+      <where>
+        <if test="startDateStr != null and endDateStr != null ">
+          AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+        </if>
+      </where>
+      GROUP BY clpp
+    ) t ORDER BY value desc;
+  </select>
+  <!--  省份事故排名-->
+  <select id="selectSFSGPM" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    select * from (
+      SELECT sf as name,count(1) as value from app_accident
+      <where>
+        <if test="startDateStr != null and endDateStr != null ">
+          AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+        </if>
+      </where>
+      GROUP BY sf
+    ) t ORDER BY value desc;
+
+  </select>
+
+  <!--  车辆行驶状态-->
+  <select id="selectXSZT" parameterType="com.site.mountain.entity.AppAccident" resultMap="ValueResultMap">
+    select * from (
+      SELECT xszt as name,count(xszt) as value from app_accident
+      <where>
+        <if test="startDateStr != null and endDateStr != null ">
+          AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+        </if>
+      </where>
+      GROUP BY sf
+    ) t ORDER BY value desc;
+
+  </select>
+
+  <!--  事故分布：查询所有事故 -->
+  <select id="selectSGFBGroup" parameterType="com.site.mountain.entity.AppAccident" resultMap="BaseResultMap">
+    SELECT sgxt  from app_accident
+    <where>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+    GROUP BY sgxt
+  </select>
+  <!--  事故分布：查询事故对应的车辆 -->
+  <select id="selectSGFBList" parameterType="com.site.mountain.entity.AppAccident" resultMap="BaseResultMap">
+    SELECT sgxt ,vin,hphm,jd,wd
+    from app_accident a,app_rundatanew r
+    <where>
+      <if test="1==1">
+        and a.vin = r.cjh
+      </if>
+      <if test="sgxt != null">
+        and sgxt = #{sgxt}
+      </if>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sjsj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sjsj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+
+  </select>
+  <select id="select24H" parameterType="com.site.mountain.entity.AppAccident" resultMap="BaseResultMap">
+    SELECT count(1) as value from (
+    SELECT DATE_FORMAT(sgfssj,'%Y-%m') as ym, DATE_FORMAT(sgfssj,'%H') as ymdh,t.* from app_accident t
+    ) tt
+    where tt.ym= #{yearMonth} and tt.ymdh &gt;= #{startDateStr} and tt.ymdh &lt;= #{endDateStr}
+
+  </select>
+  <!--  总事故-->
+  <select id="selectTotal" parameterType="com.site.mountain.entity.AppAccident" resultType="java.lang.Integer">
+    SELECT count(1) as value from app_accident
+    <where>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+  </select>
+  <!--  肇事起数-->
+  <select id="selectZSQS" parameterType="com.site.mountain.entity.AppAccident" resultType="java.lang.Integer">
+    SELECT count(1) as value from app_accident
+    <where>
+        <if test="1==1">
+          and ssrs &lt;&gt; 0
+        </if>
+        <if test="startDateStr != null and endDateStr != null ">
+          AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+        </if>
+    </where>
+  </select>
+  <!--  死亡人数-->
+  <select id="selectSWRS" parameterType="com.site.mountain.entity.AppAccident" resultType="java.lang.Integer">
+    SELECT sum(swrs) as value from app_accident
+    <where>
+      <if test="startDateStr != null and endDateStr != null ">
+        AND sgfssj &gt;= STR_TO_DATE(#{startDateStr},'%Y-%m-%d %H:%i:%s') and sgfssj &lt;= STR_TO_DATE(#{endDateStr},'%Y-%m-%d %H:%i:%s')
+      </if>
+    </where>
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from app_accident
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.AppAccident">
+    insert into app_accident (id, sgbh, sgfssj, 
+      sf, ds, swrs, ssrs, 
+      sgdd, rdyy, sgxt, cljsg, 
+      sgzr, shcd, hphm, clpp, 
+      vin, cllx, is_active, clxh, 
+      xszt, jyaq)
+    values (#{id,jdbcType=INTEGER}, #{sgbh,jdbcType=VARCHAR}, #{sgfssj,jdbcType=TIMESTAMP}, 
+      #{sf,jdbcType=VARCHAR}, #{ds,jdbcType=VARCHAR}, #{swrs,jdbcType=INTEGER}, #{ssrs,jdbcType=INTEGER}, 
+      #{sgdd,jdbcType=VARCHAR}, #{rdyy,jdbcType=VARCHAR}, #{sgxt,jdbcType=VARCHAR}, #{cljsg,jdbcType=VARCHAR}, 
+      #{sgzr,jdbcType=VARCHAR}, #{shcd,jdbcType=VARCHAR}, #{hphm,jdbcType=VARCHAR}, #{clpp,jdbcType=VARCHAR}, 
+      #{vin,jdbcType=VARCHAR}, #{cllx,jdbcType=VARCHAR}, #{isActive,jdbcType=BIT}, #{clxh,jdbcType=VARCHAR}, 
+      #{xszt,jdbcType=VARCHAR}, #{jyaq,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.AppAccident">
+    insert into app_accident
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sgbh != null">
+        sgbh,
+      </if>
+      <if test="sgfssj != null">
+        sgfssj,
+      </if>
+      <if test="sf != null">
+        sf,
+      </if>
+      <if test="ds != null">
+        ds,
+      </if>
+      <if test="swrs != null">
+        swrs,
+      </if>
+      <if test="ssrs != null">
+        ssrs,
+      </if>
+      <if test="sgdd != null">
+        sgdd,
+      </if>
+      <if test="rdyy != null">
+        rdyy,
+      </if>
+      <if test="sgxt != null">
+        sgxt,
+      </if>
+      <if test="cljsg != null">
+        cljsg,
+      </if>
+      <if test="sgzr != null">
+        sgzr,
+      </if>
+      <if test="shcd != null">
+        shcd,
+      </if>
+      <if test="hphm != null">
+        hphm,
+      </if>
+      <if test="clpp != null">
+        clpp,
+      </if>
+      <if test="vin != null">
+        vin,
+      </if>
+      <if test="cllx != null">
+        cllx,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="clxh != null">
+        clxh,
+      </if>
+      <if test="xszt != null">
+        xszt,
+      </if>
+      <if test="jyaq != null">
+        jyaq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sgbh != null">
+        #{sgbh,jdbcType=VARCHAR},
+      </if>
+      <if test="sgfssj != null">
+        #{sgfssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sf != null">
+        #{sf,jdbcType=VARCHAR},
+      </if>
+      <if test="ds != null">
+        #{ds,jdbcType=VARCHAR},
+      </if>
+      <if test="swrs != null">
+        #{swrs,jdbcType=INTEGER},
+      </if>
+      <if test="ssrs != null">
+        #{ssrs,jdbcType=INTEGER},
+      </if>
+      <if test="sgdd != null">
+        #{sgdd,jdbcType=VARCHAR},
+      </if>
+      <if test="rdyy != null">
+        #{rdyy,jdbcType=VARCHAR},
+      </if>
+      <if test="sgxt != null">
+        #{sgxt,jdbcType=VARCHAR},
+      </if>
+      <if test="cljsg != null">
+        #{cljsg,jdbcType=VARCHAR},
+      </if>
+      <if test="sgzr != null">
+        #{sgzr,jdbcType=VARCHAR},
+      </if>
+      <if test="shcd != null">
+        #{shcd,jdbcType=VARCHAR},
+      </if>
+      <if test="hphm != null">
+        #{hphm,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp != null">
+        #{clpp,jdbcType=VARCHAR},
+      </if>
+      <if test="vin != null">
+        #{vin,jdbcType=VARCHAR},
+      </if>
+      <if test="cllx != null">
+        #{cllx,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=BIT},
+      </if>
+      <if test="clxh != null">
+        #{clxh,jdbcType=VARCHAR},
+      </if>
+      <if test="xszt != null">
+        #{xszt,jdbcType=VARCHAR},
+      </if>
+      <if test="jyaq != null">
+        #{jyaq,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.AppAccident">
+    update app_accident
+    <set>
+      <if test="sgbh != null">
+        sgbh = #{sgbh,jdbcType=VARCHAR},
+      </if>
+      <if test="sgfssj != null">
+        sgfssj = #{sgfssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sf != null">
+        sf = #{sf,jdbcType=VARCHAR},
+      </if>
+      <if test="ds != null">
+        ds = #{ds,jdbcType=VARCHAR},
+      </if>
+      <if test="swrs != null">
+        swrs = #{swrs,jdbcType=INTEGER},
+      </if>
+      <if test="ssrs != null">
+        ssrs = #{ssrs,jdbcType=INTEGER},
+      </if>
+      <if test="sgdd != null">
+        sgdd = #{sgdd,jdbcType=VARCHAR},
+      </if>
+      <if test="rdyy != null">
+        rdyy = #{rdyy,jdbcType=VARCHAR},
+      </if>
+      <if test="sgxt != null">
+        sgxt = #{sgxt,jdbcType=VARCHAR},
+      </if>
+      <if test="cljsg != null">
+        cljsg = #{cljsg,jdbcType=VARCHAR},
+      </if>
+      <if test="sgzr != null">
+        sgzr = #{sgzr,jdbcType=VARCHAR},
+      </if>
+      <if test="shcd != null">
+        shcd = #{shcd,jdbcType=VARCHAR},
+      </if>
+      <if test="hphm != null">
+        hphm = #{hphm,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp != null">
+        clpp = #{clpp,jdbcType=VARCHAR},
+      </if>
+      <if test="vin != null">
+        vin = #{vin,jdbcType=VARCHAR},
+      </if>
+      <if test="cllx != null">
+        cllx = #{cllx,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="clxh != null">
+        clxh = #{clxh,jdbcType=VARCHAR},
+      </if>
+      <if test="xszt != null">
+        xszt = #{xszt,jdbcType=VARCHAR},
+      </if>
+      <if test="jyaq != null">
+        jyaq = #{jyaq,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.site.mountain.entity.AppAccident">
+    update app_accident
+    set sgbh = #{sgbh,jdbcType=VARCHAR},
+      sgfssj = #{sgfssj,jdbcType=TIMESTAMP},
+      sf = #{sf,jdbcType=VARCHAR},
+      ds = #{ds,jdbcType=VARCHAR},
+      swrs = #{swrs,jdbcType=INTEGER},
+      ssrs = #{ssrs,jdbcType=INTEGER},
+      sgdd = #{sgdd,jdbcType=VARCHAR},
+      rdyy = #{rdyy,jdbcType=VARCHAR},
+      sgxt = #{sgxt,jdbcType=VARCHAR},
+      cljsg = #{cljsg,jdbcType=VARCHAR},
+      sgzr = #{sgzr,jdbcType=VARCHAR},
+      shcd = #{shcd,jdbcType=VARCHAR},
+      hphm = #{hphm,jdbcType=VARCHAR},
+      clpp = #{clpp,jdbcType=VARCHAR},
+      vin = #{vin,jdbcType=VARCHAR},
+      cllx = #{cllx,jdbcType=VARCHAR},
+      is_active = #{isActive,jdbcType=BIT},
+      clxh = #{clxh,jdbcType=VARCHAR},
+      xszt = #{xszt,jdbcType=VARCHAR},
+      jyaq = #{jyaq,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.AppAccident">
+    update app_accident
+    set sgbh = #{sgbh,jdbcType=VARCHAR},
+      sgfssj = #{sgfssj,jdbcType=TIMESTAMP},
+      sf = #{sf,jdbcType=VARCHAR},
+      ds = #{ds,jdbcType=VARCHAR},
+      swrs = #{swrs,jdbcType=INTEGER},
+      ssrs = #{ssrs,jdbcType=INTEGER},
+      sgdd = #{sgdd,jdbcType=VARCHAR},
+      rdyy = #{rdyy,jdbcType=VARCHAR},
+      sgxt = #{sgxt,jdbcType=VARCHAR},
+      cljsg = #{cljsg,jdbcType=VARCHAR},
+      sgzr = #{sgzr,jdbcType=VARCHAR},
+      shcd = #{shcd,jdbcType=VARCHAR},
+      hphm = #{hphm,jdbcType=VARCHAR},
+      clpp = #{clpp,jdbcType=VARCHAR},
+      vin = #{vin,jdbcType=VARCHAR},
+      cllx = #{cllx,jdbcType=VARCHAR},
+      is_active = #{isActive,jdbcType=BIT},
+      clxh = #{clxh,jdbcType=VARCHAR},
+      xszt = #{xszt,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

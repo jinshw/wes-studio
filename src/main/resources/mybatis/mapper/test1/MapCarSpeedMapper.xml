@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.test1.MapCarSpeedMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapCarSpeed">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vid" jdbcType="VARCHAR" property="vid" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="alt" jdbcType="DOUBLE" property="alt" />
+    <result column="timestamp1" jdbcType="VARCHAR" property="timestamp1" />
+    <result column="speed" jdbcType="DOUBLE" property="speed" />
+    <result column="bearing" jdbcType="VARCHAR" property="bearing" />
+    <result column="subtime" jdbcType="VARCHAR" property="subtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, vid, brand, lon, lat, alt, timestamp1, speed, bearing, subtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_car_speed
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAllCarSpeed" parameterType="com.site.mountain.entity.MapCarSpeed" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_car_speed order by vid,timestamp1
+    LIMIT  0,2000
+  </select>
+  <select id="findAllCarNow" parameterType="com.site.mountain.entity.MapCarSpeed" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_car_speed ORDER BY timestamp1 LIMIT  0,2000
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from map_car_speed
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapCarSpeed">
+    insert into map_car_speed (id, vid, brand, 
+      lon, lat, alt, timestamp1, 
+      speed, bearing, subtime
+      )
+    values (#{id,jdbcType=INTEGER}, #{vid,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
+      #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{alt,jdbcType=DOUBLE}, #{timestamp1,jdbcType=VARCHAR}, 
+      #{speed,jdbcType=DOUBLE}, #{bearing,jdbcType=VARCHAR}, #{subtime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapCarSpeed">
+    insert into map_car_speed
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="vid != null">
+        vid,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="timestamp1 != null">
+        timestamp1,
+      </if>
+      <if test="speed != null">
+        speed,
+      </if>
+      <if test="bearing != null">
+        bearing,
+      </if>
+      <if test="subtime != null">
+        subtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vid != null">
+        #{vid,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="timestamp1 != null">
+        #{timestamp1,jdbcType=VARCHAR},
+      </if>
+      <if test="speed != null">
+        #{speed,jdbcType=DOUBLE},
+      </if>
+      <if test="bearing != null">
+        #{bearing,jdbcType=VARCHAR},
+      </if>
+      <if test="subtime != null">
+        #{subtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapCarSpeed">
+    update map_car_speed
+    <set>
+      <if test="vid != null">
+        vid = #{vid,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        alt = #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="timestamp1 != null">
+        timestamp1 = #{timestamp1,jdbcType=VARCHAR},
+      </if>
+      <if test="speed != null">
+        speed = #{speed,jdbcType=DOUBLE},
+      </if>
+      <if test="bearing != null">
+        bearing = #{bearing,jdbcType=VARCHAR},
+      </if>
+      <if test="subtime != null">
+        subtime = #{subtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapCarSpeed">
+    update map_car_speed
+    set vid = #{vid,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      alt = #{alt,jdbcType=DOUBLE},
+      timestamp1 = #{timestamp1,jdbcType=VARCHAR},
+      speed = #{speed,jdbcType=DOUBLE},
+      bearing = #{bearing,jdbcType=VARCHAR},
+      subtime = #{subtime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

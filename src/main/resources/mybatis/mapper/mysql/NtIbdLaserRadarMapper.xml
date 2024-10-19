@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtIbdLaserRadarMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtIbdLaserRadar">
+    <id column="laser_radar_id" jdbcType="VARCHAR" property="laserRadarId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="radar_code" jdbcType="VARCHAR" property="radarCode" />
+    <result column="radar_type" jdbcType="VARCHAR" property="radarType" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="device_id" jdbcType="BIGINT" property="deviceId" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="installation_time" jdbcType="TIMESTAMP" property="installationTime" />
+    <result column="is_status" jdbcType="VARCHAR" property="isStatus" />
+    <result column="laser_radar_id" jdbcType="VARCHAR" property="id" />
+    <collection property="deviceList" column="{deviceId=device_id}" javaType="java.util.ArrayList" ofType="com.site.mountain.entity.MapDevice"
+                select="com.site.mountain.dao.mysql.MapDeviceMapper.selectListByDeviceId"></collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    laser_radar_id, "name", radar_code, radar_type, num, is_del, opt_person, opt_time, 
+    create_time, "desc", section_id, device_id, "location", manufacturer, installation_time, 
+    is_status
+  </sql>
+  <select id="selectList" parameterType="com.site.mountain.entity.NtIbdLaserRadar" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_laser_radar
+    <where>
+      is_del = '1'
+      <if test="laserRadarId != null and laserRadarId != ''">
+        and laser_radar_id = #{laserRadarId}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND "name" LIKE #{pattern}
+      </if>
+      <if test="sectionId != null and sectionId != ''">
+        and section_id = #{sectionId}
+      </if>
+      <if test="radarType != null and radarType != ''">
+        and radar_type = #{radarType}
+      </if>
+      order by num asc
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_ibd_laser_radar
+    where laser_radar_id = #{laserRadarId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_ibd_laser_radar
+    where laser_radar_id = #{laserRadarId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtIbdLaserRadar">
+    insert into nt_ibd_laser_radar (laser_radar_id, "name", radar_code, 
+      radar_type, num, is_del, 
+      opt_person, opt_time, create_time, 
+      "desc", section_id, device_id, 
+      "location", manufacturer, installation_time, 
+      is_status)
+    values (#{laserRadarId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{radarCode,jdbcType=VARCHAR}, 
+      #{radarType,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{isDel,jdbcType=VARCHAR}, 
+      #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{desc,jdbcType=VARCHAR}, #{sectionId,jdbcType=VARCHAR}, #{deviceId,jdbcType=BIGINT}, 
+      #{location,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, #{installationTime,jdbcType=TIMESTAMP}, 
+      #{isStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtIbdLaserRadar">
+    insert into nt_ibd_laser_radar
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="laserRadarId != null">
+        laser_radar_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="radarCode != null">
+        radar_code,
+      </if>
+      <if test="radarType != null">
+        radar_type,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="location != null">
+        "location",
+      </if>
+      <if test="manufacturer != null">
+        manufacturer,
+      </if>
+      <if test="installationTime != null">
+        installation_time,
+      </if>
+      <if test="isStatus != null">
+        is_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="laserRadarId != null">
+        #{laserRadarId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="radarCode != null">
+        #{radarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="radarType != null">
+        #{radarType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null">
+        #{installationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        #{isStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtIbdLaserRadar">
+    update nt_ibd_laser_radar
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="radarCode != null">
+        radar_code = #{radarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="radarType != null">
+        radar_type = #{radarType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="location != null">
+        "location" = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null">
+        installation_time = #{installationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        is_status = #{isStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where laser_radar_id = #{laserRadarId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtIbdLaserRadar">
+    update nt_ibd_laser_radar
+    set "name" = #{name,jdbcType=VARCHAR},
+      radar_code = #{radarCode,jdbcType=VARCHAR},
+      radar_type = #{radarType,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR},
+      section_id = #{sectionId,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=BIGINT},
+      "location" = #{location,jdbcType=VARCHAR},
+      manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      installation_time = #{installationTime,jdbcType=TIMESTAMP},
+      is_status = #{isStatus,jdbcType=VARCHAR}
+    where laser_radar_id = #{laserRadarId,jdbcType=VARCHAR}
+  </update>
+</mapper>

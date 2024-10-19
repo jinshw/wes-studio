@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.SysLogMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.SysLog">
+    <id column="log_id" jdbcType="VARCHAR" property="logId" />
+    <result column="opt_user_id" jdbcType="BIGINT" property="optUserId" />
+    <result column="opt_user_name" jdbcType="VARCHAR" property="optUserName" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="args" jdbcType="VARCHAR" property="args" />
+    <result column="opt_content" jdbcType="VARCHAR" property="optContent" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_id, opt_user_id, opt_user_name, opt_content, opt_time,method_name,args
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_log
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.SysLog" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_log
+    <where>
+      <if test="optUserName != '' and optUserName != null">
+        and  opt_user_name = #{optUserName}
+      </if>
+      <if test="startTime != null">
+       and opt_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null">
+       and opt_time &lt;= #{endTime}
+      </if>
+
+    </where>
+    order by opt_time desc
+  </select>
+  <select id="selectListMap" parameterType="com.site.mountain.entity.SysLog" resultType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_log
+    <where>
+      <if test="optUserName != '' and optUserName != null">
+        and  opt_user_name = #{optUserName}
+      </if>
+      <if test="startTime != null">
+        and opt_time &gt;= #{startTime}
+      </if>
+      <if test="endTime != null">
+        and opt_time &lt;= #{endTime}
+      </if>
+
+    </where>
+    order by opt_time desc
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_log
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.SysLog">
+    insert into sys_log (log_id, opt_user_id, opt_user_name, 
+      opt_content, opt_time,method_name,args)
+    values (#{logId,jdbcType=VARCHAR}, #{optUserId,jdbcType=BIGINT}, #{optUserName,jdbcType=VARCHAR}, 
+      #{optContent,jdbcType=VARCHAR}, #{optTime,jdbcType=TIMESTAMP},
+            #{methodName,jdbcType=VARCHAR},#{args,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.SysLog">
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        log_id,
+      </if>
+      <if test="optUserId != null">
+        opt_user_id,
+      </if>
+      <if test="optUserName != null">
+        opt_user_name,
+      </if>
+      <if test="optContent != null">
+        opt_content,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="optUserId != null">
+        #{optUserId,jdbcType=BIGINT},
+      </if>
+      <if test="optUserName != null">
+        #{optUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="optContent != null">
+        #{optContent,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.SysLog">
+    update sys_log
+    <set>
+      <if test="optUserId != null">
+        opt_user_id = #{optUserId,jdbcType=BIGINT},
+      </if>
+      <if test="optUserName != null">
+        opt_user_name = #{optUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="optContent != null">
+        opt_content = #{optContent,jdbcType=VARCHAR},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.SysLog">
+    update sys_log
+    set opt_user_id = #{optUserId,jdbcType=BIGINT},
+      opt_user_name = #{optUserName,jdbcType=VARCHAR},
+      opt_content = #{optContent,jdbcType=VARCHAR},
+      opt_time = #{optTime,jdbcType=TIMESTAMP}
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </update>
+</mapper>

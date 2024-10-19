@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtActplanAssetDataMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtActplanAssetData">
+    <id column="asset_data_id" jdbcType="VARCHAR" property="assetDataId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="altitude" jdbcType="VARCHAR" property="altitude" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="text_color" jdbcType="VARCHAR" property="textColor" />
+    <result column="police_man" jdbcType="VARCHAR" property="policeMan" />
+    <result column="police_num" jdbcType="VARCHAR" property="policeNum" />
+    <result column="contact_info" jdbcType="VARCHAR" property="contactInfo" />
+    <result column="contact_man" jdbcType="VARCHAR" property="contactMan" />
+    <result column="station_num" jdbcType="VARCHAR" property="stationNum" />
+    <result column="department" jdbcType="VARCHAR" property="department" />
+    <result column="rank" jdbcType="VARCHAR" property="rank" />
+    <result column="install_place" jdbcType="VARCHAR" property="installPlace" />
+    <result column="parking_num" jdbcType="VARCHAR" property="parkingNum" />
+    <result column="charging_time" jdbcType="VARCHAR" property="chargingTime" />
+    <result column="charging_standard" jdbcType="VARCHAR" property="chargingStandard" />
+    <result column="polygon" jdbcType="VARCHAR" property="polygon" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="actplan_id" jdbcType="VARCHAR" property="actplanId" />
+    <result column="line_color" jdbcType="VARCHAR" property="lineColor" />
+    <result column="line_width" jdbcType="VARCHAR" property="lineWidth" />
+    <result column="line_style" jdbcType="VARCHAR" property="lineStyle" />
+    <result column="outline_color" jdbcType="VARCHAR" property="outlineColor" />
+    <result column="outline_width" jdbcType="VARCHAR" property="outlineWidth" />
+    <result column="outline_style" jdbcType="VARCHAR" property="outlineStyle" />
+    <result column="line_length" jdbcType="DOUBLE" property="lineLength" />
+    <result column="sub_points" jdbcType="VARCHAR" property="subPoints" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    asset_data_id, "name", "type", num, longitude, latitude, altitude, icon_url, text_color, 
+    police_man, police_num, contact_info, contact_man, station_num, department, "rank", 
+    install_place, parking_num, charging_time, charging_standard, polygon, is_del, opt_person, 
+    opt_time, create_time, "desc", actplan_id,line_color,line_width,line_style,outline_color,outline_width,outline_style,line_length,sub_points
+  </sql>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtActplanAssetData" resultType="com.site.mountain.entity.NtActplanAssetData">
+    select
+    <include refid="Base_Column_List" />
+    from nt_actplan_asset_data
+    <where>
+      is_del = '1'
+      <if test="actplanId != null and actplanId != ''">
+        and actplan_id = #{actplanId}
+      </if>
+      <if test="assetDataId != null and assetDataId != ''">
+        and asset_data_id = #{assetDataId}
+      </if>
+      <if test="type != null and type != ''">
+        and "type" = #{type}
+      </if>
+      <if test="lineStyle != null and lineStyle != ''">
+        and line_style = #{lineStyle}
+      </if>
+      order by num
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_actplan_asset_data
+    where asset_data_id = #{assetDataId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_actplan_asset_data
+    where asset_data_id = #{assetDataId,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="replace" parameterType="com.site.mountain.entity.NtActplanAssetData">
+    insert into nt_actplan_asset_data (asset_data_id, "name", "type",
+       num, longitude, latitude,
+       altitude, icon_url, text_color,
+       police_man, police_num, contact_info,
+       contact_man, station_num, department,
+       "rank", install_place, parking_num,
+       charging_time, charging_standard, polygon,
+       is_del, opt_person, opt_time,
+       create_time, "desc",actplan_id,line_color,line_width,line_style,outline_color,outline_width,outline_style,line_length,sub_points)
+    values (#{assetDataId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+        #{num,jdbcType=INTEGER}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR},
+        #{altitude,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, #{textColor,jdbcType=VARCHAR},
+        #{policeMan,jdbcType=VARCHAR}, #{policeNum,jdbcType=VARCHAR}, #{contactInfo,jdbcType=VARCHAR},
+        #{contactMan,jdbcType=VARCHAR}, #{stationNum,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
+        #{rank,jdbcType=VARCHAR}, #{installPlace,jdbcType=VARCHAR}, #{parkingNum,jdbcType=VARCHAR},
+        #{chargingTime,jdbcType=VARCHAR}, #{chargingStandard,jdbcType=VARCHAR}, #{polygon,jdbcType=VARCHAR},
+        #{isDel,jdbcType=VARCHAR}, #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP}, #{desc,jdbcType=VARCHAR}, #{actplanId,jdbcType=VARCHAR},
+        #{lineColor,jdbcType=VARCHAR},#{lineWidth,jdbcType=VARCHAR},#{lineStyle,jdbcType=VARCHAR},
+        #{outlineColor,jdbcType=VARCHAR},#{outlineWidth,jdbcType=VARCHAR},#{outlineStyle,jdbcType=VARCHAR},#{lineLength,jdbcType=DOUBLE},#{subPoints,jdbcType=VARCHAR})
+      ON conflict (asset_data_id) do update set
+         "name" = #{name,jdbcType=VARCHAR},
+         "type" = #{type,jdbcType=VARCHAR},
+         num = #{num,jdbcType=INTEGER},
+         longitude = #{longitude,jdbcType=VARCHAR},
+         latitude = #{latitude,jdbcType=VARCHAR},
+         altitude = #{altitude,jdbcType=VARCHAR},
+         icon_url = #{iconUrl,jdbcType=VARCHAR},
+         text_color = #{textColor,jdbcType=VARCHAR},
+         police_man = #{policeMan,jdbcType=VARCHAR},
+         police_num = #{policeNum,jdbcType=VARCHAR},
+         contact_info = #{contactInfo,jdbcType=VARCHAR},
+         contact_man = #{contactMan,jdbcType=VARCHAR},
+         station_num = #{stationNum,jdbcType=VARCHAR},
+         department = #{department,jdbcType=VARCHAR},
+         "rank" = #{rank,jdbcType=VARCHAR},
+         install_place = #{installPlace,jdbcType=VARCHAR},
+         parking_num = #{parkingNum,jdbcType=VARCHAR},
+         charging_time = #{chargingTime,jdbcType=VARCHAR},
+         charging_standard = #{chargingStandard,jdbcType=VARCHAR},
+         polygon = #{polygon,jdbcType=VARCHAR},
+         is_del = #{isDel,jdbcType=VARCHAR},
+         opt_person = #{optPerson,jdbcType=BIGINT},
+         opt_time = #{optTime,jdbcType=TIMESTAMP},
+         create_time = #{createTime,jdbcType=TIMESTAMP},
+         "desc" = #{desc,jdbcType=VARCHAR},
+         actplan_id = #{actplanId,jdbcType=VARCHAR},
+         line_color = #{lineColor,jdbcType=VARCHAR},
+         line_width = #{lineWidth,jdbcType=VARCHAR},
+         line_style = #{lineStyle,jdbcType=VARCHAR},
+         outline_color = #{outlineColor,jdbcType=VARCHAR},
+         outline_width = #{outlineWidth,jdbcType=VARCHAR},
+         outline_style = #{outlineStyle,jdbcType=VARCHAR},
+         line_length = #{lineLength,jdbcType=DOUBLE},
+         sub_points = #{subPoints,jdbcType=VARCHAR}
+  </insert>
+
+  <insert id="replaceSelective" parameterType="com.site.mountain.entity.NtActplanAssetData">
+    insert into nt_actplan_asset_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assetDataId != null">
+        asset_data_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="type != null">
+        "type",
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="altitude != null">
+        altitude,
+      </if>
+      <if test="iconUrl != null">
+        icon_url,
+      </if>
+      <if test="textColor != null">
+        text_color,
+      </if>
+      <if test="policeMan != null">
+        police_man,
+      </if>
+      <if test="policeNum != null">
+        police_num,
+      </if>
+      <if test="contactInfo != null">
+        contact_info,
+      </if>
+      <if test="contactMan != null">
+        contact_man,
+      </if>
+      <if test="stationNum != null">
+        station_num,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="rank != null">
+        "rank",
+      </if>
+      <if test="installPlace != null">
+        install_place,
+      </if>
+      <if test="parkingNum != null">
+        parking_num,
+      </if>
+      <if test="chargingTime != null">
+        charging_time,
+      </if>
+      <if test="chargingStandard != null">
+        charging_standard,
+      </if>
+      <if test="polygon != null">
+        polygon,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+      <if test="actplanId != null">
+        actplan_id,
+      </if>
+      <if test="lineColor != null">
+        line_color,
+      </if>
+      <if test="lineWidth != null">
+        line_width,
+      </if>
+      <if test="lineStyle != null">
+        line_style,
+      </if>
+      <if test="outlineColor != null">
+        outline_color,
+      </if>
+      <if test="outlineWidth != null">
+        outline_width,
+      </if>
+      <if test="outlineStyle != null">
+        outline_style,
+      </if>
+      <if test="lineLength != null">
+        line_length,
+      </if>
+      <if test="subPoints != null">
+        sub_points,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assetDataId != null">
+        #{assetDataId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="policeMan != null">
+        #{policeMan,jdbcType=VARCHAR},
+      </if>
+      <if test="policeNum != null">
+        #{policeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="contactInfo != null">
+        #{contactInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMan != null">
+        #{contactMan,jdbcType=VARCHAR},
+      </if>
+      <if test="stationNum != null">
+        #{stationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="installPlace != null">
+        #{installPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingNum != null">
+        #{parkingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingTime != null">
+        #{chargingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingStandard != null">
+        #{chargingStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="actplanId != null">
+        #{actplanId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="lineLength != null">
+        #{lineLength,jdbcType=DOUBLE},
+      </if>
+      <if test="subPoints != null">
+        #{subPoints,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    ON conflict (asset_data_id) do update
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        "type" = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        altitude = #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        text_color = #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="policeMan != null">
+        police_man = #{policeMan,jdbcType=VARCHAR},
+      </if>
+      <if test="policeNum != null">
+        police_num = #{policeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="contactInfo != null">
+        contact_info = #{contactInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMan != null">
+        contact_man = #{contactMan,jdbcType=VARCHAR},
+      </if>
+      <if test="stationNum != null">
+        station_num = #{stationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        "rank" = #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="installPlace != null">
+        install_place = #{installPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingNum != null">
+        parking_num = #{parkingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingTime != null">
+        charging_time = #{chargingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingStandard != null">
+        charging_standard = #{chargingStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        polygon = #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="actplanId != null">
+        actplan_id = #{actplanId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        line_color = #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        line_width = #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        line_style = #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        outline_color = #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="lineLength != null">
+        line_length = #{lineLength,jdbcType=DOUBLE},
+      </if>
+      <if test="subPoints != null">
+        sub_points = #{subPoints,jdbcType=VARCHAR},
+      </if>
+    </set>
+  </insert>
+
+  <insert id="insert" parameterType="com.site.mountain.entity.NtActplanAssetData">
+    insert into nt_actplan_asset_data (asset_data_id, "name", "type", 
+      num, longitude, latitude, 
+      altitude, icon_url, text_color, 
+      police_man, police_num, contact_info, 
+      contact_man, station_num, department, 
+      "rank", install_place, parking_num, 
+      charging_time, charging_standard, polygon, 
+      is_del, opt_person, opt_time, 
+      create_time, "desc",actplan_id,line_color,line_width,line_style,outline_color,outline_width,outline_style,line_length,sub_points)
+    values (#{assetDataId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{altitude,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, #{textColor,jdbcType=VARCHAR}, 
+      #{policeMan,jdbcType=VARCHAR}, #{policeNum,jdbcType=VARCHAR}, #{contactInfo,jdbcType=VARCHAR}, 
+      #{contactMan,jdbcType=VARCHAR}, #{stationNum,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{rank,jdbcType=VARCHAR}, #{installPlace,jdbcType=VARCHAR}, #{parkingNum,jdbcType=VARCHAR}, 
+      #{chargingTime,jdbcType=VARCHAR}, #{chargingStandard,jdbcType=VARCHAR}, #{polygon,jdbcType=VARCHAR}, 
+      #{isDel,jdbcType=VARCHAR}, #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{desc,jdbcType=VARCHAR}, #{actplanId,jdbcType=VARCHAR},
+      #{lineColor,jdbcType=VARCHAR},#{lineWidth,jdbcType=VARCHAR},#{lineStyle,jdbcType=VARCHAR},
+      #{outlineColor,jdbcType=VARCHAR},#{outlineWidth,jdbcType=VARCHAR},#{outlineStyle,jdbcType=VARCHAR},#{lineLength,jdbcType=DOUBLE},#{subPoints,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtActplanAssetData">
+    insert into nt_actplan_asset_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assetDataId != null">
+        asset_data_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="type != null">
+        "type",
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="altitude != null">
+        altitude,
+      </if>
+      <if test="iconUrl != null">
+        icon_url,
+      </if>
+      <if test="textColor != null">
+        text_color,
+      </if>
+      <if test="policeMan != null">
+        police_man,
+      </if>
+      <if test="policeNum != null">
+        police_num,
+      </if>
+      <if test="contactInfo != null">
+        contact_info,
+      </if>
+      <if test="contactMan != null">
+        contact_man,
+      </if>
+      <if test="stationNum != null">
+        station_num,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="rank != null">
+        "rank",
+      </if>
+      <if test="installPlace != null">
+        install_place,
+      </if>
+      <if test="parkingNum != null">
+        parking_num,
+      </if>
+      <if test="chargingTime != null">
+        charging_time,
+      </if>
+      <if test="chargingStandard != null">
+        charging_standard,
+      </if>
+      <if test="polygon != null">
+        polygon,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+      <if test="actplanId != null">
+        actplan_id,
+      </if>
+      <if test="lineColor != null">
+        line_color,
+      </if>
+      <if test="lineWidth != null">
+        line_width,
+      </if>
+      <if test="lineStyle != null">
+        line_style,
+      </if>
+      <if test="outlineColor != null">
+        outline_color,
+      </if>
+      <if test="outlineWidth != null">
+        outline_width,
+      </if>
+      <if test="outlineStyle != null">
+        outline_style,
+      </if>
+      <if test="lineLength != null">
+        line_length,
+      </if>
+      <if test="subPoints != null">
+        sub_points,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assetDataId != null">
+        #{assetDataId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="policeMan != null">
+        #{policeMan,jdbcType=VARCHAR},
+      </if>
+      <if test="policeNum != null">
+        #{policeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="contactInfo != null">
+        #{contactInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMan != null">
+        #{contactMan,jdbcType=VARCHAR},
+      </if>
+      <if test="stationNum != null">
+        #{stationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="installPlace != null">
+        #{installPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingNum != null">
+        #{parkingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingTime != null">
+        #{chargingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingStandard != null">
+        #{chargingStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="actplanId != null">
+        #{actplanId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="lineLength != null">
+        #{lineLength,jdbcType=DOUBLE},
+      </if>
+      <if test="subPoints != null">
+        #{subPoints,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtActplanAssetData">
+    update nt_actplan_asset_data
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        "type" = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        altitude = #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        text_color = #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="policeMan != null">
+        police_man = #{policeMan,jdbcType=VARCHAR},
+      </if>
+      <if test="policeNum != null">
+        police_num = #{policeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="contactInfo != null">
+        contact_info = #{contactInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMan != null">
+        contact_man = #{contactMan,jdbcType=VARCHAR},
+      </if>
+      <if test="stationNum != null">
+        station_num = #{stationNum,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        "rank" = #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="installPlace != null">
+        install_place = #{installPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingNum != null">
+        parking_num = #{parkingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingTime != null">
+        charging_time = #{chargingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingStandard != null">
+        charging_standard = #{chargingStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        polygon = #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="actplanId != null">
+        actplan_id = #{actplanId,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        line_color = #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        line_width = #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        line_style = #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        outline_color = #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="lineLength != null">
+        line_length = #{lineLength,jdbcType=DOUBLE},
+      </if>
+      <if test="subPoints != null">
+        sub_points = #{subPoints,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where asset_data_id = #{assetDataId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtActplanAssetData">
+    update nt_actplan_asset_data
+    set "name" = #{name,jdbcType=VARCHAR},
+      "type" = #{type,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      altitude = #{altitude,jdbcType=VARCHAR},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      text_color = #{textColor,jdbcType=VARCHAR},
+      police_man = #{policeMan,jdbcType=VARCHAR},
+      police_num = #{policeNum,jdbcType=VARCHAR},
+      contact_info = #{contactInfo,jdbcType=VARCHAR},
+      contact_man = #{contactMan,jdbcType=VARCHAR},
+      station_num = #{stationNum,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      "rank" = #{rank,jdbcType=VARCHAR},
+      install_place = #{installPlace,jdbcType=VARCHAR},
+      parking_num = #{parkingNum,jdbcType=VARCHAR},
+      charging_time = #{chargingTime,jdbcType=VARCHAR},
+      charging_standard = #{chargingStandard,jdbcType=VARCHAR},
+      polygon = #{polygon,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR},
+      actplan_id = #{actplanId,jdbcType=VARCHAR},
+      line_color = #{lineColor,jdbcType=VARCHAR},
+      line_width = #{lineWidth,jdbcType=VARCHAR},
+      line_style = #{lineStyle,jdbcType=VARCHAR},
+      outline_color = #{outlineColor,jdbcType=VARCHAR},
+      outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      line_length = #{lineLength,jdbcType=DOUBLE},
+      sub_points = #{subPoints,jdbcType=VARCHAR}
+    where asset_data_id = #{assetDataId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateIsDelByPrimaryKey" parameterType="java.lang.String">
+    update nt_actplan_asset_data
+    set is_del = '2'
+    where asset_data_id = #{assetDataId,jdbcType=VARCHAR}
+  </update>
+</mapper>

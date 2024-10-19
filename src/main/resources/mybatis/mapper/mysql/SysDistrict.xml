@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.SysDistrictDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.SysDistrict">
+        <result column="id" property="id"/>
+        <result column="region_name" property="regionName"/>
+        <result column="region_code" property="regionCode"/>
+        <result column="parent_code" property="parentCode"/>
+        <result column="weather_city_code" property="weatherCityCode"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="marker" property="marker"/>
+    </resultMap>
+
+    <sql id="all_column">
+		"id",
+		"region_name",
+		"region_code",
+		"parent_code",
+		"weather_city_code",
+		"longitude",
+		"latitude",
+		"marker"
+    </sql>
+
+    <select id="queryCityList" parameterType="com.site.mountain.entity.SysDistrict" resultMap="AllColumnMap">
+        SELECT
+            <include refid="all_column"></include>
+        FROM sys_district
+        where parent_code = #{parentCode}
+        order by region_code asc
+    </select>
+
+</mapper>
+

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.CmsColumnDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.CmsColumn">
+        <result column="cid" property="cid"/>
+		<result column="code" property="code"/>
+		<result column="pcode" property="pcode"/>
+		<result column="status" property="status"/>
+		<result column="orders" property="orders"/>
+		<result column="cname" property="cname"/>
+		<result column="alias" property="alias"/>
+		<result column="directory" property="directory"/>
+		<result column="type" property="type"/>
+		<result column="is_static" property="isStatic"/>
+		<result column="href_url" property="hrefUrl"/>
+		<result column="logo" property="logo"/>
+		<result column="detailpage_rule" property="detailpageRule"/>
+		<result column="content_type" property="contentType"/>
+		<result column="homepagetempl_pc" property="homepagetemplPc"/>
+		<result column="listtempl_pc" property="listtemplPc"/>
+		<result column="articledetailtempl_pc" property="articledetailtemplPc"/>
+		<result column="imgdetailtempl_pc" property="imgdetailtemplPc"/>
+		<result column="list_pagesize" property="listPagesize"/>
+		<result column="createtime" property="createtime"/>
+		<result column="updatetime" property="updatetime"/>
+		<result column="opt_person" property="optPerson"/>
+
+    </resultMap>
+
+    <sql id="all_column">
+        `cid`,
+		`code`,
+		`pcode`,
+		`status`,
+		`orders`,
+		`cname`,
+		`alias`,
+		`directory`,
+		`type`,
+		`is_static`,
+		`href_url`,
+		`logo`,
+		`detailpage_rule`,
+		`content_type`,
+		`homepagetempl_pc`,
+		`listtempl_pc`,
+		`articledetailtempl_pc`,
+		`imgdetailtempl_pc`,
+		`list_pagesize`,
+		`createtime`,
+		`updatetime`,
+		`opt_person`
+
+    </sql>
+
+    <insert id="insertSelective">
+        INSERT INTO cms_column (
+		`cid`,
+		`code`,
+		`pcode`,
+		`status`,
+		`orders`,
+		`cname`,
+		`alias`,
+		`directory`,
+		`type`,
+		`is_static`,
+		`href_url`,
+		`logo`,
+		`detailpage_rule`,
+		`content_type`,
+		`homepagetempl_pc`,
+		`listtempl_pc`,
+		`articledetailtempl_pc`,
+		`imgdetailtempl_pc`,
+		`list_pagesize`,
+		`createtime`,
+		`updatetime`,
+		`opt_person`
+
+	) VALUES ( 
+		#{cid},
+		#{code},
+		#{pcode},
+		#{status},
+		#{orders},
+		#{cname},
+		#{alias},
+		#{directory},
+		#{type},
+		#{isStatic},
+		#{hrefUrl},
+		#{logo},
+		#{detailpageRule},
+		#{contentType},
+		#{homepagetemplPc},
+		#{listtemplPc},
+		#{articledetailtemplPc},
+		#{imgdetailtemplPc},
+		#{listPagesize},
+		#{createtime},
+		#{updatetime},
+		#{optPerson}
+	) 
+
+    </insert>
+
+    <!--有条件插入-->
+    <insert id="insert">
+        INSERT INTO cms_column
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cid!=null">`cid`,</if> 
+			<if test="code!=null">`code`,</if> 
+			<if test="pcode!=null">`pcode`,</if> 
+			<if test="status!=null">`status`,</if> 
+			<if test="orders!=null">`orders`,</if> 
+			<if test="cname!=null">`cname`,</if> 
+			<if test="alias!=null">`alias`,</if> 
+			<if test="directory!=null">`directory`,</if> 
+			<if test="type!=null">`type`,</if> 
+			<if test="isStatic!=null">`is_static`,</if> 
+			<if test="hrefUrl!=null">`href_url`,</if> 
+			<if test="logo!=null">`logo`,</if> 
+			<if test="detailpageRule!=null">`detailpage_rule`,</if> 
+			<if test="contentType!=null">`content_type`,</if> 
+			<if test="homepagetemplPc!=null">`homepagetempl_pc`,</if> 
+			<if test="listtemplPc!=null">`listtempl_pc`,</if> 
+			<if test="articledetailtemplPc!=null">`articledetailtempl_pc`,</if> 
+			<if test="imgdetailtemplPc!=null">`imgdetailtempl_pc`,</if> 
+			<if test="listPagesize!=null">`list_pagesize`,</if> 
+			<if test="createtime!=null">`createtime`,</if> 
+			<if test="updatetime!=null">`updatetime`,</if> 
+			<if test="optPerson!=null">`opt_person`,</if> 
+
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cid!=null">#{cid},</if> 
+			<if test="code!=null">#{code},</if> 
+			<if test="pcode!=null">#{pcode},</if> 
+			<if test="status!=null">#{status},</if> 
+			<if test="orders!=null">#{orders},</if> 
+			<if test="cname!=null">#{cname},</if> 
+			<if test="alias!=null">#{alias},</if> 
+			<if test="directory!=null">#{directory},</if> 
+			<if test="type!=null">#{type},</if> 
+			<if test="isStatic!=null">#{isStatic},</if> 
+			<if test="hrefUrl!=null">#{hrefUrl},</if> 
+			<if test="logo!=null">#{logo},</if> 
+			<if test="detailpageRule!=null">#{detailpageRule},</if> 
+			<if test="contentType!=null">#{contentType},</if> 
+			<if test="homepagetemplPc!=null">#{homepagetemplPc},</if> 
+			<if test="listtemplPc!=null">#{listtemplPc},</if> 
+			<if test="articledetailtemplPc!=null">#{articledetailtemplPc},</if> 
+			<if test="imgdetailtemplPc!=null">#{imgdetailtemplPc},</if> 
+			<if test="listPagesize!=null">#{listPagesize},</if> 
+			<if test="createtime!=null">#{createtime},</if> 
+			<if test="updatetime!=null">#{updatetime},</if> 
+			<if test="optPerson!=null">#{optPerson},</if> 
+
+        </trim>
+    </insert>
+
+    <update id="updateOne">
+        UPDATE cms_column
+        <trim prefix="set" suffixOverrides=",">
+			<if test="status!=null">`status`= #{status},</if>
+			<if test="orders!=null">`orders`= #{orders},</if> 
+			<if test="cname!=null">`cname`= #{cname},</if> 
+			<if test="alias!=null">`alias`= #{alias},</if> 
+			<if test="directory!=null">`directory`= #{directory},</if> 
+			<if test="type!=null">`type`= #{type},</if> 
+			<if test="isStatic!=null">`is_static`= #{isStatic},</if> 
+			<if test="hrefUrl!=null">`href_url`= #{hrefUrl},</if> 
+			<if test="logo!=null">`logo`= #{logo},</if> 
+			<if test="detailpageRule!=null">`detailpage_rule`= #{detailpageRule},</if> 
+			<if test="contentType!=null">`content_type`= #{contentType},</if> 
+			<if test="homepagetemplPc!=null">`homepagetempl_pc`= #{homepagetemplPc},</if> 
+			<if test="listtemplPc!=null">`listtempl_pc`= #{listtemplPc},</if> 
+			<if test="articledetailtemplPc!=null">`articledetailtempl_pc`= #{articledetailtemplPc},</if> 
+			<if test="imgdetailtemplPc!=null">`imgdetailtempl_pc`= #{imgdetailtemplPc},</if> 
+			<if test="listPagesize!=null">`list_pagesize`= #{listPagesize},</if> 
+			<if test="createtime!=null">`createtime`= #{createtime},</if> 
+			<if test="updatetime!=null">`updatetime`= #{updatetime},</if> 
+			<if test="optPerson!=null">`opt_person`= #{optPerson},</if> 
+
+        </trim>
+        WHERE cid=#{cid}
+    </update>
+
+    <select id="findList" parameterType="com.site.mountain.entity.CmsColumn" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from cms_column
+        <where>
+            <if test="cid != null">AND cid = #{cid}</if>
+			<if test="code != null">AND code = #{code}</if>
+			<if test="pcode != null">AND pcode = #{pcode}</if>
+			<if test="status != null">AND status = #{status}</if>
+			<if test="orders != null">AND orders = #{orders}</if>
+			<if test="cname != null">AND cname = #{cname}</if>
+			<if test="alias != null">AND alias = #{alias}</if>
+			<if test="directory != null">AND directory = #{directory}</if>
+			<if test="type != null">AND type = #{type}</if>
+			<if test="isStatic != null">AND is_static = #{isStatic}</if>
+			<if test="hrefUrl != null">AND href_url = #{hrefUrl}</if>
+			<if test="logo != null">AND logo = #{logo}</if>
+
+        </where>
+    </select>
+
+	<select id="findListByCode" parameterType="com.site.mountain.entity.CmsColumn" resultMap="AllColumnMap">
+		select
+		<include refid="all_column"/>
+		from cms_column
+		<where>
+			<if test="code != null">
+				<bind name="pattern" value="'%' + code + '%'"/>
+				AND code LIKE #{pattern}
+			</if>
+		</where>
+	</select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.CmsColumn">
+        DELETE from cms_column
+        <where>
+            <if test="cid != null">AND cid = #{cid}</if>
+        </where>
+    </delete>
+
+
+</mapper>
+

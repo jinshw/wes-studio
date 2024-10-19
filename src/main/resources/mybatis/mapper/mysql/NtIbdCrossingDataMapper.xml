@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtIbdCrossingDataMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtIbdCrossingData">
+    <id column="cross_id" jdbcType="VARCHAR" property="crossId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="cross_code" jdbcType="VARCHAR" property="crossCode" />
+    <result column="cross_type" jdbcType="VARCHAR" property="crossType" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="polygon" jdbcType="VARCHAR" property="polygon" />
+    <result column="line_color" jdbcType="VARCHAR" property="lineColor" />
+    <result column="line_width" jdbcType="VARCHAR" property="lineWidth" />
+    <result column="line_style" jdbcType="VARCHAR" property="lineStyle" />
+    <result column="outline_color" jdbcType="VARCHAR" property="outlineColor" />
+    <result column="outline_width" jdbcType="VARCHAR" property="outlineWidth" />
+    <result column="outline_style" jdbcType="VARCHAR" property="outlineStyle" />
+    <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="road_id" jdbcType="VARCHAR" property="roadId" />
+    <result column="polygon_center" jdbcType="VARCHAR" property="polygonCenter" />
+    <result column="cross_id" jdbcType="VARCHAR" property="id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cross_id, "name", cross_code, cross_type, num, is_del, opt_person, opt_time, create_time, 
+    "desc", polygon, line_color, line_width, line_style, outline_color, outline_width, 
+    outline_style, section_id, road_id, polygon_center
+  </sql>
+
+  <select id="selectCrossingDataByRoadId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_crossing_data
+    where is_del = '1' and road_id = #{roadId}
+    order by num asc
+  </select>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtIbdCrossingData" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_crossing_data
+    <where>
+      is_del = '1'
+      <if test="crossId != null and crossId != ''">
+        and cross_id = #{crossId}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND "name" LIKE #{pattern}
+      </if>
+      order by num asc
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_ibd_crossing_data
+    where cross_id = #{crossId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_ibd_crossing_data
+    where cross_id = #{crossId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtIbdCrossingData">
+    insert into nt_ibd_crossing_data (cross_id, "name", cross_code, 
+      cross_type, num, is_del, 
+      opt_person, opt_time, create_time, 
+      "desc", polygon, line_color, 
+      line_width, line_style, outline_color, 
+      outline_width, outline_style, section_id, 
+      road_id,polygon_center)
+    values (#{crossId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{crossCode,jdbcType=VARCHAR}, 
+      #{crossType,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{isDel,jdbcType=VARCHAR}, 
+      #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{desc,jdbcType=VARCHAR}, #{polygon,jdbcType=VARCHAR}, #{lineColor,jdbcType=VARCHAR}, 
+      #{lineWidth,jdbcType=VARCHAR}, #{lineStyle,jdbcType=VARCHAR}, #{outlineColor,jdbcType=VARCHAR}, 
+      #{outlineWidth,jdbcType=VARCHAR}, #{outlineStyle,jdbcType=VARCHAR}, #{sectionId,jdbcType=VARCHAR}, 
+      #{roadId,jdbcType=VARCHAR},#{polygonCenter,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtIbdCrossingData">
+    insert into nt_ibd_crossing_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="crossId != null">
+        cross_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="crossCode != null">
+        cross_code,
+      </if>
+      <if test="crossType != null">
+        cross_type,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+      <if test="polygon != null">
+        polygon,
+      </if>
+      <if test="lineColor != null">
+        line_color,
+      </if>
+      <if test="lineWidth != null">
+        line_width,
+      </if>
+      <if test="lineStyle != null">
+        line_style,
+      </if>
+      <if test="outlineColor != null">
+        outline_color,
+      </if>
+      <if test="outlineWidth != null">
+        outline_width,
+      </if>
+      <if test="outlineStyle != null">
+        outline_style,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="roadId != null">
+        road_id,
+      </if>
+      <if test="polygonCenter != null">
+        polygon_center,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="crossId != null">
+        #{crossId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="crossCode != null">
+        #{crossCode,jdbcType=VARCHAR},
+      </if>
+      <if test="crossType != null">
+        #{crossType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="roadId != null">
+        #{roadId,jdbcType=VARCHAR},
+      </if>
+      <if test="polygonCenter != null">
+        #{polygonCenter,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtIbdCrossingData">
+    update nt_ibd_crossing_data
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="crossCode != null">
+        cross_code = #{crossCode,jdbcType=VARCHAR},
+      </if>
+      <if test="crossType != null">
+        cross_type = #{crossType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="polygon != null">
+        polygon = #{polygon,jdbcType=VARCHAR},
+      </if>
+      <if test="lineColor != null">
+        line_color = #{lineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="lineWidth != null">
+        line_width = #{lineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="lineStyle != null">
+        line_style = #{lineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineColor != null">
+        outline_color = #{outlineColor,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineWidth != null">
+        outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="outlineStyle != null">
+        outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="roadId != null">
+        road_id = #{roadId,jdbcType=VARCHAR},
+      </if>
+      <if test="polygonCenter != null">
+        polygon_center = #{polygonCenter,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cross_id = #{crossId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtIbdCrossingData">
+    update nt_ibd_crossing_data
+    set "name" = #{name,jdbcType=VARCHAR},
+      cross_code = #{crossCode,jdbcType=VARCHAR},
+      cross_type = #{crossType,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR},
+      polygon = #{polygon,jdbcType=VARCHAR},
+      line_color = #{lineColor,jdbcType=VARCHAR},
+      line_width = #{lineWidth,jdbcType=VARCHAR},
+      line_style = #{lineStyle,jdbcType=VARCHAR},
+      outline_color = #{outlineColor,jdbcType=VARCHAR},
+      outline_width = #{outlineWidth,jdbcType=VARCHAR},
+      outline_style = #{outlineStyle,jdbcType=VARCHAR},
+      section_id = #{sectionId,jdbcType=VARCHAR},
+      road_id = #{roadId,jdbcType=VARCHAR},
+      polygon_center = #{polygonCenter,jdbcType=VARCHAR}
+    where cross_id = #{crossId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateIsDelByPrimaryKey" parameterType="java.lang.String">
+    update nt_ibd_crossing_data
+    set is_del = '2'
+    where cross_id = #{crossId,jdbcType=VARCHAR}
+  </update>
+</mapper>

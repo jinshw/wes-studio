@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.Map3dtilesMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.Map3dtiles">
+    <id column="tiles_id" jdbcType="BIGINT" property="tilesId" />
+    <result column="tiles_name" jdbcType="VARCHAR" property="tilesName" />
+    <result column="tiles_type" jdbcType="VARCHAR" property="tilesType" />
+    <result column="tiles_version" jdbcType="VARCHAR" property="tilesVersion" />
+    <result column="tiles_code" jdbcType="VARCHAR" property="tilesCode" />
+    <result column="uri" jdbcType="VARCHAR" property="uri" />
+    <result column="center_lon" jdbcType="DOUBLE" property="centerLon" />
+    <result column="center_lat" jdbcType="DOUBLE" property="centerLat" />
+    <result column="data_id" jdbcType="BIGINT" property="dataId" />
+    <result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_person" jdbcType="BIGINT" property="updatePerson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tiles_id, tiles_name, tiles_type, tiles_version, tiles_code, uri,center_lon,center_lat,data_id, thumbnail,
+    update_time, update_person
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_3dtiles
+    where tiles_id = #{tilesId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAll" parameterType="com.site.mountain.entity.Map3dtiles" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_3dtiles
+    <where>
+      <if test="tilesId != null and tilesId != ''">
+        and tiles_id = #{tilesId}
+      </if>
+      <if test="tilesName != null and tilesName != ''">
+        <bind name="pattern" value="'%' + tilesName + '%'"/>
+        AND tiles_name LIKE #{pattern}
+      </if>
+      <if test="tilesType != null and tilesType != ''">
+        and tiles_type = #{tilesType}
+      </if>
+      <if test="tilesVersion != null and tilesVersion != ''">
+        and tiles_version = #{tilesVersion}
+      </if>
+      <if test="tilesCode != null and tilesCode != ''">
+        and tiles_code = #{tilesCode}
+      </if>
+      <if test="dataId != null and dataId != ''">
+        and data_id = #{dataId}
+      </if>
+
+
+    </where>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_3dtiles
+    where tiles_id = #{tilesId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.Map3dtiles">
+    insert into map_3dtiles (tiles_id, tiles_name, tiles_type, 
+      tiles_version, tiles_code, uri,
+      center_lon,center_lat
+      data_id, thumbnail, update_time, 
+      update_person)
+    values (#{tilesId,jdbcType=BIGINT}, #{tilesName,jdbcType=VARCHAR}, #{tilesType,jdbcType=VARCHAR}, 
+      #{tilesVersion,jdbcType=VARCHAR}, #{tilesCode,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR},
+      #{centerLon,jdbcType=DOUBLE}, #{centerLat,jdbcType=DOUBLE},
+      #{dataId,jdbcType=BIGINT}, #{thumbnail,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updatePerson,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.Map3dtiles">
+    insert into map_3dtiles
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tilesId != null">
+        tiles_id,
+      </if>
+      <if test="tilesName != null">
+        tiles_name,
+      </if>
+      <if test="tilesType != null">
+        tiles_type,
+      </if>
+      <if test="tilesVersion != null">
+        tiles_version,
+      </if>
+      <if test="tilesCode != null">
+        tiles_code,
+      </if>
+      <if test="uri != null">
+        uri,
+      </if>
+      <if test="centerLon != null">
+        center_lon,
+      </if>
+      <if test="centerLat != null">
+        center_lat,
+      </if>
+      <if test="dataId != null">
+        data_id,
+      </if>
+      <if test="thumbnail != null">
+        thumbnail,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updatePerson != null">
+        update_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tilesId != null">
+        #{tilesId,jdbcType=BIGINT},
+      </if>
+      <if test="tilesName != null">
+        #{tilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesType != null">
+        #{tilesType,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesVersion != null">
+        #{tilesVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesCode != null">
+        #{tilesCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="centerLon != null">
+        #{centerLon,jdbcType=DOUBLE},
+      </if>
+      <if test="centerLat != null">
+        #{centerLat,jdbcType=DOUBLE},
+      </if>
+      <if test="dataId != null">
+        #{dataId,jdbcType=BIGINT},
+      </if>
+      <if test="thumbnail != null">
+        #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        #{updatePerson,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.Map3dtiles">
+    update map_3dtiles
+    <set>
+      <if test="tilesName != null">
+        tiles_name = #{tilesName,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesType != null">
+        tiles_type = #{tilesType,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesVersion != null">
+        tiles_version = #{tilesVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="tilesCode != null">
+        tiles_code = #{tilesCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        uri = #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="centerLon != null">
+        center_lon = #{centerLon,jdbcType=DOUBLE},
+      </if>
+      <if test="centerLat != null">
+        center_lat = #{centerLat,jdbcType=DOUBLE},
+      </if>
+      <if test="dataId != null">
+        data_id = #{dataId,jdbcType=BIGINT},
+      </if>
+      <if test="thumbnail != null">
+        thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePerson != null">
+        update_person = #{updatePerson,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tiles_id = #{tilesId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.Map3dtiles">
+    update map_3dtiles
+    set tiles_name = #{tilesName,jdbcType=VARCHAR},
+      tiles_type = #{tilesType,jdbcType=VARCHAR},
+      tiles_version = #{tilesVersion,jdbcType=VARCHAR},
+      tiles_code = #{tilesCode,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR},
+      center_lon= #{centerLon,jdbcType=DOUBLE},
+      center_lat= #{centerLat,jdbcType=DOUBLE},
+      data_id = #{dataId,jdbcType=BIGINT},
+      thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_person = #{updatePerson,jdbcType=BIGINT}
+    where tiles_id = #{tilesId,jdbcType=BIGINT}
+  </update>
+</mapper>

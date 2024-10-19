@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapVehicleAlarmMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapVehicleAlarm">
+    <id column="va_id" jdbcType="BIGINT" property="vaId" />
+    <result column="alarm_name" jdbcType="VARCHAR" property="alarmName" />
+    <result column="alarm_type" jdbcType="BIGINT" property="alarmType" />
+    <result column="plate_no" jdbcType="VARCHAR" property="plateNo" />
+    <result column="enterprise" jdbcType="VARCHAR" property="enterprise" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="ele" jdbcType="DOUBLE" property="ele" />
+    <result column="alarm_time" jdbcType="TIMESTAMP" property="alarmTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_person" jdbcType="BIGINT" property="createPerson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    va_id, alarm_name, alarm_type, plate_no, enterprise, "location", lon, lat, ele, alarm_time,
+    create_time, create_person
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_vehicle_alarm
+    where va_id = #{vaId,jdbcType=BIGINT}
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.MapVehicleAlarm" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_vehicle_alarm
+    <where>
+      <if test="plateNo != null and plateNo != ''">
+        AND plate_no = #{plateNo}
+      </if>
+    </where>
+    order by create_time desc
+
+  </select>
+
+  <select id="selectListMap" parameterType="com.site.mountain.entity.MapVehicleAlarm" resultType="java.util.HashMap">
+    SELECT
+      va_id,
+      alarm_name,
+      CASE when alarm_type = 1 THEN '故障告警' ELSE 'V2X告警' end as alarm_type,
+      plate_no,
+      enterprise,
+      "location",
+      lon,
+      lat,
+      ele,
+      alarm_time,
+      create_time,
+      create_person
+    FROM
+      map_vehicle_alarm
+    ORDER BY
+      create_time DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_vehicle_alarm
+    where va_id = #{vaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapVehicleAlarm">
+    insert into map_vehicle_alarm (va_id, alarm_name, alarm_type, 
+      plate_no, enterprise, location,
+      lon, lat, ele, alarm_time, 
+      create_time, create_person)
+    values (#{vaId,jdbcType=BIGINT}, #{alarmName,jdbcType=VARCHAR}, #{alarmType,jdbcType=BIGINT}, 
+      #{plateNo,jdbcType=VARCHAR}, #{enterprise,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{ele,jdbcType=DOUBLE}, #{alarmTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createPerson,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapVehicleAlarm">
+    insert into map_vehicle_alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vaId != null">
+        va_id,
+      </if>
+      <if test="alarmName != null">
+        alarm_name,
+      </if>
+      <if test="alarmType != null">
+        alarm_type,
+      </if>
+      <if test="plateNo != null">
+        plate_no,
+      </if>
+      <if test="enterprise != null">
+        enterprise,
+      </if>
+      <if test="location != null">
+        location,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="ele != null">
+        ele,
+      </if>
+      <if test="alarmTime != null">
+        alarm_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vaId != null">
+        #{vaId,jdbcType=BIGINT},
+      </if>
+      <if test="alarmName != null">
+        #{alarmName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmType != null">
+        #{alarmType,jdbcType=BIGINT},
+      </if>
+      <if test="plateNo != null">
+        #{plateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="enterprise != null">
+        #{enterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="ele != null">
+        #{ele,jdbcType=DOUBLE},
+      </if>
+      <if test="alarmTime != null">
+        #{alarmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapVehicleAlarm">
+    update map_vehicle_alarm
+    <set>
+      <if test="alarmName != null">
+        alarm_name = #{alarmName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmType != null">
+        alarm_type = #{alarmType,jdbcType=BIGINT},
+      </if>
+      <if test="plateNo != null">
+        plate_no = #{plateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="enterprise != null">
+        enterprise = #{enterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="ele != null">
+        ele = #{ele,jdbcType=DOUBLE},
+      </if>
+      <if test="alarmTime != null">
+        alarm_time = #{alarmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=BIGINT},
+      </if>
+    </set>
+    where va_id = #{vaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapVehicleAlarm">
+    update map_vehicle_alarm
+    set alarm_name = #{alarmName,jdbcType=VARCHAR},
+      alarm_type = #{alarmType,jdbcType=BIGINT},
+      plate_no = #{plateNo,jdbcType=VARCHAR},
+      enterprise = #{enterprise,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      ele = #{ele,jdbcType=DOUBLE},
+      alarm_time = #{alarmTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_person = #{createPerson,jdbcType=BIGINT}
+    where va_id = #{vaId,jdbcType=BIGINT}
+  </update>
+</mapper>

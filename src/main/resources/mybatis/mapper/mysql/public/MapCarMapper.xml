@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.public.MapCarMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.public.MapCar">
+    <id column="car_id" jdbcType="BIGINT" property="carId" />
+    <result column="car_number" jdbcType="VARCHAR" property="carNumber" />
+    <result column="vin" jdbcType="VARCHAR" property="vin" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="car_type" jdbcType="VARCHAR" property="carType" />
+    <result column="enterprises" jdbcType="VARCHAR" property="enterprises" />
+    <result column="driving_level" jdbcType="VARCHAR" property="drivingLevel" />
+    <result column="has_obu" jdbcType="INTEGER" property="hasObu" />
+    <result column="obu_code" jdbcType="VARCHAR" property="obuCode" />
+    <result column="driver_name" jdbcType="VARCHAR" property="driverName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="car_img" jdbcType="VARCHAR" property="carImg" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="DATE" property="optTime" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    car_id, car_number, vin, brand, model, car_type, enterprises, driving_level, has_obu, 
+    obu_code, driver_name, phone, `status`, car_img, is_del, opt_person, opt_time, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from public.map_car
+    where car_id = #{carId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from public.map_car
+    where car_id = #{carId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.public.MapCar">
+    insert into public.map_car (car_id, car_number, vin, 
+      brand, model, car_type, 
+      enterprises, driving_level, has_obu, 
+      obu_code, driver_name, phone, 
+      `status`, car_img, is_del, 
+      opt_person, opt_time, create_time
+      )
+    values (#{carId,jdbcType=BIGINT}, #{carNumber,jdbcType=VARCHAR}, #{vin,jdbcType=VARCHAR}, 
+      #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}, 
+      #{enterprises,jdbcType=VARCHAR}, #{drivingLevel,jdbcType=VARCHAR}, #{hasObu,jdbcType=INTEGER}, 
+      #{obuCode,jdbcType=VARCHAR}, #{driverName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{carImg,jdbcType=VARCHAR}, #{isDel,jdbcType=VARCHAR}, 
+      #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=DATE}, #{createTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.public.MapCar">
+    insert into public.map_car
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="carId != null">
+        car_id,
+      </if>
+      <if test="carNumber != null">
+        car_number,
+      </if>
+      <if test="vin != null">
+        vin,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="model != null">
+        model,
+      </if>
+      <if test="carType != null">
+        car_type,
+      </if>
+      <if test="enterprises != null">
+        enterprises,
+      </if>
+      <if test="drivingLevel != null">
+        driving_level,
+      </if>
+      <if test="hasObu != null">
+        has_obu,
+      </if>
+      <if test="obuCode != null">
+        obu_code,
+      </if>
+      <if test="driverName != null">
+        driver_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="carImg != null">
+        car_img,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="carId != null">
+        #{carId,jdbcType=BIGINT},
+      </if>
+      <if test="carNumber != null">
+        #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="vin != null">
+        #{vin,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="enterprises != null">
+        #{enterprises,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingLevel != null">
+        #{drivingLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="hasObu != null">
+        #{hasObu,jdbcType=INTEGER},
+      </if>
+      <if test="obuCode != null">
+        #{obuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="driverName != null">
+        #{driverName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="carImg != null">
+        #{carImg,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.public.MapCar">
+    update public.map_car
+    <set>
+      <if test="carNumber != null">
+        car_number = #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="vin != null">
+        vin = #{vin,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        car_type = #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="enterprises != null">
+        enterprises = #{enterprises,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingLevel != null">
+        driving_level = #{drivingLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="hasObu != null">
+        has_obu = #{hasObu,jdbcType=INTEGER},
+      </if>
+      <if test="obuCode != null">
+        obu_code = #{obuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="driverName != null">
+        driver_name = #{driverName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="carImg != null">
+        car_img = #{carImg,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where car_id = #{carId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.public.MapCar">
+    update public.map_car
+    set car_number = #{carNumber,jdbcType=VARCHAR},
+      vin = #{vin,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      car_type = #{carType,jdbcType=VARCHAR},
+      enterprises = #{enterprises,jdbcType=VARCHAR},
+      driving_level = #{drivingLevel,jdbcType=VARCHAR},
+      has_obu = #{hasObu,jdbcType=INTEGER},
+      obu_code = #{obuCode,jdbcType=VARCHAR},
+      driver_name = #{driverName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      car_img = #{carImg,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=DATE}
+    where car_id = #{carId,jdbcType=BIGINT}
+  </update>
+</mapper>

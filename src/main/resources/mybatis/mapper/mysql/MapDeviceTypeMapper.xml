@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapDeviceTypeMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapDeviceType">
+    <id column="dt_id" jdbcType="BIGINT" property="dtId" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="DATE" property="optTime" />
+    <result column="createtime" jdbcType="DATE" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dt_id, type_name, code, is_del, opt_person, opt_time, createtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_device_type
+    where dt_id = #{dtId,jdbcType=BIGINT}
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.MapDeviceType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_device_type
+    <where>
+      <if test="1==1">
+        and is_del = '0'
+      </if>
+      <if test="dtId != null">
+        and dt_id = #{dtId}
+      </if>
+      <if test="typeName != null and typeName != ''">
+        <bind name="pattern" value="'%' + typeName + '%'"/>
+        AND type_name LIKE #{pattern}
+      </if>
+      <if test="code != null and code != ''">
+        and code = #{code}
+      </if>
+      <if test="isDel != null and isDel != ''">
+        and is_del = #{isDel}
+      </if>
+      order by type_name asc
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_device_type
+    where dt_id = #{dtId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapDeviceType">
+    insert into map_device_type ( type_name, code,
+      is_del, opt_person, opt_time, 
+      createtime)
+    values ( #{typeName,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+      #{isDel,jdbcType=VARCHAR}, #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=DATE}, 
+      #{createtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapDeviceType">
+    insert into map_device_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dtId != null">
+        dt_id,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dtId != null">
+        #{dtId,jdbcType=BIGINT},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=DATE},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapDeviceType">
+    update map_device_type
+    <set>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=DATE},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+    </set>
+    where dt_id = #{dtId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapDeviceType">
+    update map_device_type
+    set type_name = #{typeName,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=DATE},
+      createtime = #{createtime,jdbcType=DATE}
+    where dt_id = #{dtId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectRelation" parameterType="com.site.mountain.entity.MapDeviceType" resultMap="BaseResultMap">
+    SELECT  dt.* from map_device_type dt,map_device d where dt.dt_id = d.device_type and dt.dt_id = #{dtId,jdbcType=BIGINT}
+
+  </select>
+</mapper>

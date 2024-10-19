@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtLocationAssetDictMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtLocationAssetDict">
+    <id column="locat_dict_id" jdbcType="VARCHAR" property="locatDictId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="locat_dict_id" jdbcType="VARCHAR" property="id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    locat_dict_id, "name", "table_name", "type", type_code, num, is_del, opt_person,
+    opt_time, create_time, "desc"
+  </sql>
+  <select id="selectAssetStatAnalysis" parameterType="com.site.mountain.entity.NtLocationAssetDict" resultType="java.lang.Integer">
+    select count(*) as count from ${tableName}
+    <where>
+      <if test='type != null and (type == "3" or type == "4" or type == "5" or type == "6" or type == "7" or type == "8"
+        or type == "9" or type == "10" or type == "11" or type == "12" or type == "13")'>
+        and "type" = #{type}
+      </if>
+    </where>
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.NtLocationAssetDict" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_location_asset_dict
+    <where>
+      is_del = '1'
+      <if test="locatDictId != null and locatDictId != ''">
+        and locat_dict_id = #{locatDictId}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND "name" LIKE #{pattern}
+      </if>
+      order by num asc
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_location_asset_dict
+    where locat_dict_id = #{locatDictId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_location_asset_dict
+    where locat_dict_id = #{locatDictId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtLocationAssetDict">
+    insert into nt_location_asset_dict (locat_dict_id, "name", "table_name", 
+      "type", type_code, num, 
+      is_del, opt_person, opt_time, 
+      create_time, "desc")
+    values (#{locatDictId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
+      #{isDel,jdbcType=VARCHAR}, #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{desc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtLocationAssetDict">
+    insert into nt_location_asset_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="locatDictId != null">
+        locat_dict_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="tableName != null">
+        "table_name",
+      </if>
+      <if test="type != null">
+        "type",
+      </if>
+      <if test="typeCode != null">
+        type_code,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="locatDictId != null">
+        #{locatDictId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtLocationAssetDict">
+    update nt_location_asset_dict
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        "table_name" = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        "type" = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null">
+        type_code = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where locat_dict_id = #{locatDictId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtLocationAssetDict">
+    update nt_location_asset_dict
+    set "name" = #{name,jdbcType=VARCHAR},
+      "table_name" = #{tableName,jdbcType=VARCHAR},
+      "type" = #{type,jdbcType=VARCHAR},
+      type_code = #{typeCode,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR}
+    where locat_dict_id = #{locatDictId,jdbcType=VARCHAR}
+  </update>
+</mapper>

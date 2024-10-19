@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapMecMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapMec">
+    <id column="mec_id" jdbcType="BIGINT" property="mecId" />
+    <result column="mec_name" jdbcType="VARCHAR" property="mecName" />
+    <result column="effective_radius" jdbcType="REAL" property="effectiveRadius" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="connect_url" jdbcType="VARCHAR" property="connectUrl" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.site.mountain.entity.MapMec">
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    mec_id, mec_name, effective_radius, "status", code, project_name, lon, lat, connect_url,
+    is_delete, opt_time, opt_person
+  </sql>
+  <sql id="Blob_Column_List">
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.site.mountain.entity.MapMec" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from map_mec
+    <where>
+      <if test="mecId != null and mecId != ''">
+        and mec_id = #{mecId}
+      </if>
+      <if test="code != null and code != ''">
+        and code = #{code}
+      </if>
+    </where>
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.MapMec" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from map_mec
+    <where>
+      <if test ="userList != null">
+        opt_person in
+        <foreach collection="userList" item="user" index="index" open="(" close=")" separator=",">
+          #{user.userId}
+        </foreach>
+      </if>
+      <if test="mecId != null and mecId != ''">
+        and mec_id = #{mecId}
+      </if>
+      <if test="mecName != null and mecName != ''">
+        and mec_name = #{mecName}
+      </if>
+      <if test="effectiveRadius != null and effectiveRadius != ''">
+        and effective_radius = #{effectiveRadius}
+      </if>
+      <if test="status != null and status != ''">
+        and "status" = #{status}
+      </if>
+      <if test="code != null and code != ''">
+        and "code" = #{code}
+      </if>
+      <if test="projectName != null and projectName != ''">
+        and project_name = #{projectName}
+      </if>
+      <if test="isDelete  != null and isDelete != ''">
+        and is_delete    = #{isDelete}
+      </if>
+
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_mec
+    where mec_id = #{mecId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapMec">
+    insert into map_mec ( mec_name, effective_radius,
+      "status", code, project_name,
+      lon, lat, connect_url,
+      is_delete, opt_time, opt_person,
+      remark)
+    values ( #{mecName,jdbcType=VARCHAR}, #{effectiveRadius,jdbcType=REAL},
+      #{status,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+      #{lon,jdbcType=DOUBLE}, #{lat,jdbcType=DOUBLE}, #{connectUrl,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=INTEGER}, #{optTime,jdbcType=TIMESTAMP}, #{optPerson,jdbcType=BIGINT},
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapMec">
+    insert into map_mec
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mecId != null">
+        mec_id,
+      </if>
+      <if test="mecName != null">
+        mec_name,
+      </if>
+      <if test="effectiveRadius != null">
+        effective_radius,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="connectUrl != null">
+        connect_url,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mecId != null">
+        #{mecId,jdbcType=BIGINT},
+      </if>
+      <if test="mecName != null">
+        #{mecName,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveRadius != null">
+        #{effectiveRadius,jdbcType=REAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="connectUrl != null">
+        #{connectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapMec">
+    update map_mec
+    <set>
+      <if test="mecName != null">
+        mec_name = #{mecName,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveRadius != null">
+        effective_radius = #{effectiveRadius,jdbcType=REAL},
+      </if>
+      <if test="status != null">
+        "status" = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="connectUrl != null">
+        connect_url = #{connectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mec_id = #{mecId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.site.mountain.entity.MapMec">
+    update map_mec
+    set mec_name = #{mecName,jdbcType=VARCHAR},
+      effective_radius = #{effectiveRadius,jdbcType=REAL},
+      "status" = #{status,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      connect_url = #{connectUrl,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where mec_id = #{mecId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapMec">
+    update map_mec
+    set mec_name = #{mecName,jdbcType=VARCHAR},
+      effective_radius = #{effectiveRadius,jdbcType=REAL},
+      "status" = #{status,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      connect_url = #{connectUrl,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      opt_person = #{optPerson,jdbcType=BIGINT}
+    where mec_id = #{mecId,jdbcType=BIGINT}
+  </update>
+</mapper>

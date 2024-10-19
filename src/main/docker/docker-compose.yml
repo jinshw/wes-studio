@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  roadrule:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    image: roadrule:v1.0.1
+    container_name: roadrule
+    ports:
+      - 8085:8085
+    volumes:
+      - ./data:/data/nginx_data

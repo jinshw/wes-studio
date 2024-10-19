@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtAreaFenceMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtAreaFence">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="polygons" jdbcType="VARCHAR" property="polygons" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="touch" jdbcType="VARCHAR" property="touch" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="filled_color" jdbcType="VARCHAR" property="filledColor" />
+    <result column="actplan_id" jdbcType="VARCHAR" property="actplanId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, "name", polygons,"type", touch, is_delete,"status", filled_color, actplan_id
+  </sql>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtAreaFence" resultType="com.site.mountain.entity.NtAreaFence">
+    select
+    <include refid="Base_Column_List" />
+    from nt_area_fence
+    <where>
+      <if test="type != null and type != ''">
+        and "type" = #{type}
+      </if>
+      <if test="status != null and status != ''">
+        and "status" = #{status}
+      </if>
+      <if test="actplanId != null and actplanId != ''">
+        and "actplan_id" = #{actplanId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert" parameterType="com.site.mountain.entity.NtAreaFence">
+    insert into nt_area_fence (id, "name", polygons, 
+      "type", touch, is_delete, 
+      "status", filled_color,actplan_id)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{polygons,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{touch,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{filledColor,jdbcType=VARCHAR}, #{actplanId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtAreaFence">
+    insert into nt_area_fence
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="polygons != null">
+        polygons,
+      </if>
+      <if test="type != null">
+        "type",
+      </if>
+      <if test="touch != null">
+        touch,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="filledColor != null">
+        filled_color,
+      </if>
+      <if test="actplanId != null">
+        actplan_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="polygons != null">
+        #{polygons,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="touch != null">
+        #{touch,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="filledColor != null">
+        #{filledColor,jdbcType=VARCHAR},
+      </if>
+      <if test="actplanId != null">
+        #{actplanId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

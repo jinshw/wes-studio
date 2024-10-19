@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.MapAccessMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.MapAccess">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mapdata_code" jdbcType="VARCHAR" property="mapdataCode" />
+    <result column="access_account" jdbcType="VARCHAR" property="accessAccount" />
+    <result column="access_person" jdbcType="BIGINT" property="accessPerson" />
+    <result column="access_num" jdbcType="BIGINT" property="accessNum" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mapdata_code, access_account, access_person, access_num, opt_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from map_access
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="select" parameterType="com.site.mountain.entity.MapAccess" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_access
+    <where>
+      <if test="mapdataCode != null and mapdataCode != ''">
+        AND mapdata_code = #{mapdataCode}
+      </if>
+      <if test="accessAccount!= null and accessAccount != ''">
+        AND access_account = #{accessAccount}
+      </if>
+
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from map_access
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.MapAccess">
+    insert into map_access ( mapdata_code, access_account,
+      access_person, access_num, opt_time
+      )
+    values (#{mapdataCode,jdbcType=BIGINT}, #{accessAccount,jdbcType=VARCHAR},
+      #{accessPerson,jdbcType=BIGINT}, #{accessNum,jdbcType=BIGINT}, #{optTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.MapAccess">
+    insert into map_access
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mapdataCode != null">
+        mapdata_code,
+      </if>
+      <if test="accessAccount != null">
+        access_account,
+      </if>
+      <if test="accessPerson != null">
+        access_person,
+      </if>
+      <if test="accessNum != null">
+        access_num,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="mapdataCode != null">
+        #{mapdataCode,jdbcType=BIGINT},
+      </if>
+      <if test="accessAccount != null">
+        #{accessAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="accessPerson != null">
+        #{accessPerson,jdbcType=BIGINT},
+      </if>
+      <if test="accessNum != null">
+        #{accessNum,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.MapAccess">
+    update map_access
+    <set>
+      <if test="mapdataCode != null">
+        mapdata_code = #{mapdataCode,jdbcType=BIGINT},
+      </if>
+      <if test="accessAccount != null">
+        access_account = #{accessAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="accessPerson != null">
+        access_person = #{accessPerson,jdbcType=BIGINT},
+      </if>
+      <if test="accessNum != null">
+        access_num = #{accessNum,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=DATE},
+      </if>
+    </set>
+    where access_account = #{accessAccount} and mapdata_code = #{mapdataCode}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.MapAccess">
+    update map_access
+    set mapdata_code = #{mapdataCode,jdbcType=BIGINT},
+      access_account = #{accessAccount,jdbcType=VARCHAR},
+      access_person = #{accessPerson,jdbcType=BIGINT},
+      access_num = #{accessNum,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

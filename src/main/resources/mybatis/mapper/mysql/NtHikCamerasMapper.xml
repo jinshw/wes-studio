@@ -1,0 +1,1192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtHikCamerasMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtHikCameras">
+    <id column="camera_index_code" jdbcType="VARCHAR" property="cameraIndexCode" />
+    <result column="gb_index_code" jdbcType="VARCHAR" property="gbIndexCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="device_index_code" jdbcType="VARCHAR" property="deviceIndexCode" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="altitude" jdbcType="VARCHAR" property="altitude" />
+    <result column="pixel" jdbcType="INTEGER" property="pixel" />
+    <result column="camera_type" jdbcType="SMALLINT" property="cameraType" />
+    <result column="camera_type_name" jdbcType="VARCHAR" property="cameraTypeName" />
+    <result column="install_place" jdbcType="VARCHAR" property="installPlace" />
+    <result column="matrix_code" jdbcType="VARCHAR" property="matrixCode" />
+    <result column="chan_num" jdbcType="SMALLINT" property="chanNum" />
+    <result column="viewshed" jdbcType="VARCHAR" property="viewshed" />
+    <result column="capability_set" jdbcType="VARCHAR" property="capabilitySet" />
+    <result column="capability_set_name" jdbcType="VARCHAR" property="capabilitySetName" />
+    <result column="intelligent_set" jdbcType="VARCHAR" property="intelligentSet" />
+    <result column="intelligent_set_name" jdbcType="VARCHAR" property="intelligentSetName" />
+    <result column="record_location" jdbcType="VARCHAR" property="recordLocation" />
+    <result column="record_location_name" jdbcType="VARCHAR" property="recordLocationName" />
+    <result column="ptz_controller" jdbcType="SMALLINT" property="ptzController" />
+    <result column="ptz_controller_name" jdbcType="VARCHAR" property="ptzControllerName" />
+    <result column="device_resource_type" jdbcType="VARCHAR" property="deviceResourceType" />
+    <result column="device_resource_type_name" jdbcType="VARCHAR" property="deviceResourceTypeName" />
+    <result column="channel_type" jdbcType="SMALLINT" property="channelType" />
+    <result column="channel_type_name" jdbcType="VARCHAR" property="channelTypeName" />
+    <result column="trans_type" jdbcType="SMALLINT" property="transType" />
+    <result column="trans_type_name" jdbcType="VARCHAR" property="transTypeName" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="unit_index_code" jdbcType="VARCHAR" property="unitIndexCode" />
+    <result column="treaty_type" jdbcType="VARCHAR" property="treatyType" />
+    <result column="treaty_type_name" jdbcType="VARCHAR" property="treatyTypeName" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="status_name" jdbcType="VARCHAR" property="statusName" />
+    <result column="is_scope" jdbcType="VARCHAR" property="isScope" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="text_color" jdbcType="VARCHAR" property="textColor" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="camera_index_code" jdbcType="VARCHAR" property="id" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="installation_time" jdbcType="TIMESTAMP" property="installationTime" />
+    <result column="is_scope" jdbcType="VARCHAR" property="isStatus" />
+    <result column="datum" jdbcType="VARCHAR" property="datum" />
+    <result column="pole_id" jdbcType="VARCHAR" property="poleId" />
+    <result column="device_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="cross_id" jdbcType="VARCHAR" property="crossId" />
+    <result column="device_id" jdbcType="BIGINT" property="deviceId" />
+    <collection property="deviceList" column="{deviceId=device_id}" javaType="java.util.ArrayList" ofType="com.site.mountain.entity.MapDevice"
+                  select="com.site.mountain.dao.mysql.MapDeviceMapper.selectListByDeviceId"></collection>
+    <collection property="imgList" column="{deviceId=pole_id}" javaType="java.util.ArrayList" ofType="com.site.mountain.entity.projectFile"
+                  select="com.site.mountain.dao.mysql.ProjectFileDao.selectFileListByMasterId"></collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    camera_index_code, gb_index_code, "name", device_index_code, longitude, latitude,
+    altitude, pixel, camera_type, camera_type_name, install_place, matrix_code, chan_num, 
+    viewshed, capability_set, capability_set_name, intelligent_set, intelligent_set_name, 
+    record_location, record_location_name, ptz_controller, ptz_controller_name, device_resource_type, 
+    device_resource_type_name, channel_type, channel_type_name, trans_type, trans_type_name, 
+    update_time, unit_index_code, treaty_type, treaty_type_name, create_time, "status",
+    status_name, is_scope, icon_url, text_color, "desc","cross_id",device_id,"location", manufacturer,
+    installation_time, datum,device_code,pole_id,coll_status, info_source, coll_location,
+    modify_time, modify_person, pitch, roll, heading
+  </sql>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtHikCameras" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_hik_cameras
+    <where>
+      is_scope ='1'
+      <if test="cameraIndexCode != null and cameraIndexCode != ''">
+        and camera_index_code = #{cameraIndexCode}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND d."name" LIKE #{pattern}
+      </if>
+      <if test="crossId != null and crossId != ''">
+        and cross_id = #{crossId}
+      </if>
+      <if test="collStatus != null and collStatus != ''">
+        and coll_status = #{collStatus}
+      </if>
+      <if test="infoSource != null and infoSource != ''">
+            and info_source = #{infoSource}
+      </if>
+    </where>
+    order by modify_time desc,camera_index_code asc
+  </select>
+
+  <insert id="replaceSelectiveBatch" parameterType="list">
+    <if test="records != null and records.size() > 0">
+      <foreach collection="records" item="item" index="index" open="" close="" separator=";">
+        insert into nt_hik_cameras (camera_index_code, gb_index_code, "name",
+            device_index_code, longitude, latitude,
+            altitude, pixel, camera_type,
+            camera_type_name, install_place, matrix_code,
+            chan_num, viewshed, capability_set,
+            capability_set_name, intelligent_set, intelligent_set_name,
+            record_location, record_location_name, ptz_controller,
+            ptz_controller_name, device_resource_type,
+            device_resource_type_name, channel_type, channel_type_name,
+            trans_type, trans_type_name, update_time,
+            unit_index_code, treaty_type, treaty_type_name,
+            create_time, "status", status_name
+            )
+        values (#{item.cameraIndexCode,jdbcType=VARCHAR}, #{item.gbIndexCode,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR},
+            #{item.deviceIndexCode,jdbcType=VARCHAR}, #{item.longitude,jdbcType=VARCHAR}, #{item.latitude,jdbcType=VARCHAR},
+            #{item.altitude,jdbcType=VARCHAR}, #{item.pixel,jdbcType=INTEGER}, #{item.cameraType,jdbcType=SMALLINT},
+            #{item.cameraTypeName,jdbcType=VARCHAR}, #{item.installPlace,jdbcType=VARCHAR}, #{item.matrixCode,jdbcType=VARCHAR},
+            #{item.chanNum,jdbcType=SMALLINT}, #{item.viewshed,jdbcType=VARCHAR}, #{item.capabilitySet,jdbcType=VARCHAR},
+            #{item.capabilitySetName,jdbcType=VARCHAR}, #{item.intelligentSet,jdbcType=VARCHAR}, #{item.intelligentSetName,jdbcType=VARCHAR},
+            #{item.recordLocation,jdbcType=VARCHAR}, #{item.recordLocationName,jdbcType=VARCHAR}, #{item.ptzController,jdbcType=SMALLINT},
+            #{item.ptzControllerName,jdbcType=VARCHAR}, #{item.deviceResourceType,jdbcType=VARCHAR},
+            #{item.deviceResourceTypeName,jdbcType=VARCHAR}, #{item.channelType,jdbcType=SMALLINT}, #{item.channelTypeName,jdbcType=VARCHAR},
+            #{item.transType,jdbcType=SMALLINT}, #{item.transTypeName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=VARCHAR},
+            #{item.unitIndexCode,jdbcType=VARCHAR}, #{item.treatyType,jdbcType=VARCHAR}, #{item.treatyTypeName,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=VARCHAR}, #{item.status,jdbcType=SMALLINT}, #{item.statusName,jdbcType=VARCHAR}
+            )
+        ON conflict (camera_index_code) do update set
+            gb_index_code = #{item.gbIndexCode,jdbcType=VARCHAR},
+            "name" = #{item.name,jdbcType=VARCHAR},
+            device_index_code = #{item.deviceIndexCode,jdbcType=VARCHAR},
+            longitude = #{item.longitude,jdbcType=VARCHAR},
+            latitude = #{item.latitude,jdbcType=VARCHAR},
+            altitude = #{item.altitude,jdbcType=VARCHAR},
+            pixel = #{item.pixel,jdbcType=INTEGER},
+            camera_type = #{item.cameraType,jdbcType=SMALLINT},
+            camera_type_name = #{item.cameraTypeName,jdbcType=VARCHAR},
+            install_place = #{item.installPlace,jdbcType=VARCHAR},
+            matrix_code = #{item.matrixCode,jdbcType=VARCHAR},
+            chan_num = #{item.chanNum,jdbcType=SMALLINT},
+            viewshed = #{item.viewshed,jdbcType=VARCHAR},
+            capability_set = #{item.capabilitySet,jdbcType=VARCHAR},
+            capability_set_name = #{item.capabilitySetName,jdbcType=VARCHAR},
+            intelligent_set = #{item.intelligentSet,jdbcType=VARCHAR},
+            intelligent_set_name = #{item.intelligentSetName,jdbcType=VARCHAR},
+            record_location = #{item.recordLocation,jdbcType=VARCHAR},
+            record_location_name = #{item.recordLocationName,jdbcType=VARCHAR},
+            ptz_controller = #{item.ptzController,jdbcType=SMALLINT},
+            ptz_controller_name = #{item.ptzControllerName,jdbcType=VARCHAR},
+            device_resource_type = #{item.deviceResourceType,jdbcType=VARCHAR},
+            device_resource_type_name = #{item.deviceResourceTypeName,jdbcType=VARCHAR},
+            channel_type = #{item.channelType,jdbcType=SMALLINT},
+            channel_type_name = #{item.channelTypeName,jdbcType=VARCHAR},
+            trans_type = #{item.transType,jdbcType=SMALLINT},
+            trans_type_name = #{item.transTypeName,jdbcType=VARCHAR},
+            update_time = #{item.updateTime,jdbcType=VARCHAR},
+            unit_index_code = #{item.unitIndexCode,jdbcType=VARCHAR},
+            treaty_type = #{item.treatyType,jdbcType=VARCHAR},
+            treaty_type_name = #{item.treatyTypeName,jdbcType=VARCHAR},
+            create_time = #{item.createTime,jdbcType=VARCHAR},
+            "status" = #{item.status,jdbcType=SMALLINT},
+            status_name = #{item.statusName,jdbcType=VARCHAR}
+      </foreach>
+    </if>
+  </insert>
+
+  <update id="updateIsDelByPrimaryKey" parameterType="java.lang.String">
+    update nt_hik_cameras
+    set is_scope = '2'
+    where camera_index_code = #{cameraIndexCode,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="replace" parameterType="com.site.mountain.entity.NtHikCameras">
+    insert into nt_hik_cameras (camera_index_code, gb_index_code, "name",
+            device_index_code, longitude, latitude,
+            altitude, pixel, camera_type,
+            camera_type_name, install_place, matrix_code,
+            chan_num, viewshed, capability_set,
+            capability_set_name, intelligent_set, intelligent_set_name,
+            record_location, record_location_name, ptz_controller,
+            ptz_controller_name, device_resource_type,
+            device_resource_type_name, channel_type, channel_type_name,
+            trans_type, trans_type_name, update_time,
+            unit_index_code, treaty_type, treaty_type_name,
+            create_time, "status", status_name,
+            is_scope, icon_url, text_color, "desc")
+    values (#{cameraIndexCode,jdbcType=VARCHAR}, #{gbIndexCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+            #{deviceIndexCode,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR},
+            #{altitude,jdbcType=VARCHAR}, #{pixel,jdbcType=INTEGER}, #{cameraType,jdbcType=SMALLINT},
+            #{cameraTypeName,jdbcType=VARCHAR}, #{installPlace,jdbcType=VARCHAR}, #{matrixCode,jdbcType=VARCHAR},
+            #{chanNum,jdbcType=SMALLINT}, #{viewshed,jdbcType=VARCHAR}, #{capabilitySet,jdbcType=VARCHAR},
+            #{capabilitySetName,jdbcType=VARCHAR}, #{intelligentSet,jdbcType=VARCHAR}, #{intelligentSetName,jdbcType=VARCHAR},
+            #{recordLocation,jdbcType=VARCHAR}, #{recordLocationName,jdbcType=VARCHAR}, #{ptzController,jdbcType=SMALLINT},
+            #{ptzControllerName,jdbcType=VARCHAR}, #{deviceResourceType,jdbcType=VARCHAR},
+            #{deviceResourceTypeName,jdbcType=VARCHAR}, #{channelType,jdbcType=SMALLINT}, #{channelTypeName,jdbcType=VARCHAR},
+            #{transType,jdbcType=SMALLINT}, #{transTypeName,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR},
+            #{unitIndexCode,jdbcType=VARCHAR}, #{treatyType,jdbcType=VARCHAR}, #{treatyTypeName,jdbcType=VARCHAR},
+            #{createTime,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{statusName,jdbcType=VARCHAR},
+            #{isScope,jdbcType=VARCHAR},#{iconUrl,jdbcType=VARCHAR},#{textColor,jdbcType=VARCHAR},#{desc,jdbcType=VARCHAR})
+        ON conflict (camera_index_code) do update set
+            gb_index_code = #{gbIndexCode,jdbcType=VARCHAR},
+           "name" = #{name,jdbcType=VARCHAR},
+           device_index_code = #{deviceIndexCode,jdbcType=VARCHAR},
+           longitude = #{longitude,jdbcType=VARCHAR},
+           latitude = #{latitude,jdbcType=VARCHAR},
+           altitude = #{altitude,jdbcType=VARCHAR},
+           pixel = #{pixel,jdbcType=INTEGER},
+           camera_type = #{cameraType,jdbcType=SMALLINT},
+           camera_type_name = #{cameraTypeName,jdbcType=VARCHAR},
+           install_place = #{installPlace,jdbcType=VARCHAR},
+           matrix_code = #{matrixCode,jdbcType=VARCHAR},
+           chan_num = #{chanNum,jdbcType=SMALLINT},
+           viewshed = #{viewshed,jdbcType=VARCHAR},
+           capability_set = #{capabilitySet,jdbcType=VARCHAR},
+           capability_set_name = #{capabilitySetName,jdbcType=VARCHAR},
+           intelligent_set = #{intelligentSet,jdbcType=VARCHAR},
+           intelligent_set_name = #{intelligentSetName,jdbcType=VARCHAR},
+           record_location = #{recordLocation,jdbcType=VARCHAR},
+           record_location_name = #{recordLocationName,jdbcType=VARCHAR},
+           ptz_controller = #{ptzController,jdbcType=SMALLINT},
+           ptz_controller_name = #{ptzControllerName,jdbcType=VARCHAR},
+           device_resource_type = #{deviceResourceType,jdbcType=VARCHAR},
+           device_resource_type_name = #{deviceResourceTypeName,jdbcType=VARCHAR},
+           channel_type = #{channelType,jdbcType=SMALLINT},
+           channel_type_name = #{channelTypeName,jdbcType=VARCHAR},
+           trans_type = #{transType,jdbcType=SMALLINT},
+           trans_type_name = #{transTypeName,jdbcType=VARCHAR},
+           update_time = #{updateTime,jdbcType=VARCHAR},
+           unit_index_code = #{unitIndexCode,jdbcType=VARCHAR},
+           treaty_type = #{treatyType,jdbcType=VARCHAR},
+           treaty_type_name = #{treatyTypeName,jdbcType=VARCHAR},
+           create_time = #{createTime,jdbcType=VARCHAR},
+           "status" = #{status,jdbcType=SMALLINT},
+           status_name = #{statusName,jdbcType=VARCHAR},
+           is_scope = #{isScope,jdbcType=VARCHAR},
+           icon_url = #{iconUrl,jdbcType=VARCHAR},
+           text_color = #{textColor,jdbcType=VARCHAR},
+           "desc" = #{desc,jdbcType=VARCHAR}
+  </insert>
+
+  <insert id="replaceSelective" parameterType="com.site.mountain.entity.NtHikCameras">
+    insert into nt_hik_cameras
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cameraIndexCode != null">
+                camera_index_code,
+            </if>
+            <if test="gbIndexCode != null">
+                gb_index_code,
+            </if>
+            <if test="name != null">
+                "name",
+            </if>
+            <if test="deviceIndexCode != null">
+                device_index_code,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="altitude != null">
+                altitude,
+            </if>
+            <if test="pixel != null">
+                pixel,
+            </if>
+            <if test="cameraType != null">
+                camera_type,
+            </if>
+            <if test="cameraTypeName != null">
+                camera_type_name,
+            </if>
+            <if test="installPlace != null">
+                install_place,
+            </if>
+            <if test="matrixCode != null">
+                matrix_code,
+            </if>
+            <if test="chanNum != null">
+                chan_num,
+            </if>
+            <if test="viewshed != null">
+                viewshed,
+            </if>
+            <if test="capabilitySet != null">
+                capability_set,
+            </if>
+            <if test="capabilitySetName != null">
+                capability_set_name,
+            </if>
+            <if test="intelligentSet != null">
+                intelligent_set,
+            </if>
+            <if test="intelligentSetName != null">
+                intelligent_set_name,
+            </if>
+            <if test="recordLocation != null">
+                record_location,
+            </if>
+            <if test="recordLocationName != null">
+                record_location_name,
+            </if>
+            <if test="ptzController != null">
+                ptz_controller,
+            </if>
+            <if test="ptzControllerName != null">
+                ptz_controller_name,
+            </if>
+            <if test="deviceResourceType != null">
+                device_resource_type,
+            </if>
+            <if test="deviceResourceTypeName != null">
+                device_resource_type_name,
+            </if>
+            <if test="channelType != null">
+                channel_type,
+            </if>
+            <if test="channelTypeName != null">
+                channel_type_name,
+            </if>
+            <if test="transType != null">
+                trans_type,
+            </if>
+            <if test="transTypeName != null">
+                trans_type_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="unitIndexCode != null">
+                unit_index_code,
+            </if>
+            <if test="treatyType != null">
+                treaty_type,
+            </if>
+            <if test="treatyTypeName != null">
+                treaty_type_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                "status",
+            </if>
+            <if test="statusName != null">
+                status_name,
+            </if>
+            <if test="isScope != null">
+                is_scope,
+            </if>
+            <if test="iconUrl != null">
+                icon_url,
+            </if>
+            <if test="textColor != null">
+                text_color,
+            </if>
+            <if test="desc != null">
+                "desc",
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cameraIndexCode != null">
+                #{cameraIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="gbIndexCode != null">
+                #{gbIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceIndexCode != null">
+                #{deviceIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="altitude != null">
+                #{altitude,jdbcType=VARCHAR},
+            </if>
+            <if test="pixel != null">
+                #{pixel,jdbcType=INTEGER},
+            </if>
+            <if test="cameraType != null">
+                #{cameraType,jdbcType=SMALLINT},
+            </if>
+            <if test="cameraTypeName != null">
+                #{cameraTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="installPlace != null">
+                #{installPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="matrixCode != null">
+                #{matrixCode,jdbcType=VARCHAR},
+            </if>
+            <if test="chanNum != null">
+                #{chanNum,jdbcType=SMALLINT},
+            </if>
+            <if test="viewshed != null">
+                #{viewshed,jdbcType=VARCHAR},
+            </if>
+            <if test="capabilitySet != null">
+                #{capabilitySet,jdbcType=VARCHAR},
+            </if>
+            <if test="capabilitySetName != null">
+                #{capabilitySetName,jdbcType=VARCHAR},
+            </if>
+            <if test="intelligentSet != null">
+                #{intelligentSet,jdbcType=VARCHAR},
+            </if>
+            <if test="intelligentSetName != null">
+                #{intelligentSetName,jdbcType=VARCHAR},
+            </if>
+            <if test="recordLocation != null">
+                #{recordLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="recordLocationName != null">
+                #{recordLocationName,jdbcType=VARCHAR},
+            </if>
+            <if test="ptzController != null">
+                #{ptzController,jdbcType=SMALLINT},
+            </if>
+            <if test="ptzControllerName != null">
+                #{ptzControllerName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceResourceType != null">
+                #{deviceResourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceResourceTypeName != null">
+                #{deviceResourceTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="channelType != null">
+                #{channelType,jdbcType=SMALLINT},
+            </if>
+            <if test="channelTypeName != null">
+                #{channelTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="transType != null">
+                #{transType,jdbcType=SMALLINT},
+            </if>
+            <if test="transTypeName != null">
+                #{transTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="unitIndexCode != null">
+                #{unitIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="treatyType != null">
+                #{treatyType,jdbcType=VARCHAR},
+            </if>
+            <if test="treatyTypeName != null">
+                #{treatyTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="statusName != null">
+                #{statusName,jdbcType=VARCHAR},
+            </if>
+            <if test="isScope != null">
+                #{isScope,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="textColor != null">
+                #{textColor,jdbcType=VARCHAR},
+            </if>
+            <if test="desc != null">
+                #{desc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON conflict (camera_index_code) do update
+        <set>
+            <if test="gbIndexCode != null">
+                gb_index_code = #{gbIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                "name" = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceIndexCode != null">
+                device_index_code = #{deviceIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="altitude != null">
+                altitude = #{altitude,jdbcType=VARCHAR},
+            </if>
+            <if test="pixel != null">
+                pixel = #{pixel,jdbcType=INTEGER},
+            </if>
+            <if test="cameraType != null">
+                camera_type = #{cameraType,jdbcType=SMALLINT},
+            </if>
+            <if test="cameraTypeName != null">
+                camera_type_name = #{cameraTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="installPlace != null">
+                install_place = #{installPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="matrixCode != null">
+                matrix_code = #{matrixCode,jdbcType=VARCHAR},
+            </if>
+            <if test="chanNum != null">
+                chan_num = #{chanNum,jdbcType=SMALLINT},
+            </if>
+            <if test="viewshed != null">
+                viewshed = #{viewshed,jdbcType=VARCHAR},
+            </if>
+            <if test="capabilitySet != null">
+                capability_set = #{capabilitySet,jdbcType=VARCHAR},
+            </if>
+            <if test="capabilitySetName != null">
+                capability_set_name = #{capabilitySetName,jdbcType=VARCHAR},
+            </if>
+            <if test="intelligentSet != null">
+                intelligent_set = #{intelligentSet,jdbcType=VARCHAR},
+            </if>
+            <if test="intelligentSetName != null">
+                intelligent_set_name = #{intelligentSetName,jdbcType=VARCHAR},
+            </if>
+            <if test="recordLocation != null">
+                record_location = #{recordLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="recordLocationName != null">
+                record_location_name = #{recordLocationName,jdbcType=VARCHAR},
+            </if>
+            <if test="ptzController != null">
+                ptz_controller = #{ptzController,jdbcType=SMALLINT},
+            </if>
+            <if test="ptzControllerName != null">
+                ptz_controller_name = #{ptzControllerName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceResourceType != null">
+                device_resource_type = #{deviceResourceType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceResourceTypeName != null">
+                device_resource_type_name = #{deviceResourceTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="channelType != null">
+                channel_type = #{channelType,jdbcType=SMALLINT},
+            </if>
+            <if test="channelTypeName != null">
+                channel_type_name = #{channelTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="transType != null">
+                trans_type = #{transType,jdbcType=SMALLINT},
+            </if>
+            <if test="transTypeName != null">
+                trans_type_name = #{transTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="unitIndexCode != null">
+                unit_index_code = #{unitIndexCode,jdbcType=VARCHAR},
+            </if>
+            <if test="treatyType != null">
+                treaty_type = #{treatyType,jdbcType=VARCHAR},
+            </if>
+            <if test="treatyTypeName != null">
+                treaty_type_name = #{treatyTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                "status" = #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="statusName != null">
+                status_name = #{statusName,jdbcType=VARCHAR},
+            </if>
+            <if test="isScope != null">
+                is_scope = #{isScope,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                icon_url = #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="textColor != null">
+                text_color = #{textColor,jdbcType=VARCHAR},
+            </if>
+            <if test="desc != null">
+                "desc" = #{desc,jdbcType=VARCHAR},
+            </if>
+        </set>
+  </insert>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_hik_cameras
+    where camera_index_code = #{cameraIndexCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_hik_cameras
+    where camera_index_code = #{cameraIndexCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtHikCameras">
+    insert into nt_hik_cameras (camera_index_code, gb_index_code, "name", 
+      device_index_code, longitude, latitude, 
+      altitude, pixel, camera_type, 
+      camera_type_name, install_place, matrix_code, 
+      chan_num, viewshed, capability_set, 
+      capability_set_name, intelligent_set, intelligent_set_name, 
+      record_location, record_location_name, ptz_controller, 
+      ptz_controller_name, device_resource_type, 
+      device_resource_type_name, channel_type, channel_type_name, 
+      trans_type, trans_type_name, update_time, 
+      unit_index_code, treaty_type, treaty_type_name, 
+      create_time, "status", status_name, 
+      is_scope, icon_url, text_color, "desc")
+    values (#{cameraIndexCode,jdbcType=VARCHAR}, #{gbIndexCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{deviceIndexCode,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{altitude,jdbcType=VARCHAR}, #{pixel,jdbcType=INTEGER}, #{cameraType,jdbcType=SMALLINT}, 
+      #{cameraTypeName,jdbcType=VARCHAR}, #{installPlace,jdbcType=VARCHAR}, #{matrixCode,jdbcType=VARCHAR}, 
+      #{chanNum,jdbcType=SMALLINT}, #{viewshed,jdbcType=VARCHAR}, #{capabilitySet,jdbcType=VARCHAR}, 
+      #{capabilitySetName,jdbcType=VARCHAR}, #{intelligentSet,jdbcType=VARCHAR}, #{intelligentSetName,jdbcType=VARCHAR}, 
+      #{recordLocation,jdbcType=VARCHAR}, #{recordLocationName,jdbcType=VARCHAR}, #{ptzController,jdbcType=SMALLINT}, 
+      #{ptzControllerName,jdbcType=VARCHAR}, #{deviceResourceType,jdbcType=VARCHAR}, 
+      #{deviceResourceTypeName,jdbcType=VARCHAR}, #{channelType,jdbcType=SMALLINT}, #{channelTypeName,jdbcType=VARCHAR}, 
+      #{transType,jdbcType=SMALLINT}, #{transTypeName,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
+      #{unitIndexCode,jdbcType=VARCHAR}, #{treatyType,jdbcType=VARCHAR}, #{treatyTypeName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{statusName,jdbcType=VARCHAR}, 
+      #{isScope,jdbcType=VARCHAR},#{iconUrl,jdbcType=VARCHAR},#{textColor,jdbcType=VARCHAR},#{desc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtHikCameras">
+    insert into nt_hik_cameras
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cameraIndexCode != null">
+        camera_index_code,
+      </if>
+      <if test="gbIndexCode != null">
+        gb_index_code,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="deviceIndexCode != null">
+        device_index_code,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="altitude != null">
+        altitude,
+      </if>
+      <if test="pixel != null">
+        pixel,
+      </if>
+      <if test="cameraType != null">
+        camera_type,
+      </if>
+      <if test="cameraTypeName != null">
+        camera_type_name,
+      </if>
+      <if test="installPlace != null">
+        install_place,
+      </if>
+      <if test="matrixCode != null">
+        matrix_code,
+      </if>
+      <if test="chanNum != null">
+        chan_num,
+      </if>
+      <if test="viewshed != null">
+        viewshed,
+      </if>
+      <if test="capabilitySet != null">
+        capability_set,
+      </if>
+      <if test="capabilitySetName != null">
+        capability_set_name,
+      </if>
+      <if test="intelligentSet != null">
+        intelligent_set,
+      </if>
+      <if test="intelligentSetName != null">
+        intelligent_set_name,
+      </if>
+      <if test="recordLocation != null">
+        record_location,
+      </if>
+      <if test="recordLocationName != null">
+        record_location_name,
+      </if>
+      <if test="ptzController != null">
+        ptz_controller,
+      </if>
+      <if test="ptzControllerName != null">
+        ptz_controller_name,
+      </if>
+      <if test="deviceResourceType != null">
+        device_resource_type,
+      </if>
+      <if test="deviceResourceTypeName != null">
+        device_resource_type_name,
+      </if>
+      <if test="channelType != null">
+        channel_type,
+      </if>
+      <if test="channelTypeName != null">
+        channel_type_name,
+      </if>
+      <if test="transType != null">
+        trans_type,
+      </if>
+      <if test="transTypeName != null">
+        trans_type_name,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="unitIndexCode != null">
+        unit_index_code,
+      </if>
+      <if test="treatyType != null">
+        treaty_type,
+      </if>
+      <if test="treatyTypeName != null">
+        treaty_type_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="statusName != null">
+        status_name,
+      </if>
+      <if test="isScope != null">
+        is_scope,
+      </if>
+      <if test="iconUrl != null">
+        icon_url,
+      </if>
+      <if test="textColor != null">
+        text_color,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+        <if test="crossId != null">
+            cross_id,
+        </if>
+        <if test="deviceId != null">
+            device_id,
+        </if>
+        <if test="location != null">
+            location,
+        </if>
+        <if test="manufacturer != null">
+            manufacturer,
+        </if>
+        <if test="installationTime != null">
+            installation_time,
+        </if>
+        <if test="datum != null">
+            datum,
+        </if>
+        <if test="deviceCode != null">
+            device_code,
+        </if>
+        <if test="poleId != null">
+            pole_id,
+        </if>
+        <if test="deviceType != null">
+            device_type,
+        </if>
+        <if test="collStatus != null">
+            coll_status,
+        </if>
+        <if test="infoSource != null">
+            info_source,
+        </if>
+        <if test="collLocation != null">
+            coll_location,
+        </if>
+        <if test="modifyTime != null">
+            modify_time,
+        </if>
+        <if test="modifyPerson != null">
+            modify_person,
+        </if>
+        <if test="pitch != null">
+            pitch,
+        </if>
+        <if test="roll != null">
+            roll,
+        </if>
+        <if test="heading != null">
+            heading,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cameraIndexCode != null">
+        #{cameraIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gbIndexCode != null">
+        #{gbIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceIndexCode != null">
+        #{deviceIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="pixel != null">
+        #{pixel,jdbcType=INTEGER},
+      </if>
+      <if test="cameraType != null">
+        #{cameraType,jdbcType=SMALLINT},
+      </if>
+      <if test="cameraTypeName != null">
+        #{cameraTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="installPlace != null">
+        #{installPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="matrixCode != null">
+        #{matrixCode,jdbcType=VARCHAR},
+      </if>
+      <if test="chanNum != null">
+        #{chanNum,jdbcType=SMALLINT},
+      </if>
+      <if test="viewshed != null">
+        #{viewshed,jdbcType=VARCHAR},
+      </if>
+      <if test="capabilitySet != null">
+        #{capabilitySet,jdbcType=VARCHAR},
+      </if>
+      <if test="capabilitySetName != null">
+        #{capabilitySetName,jdbcType=VARCHAR},
+      </if>
+      <if test="intelligentSet != null">
+        #{intelligentSet,jdbcType=VARCHAR},
+      </if>
+      <if test="intelligentSetName != null">
+        #{intelligentSetName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordLocation != null">
+        #{recordLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="recordLocationName != null">
+        #{recordLocationName,jdbcType=VARCHAR},
+      </if>
+      <if test="ptzController != null">
+        #{ptzController,jdbcType=SMALLINT},
+      </if>
+      <if test="ptzControllerName != null">
+        #{ptzControllerName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceResourceType != null">
+        #{deviceResourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceResourceTypeName != null">
+        #{deviceResourceTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null">
+        #{channelType,jdbcType=SMALLINT},
+      </if>
+      <if test="channelTypeName != null">
+        #{channelTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null">
+        #{transType,jdbcType=SMALLINT},
+      </if>
+      <if test="transTypeName != null">
+        #{transTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIndexCode != null">
+        #{unitIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="treatyType != null">
+        #{treatyType,jdbcType=VARCHAR},
+      </if>
+      <if test="treatyTypeName != null">
+        #{treatyTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="statusName != null">
+        #{statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="isScope != null">
+        #{isScope,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+        <if test="crossId != null">
+            #{crossId,jdbcType=VARCHAR},
+        </if>
+        <if test="deviceId != null">
+            #{deviceId,jdbcType=INTEGER},
+        </if>
+        <if test="location != null">
+            #{location,jdbcType=VARCHAR},
+        </if>
+        <if test="manufacturer != null">
+            #{manufacturer,jdbcType=VARCHAR},
+        </if>
+        <if test="installationTime != null">
+            #{installationTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="datum != null">
+            #{datum,jdbcType=VARCHAR},
+        </if>
+        <if test="deviceCode != null">
+            #{deviceCode,jdbcType=VARCHAR},
+        </if>
+        <if test="poleId != null">
+            #{poleId,jdbcType=VARCHAR},
+        </if>
+        <if test="deviceType != null">
+            #{deviceType,jdbcType=BIGINT},
+        </if>
+        <if test="collStatus != null">
+            #{collStatus,jdbcType=BIGINT},
+        </if>
+        <if test="infoSource != null">
+            #{infoSource,jdbcType=BIGINT},
+        </if>
+        <if test="collLocation != null">
+            #{collLocation,jdbcType=VARCHAR},
+        </if>
+        <if test="modifyTime != null">
+            #{modifyTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="modifyPerson != null">
+            #{modifyPerson,jdbcType=BIGINT},
+        </if>
+        <if test="pitch != null">
+            #{pitch,jdbcType=DOUBLE},
+        </if>
+        <if test="roll != null">
+            #{roll,jdbcType=DOUBLE},
+        </if>
+        <if test="heading != null">
+            #{heading,jdbcType=DOUBLE},
+        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtHikCameras">
+    update nt_hik_cameras
+    <set>
+      <if test="gbIndexCode != null">
+        gb_index_code = #{gbIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceIndexCode != null">
+        device_index_code = #{deviceIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        altitude = #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="pixel != null">
+        pixel = #{pixel,jdbcType=INTEGER},
+      </if>
+      <if test="cameraType != null">
+        camera_type = #{cameraType,jdbcType=SMALLINT},
+      </if>
+      <if test="cameraTypeName != null">
+        camera_type_name = #{cameraTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="installPlace != null">
+        install_place = #{installPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="matrixCode != null">
+        matrix_code = #{matrixCode,jdbcType=VARCHAR},
+      </if>
+      <if test="chanNum != null">
+        chan_num = #{chanNum,jdbcType=SMALLINT},
+      </if>
+      <if test="viewshed != null">
+        viewshed = #{viewshed,jdbcType=VARCHAR},
+      </if>
+      <if test="capabilitySet != null">
+        capability_set = #{capabilitySet,jdbcType=VARCHAR},
+      </if>
+      <if test="capabilitySetName != null">
+        capability_set_name = #{capabilitySetName,jdbcType=VARCHAR},
+      </if>
+      <if test="intelligentSet != null">
+        intelligent_set = #{intelligentSet,jdbcType=VARCHAR},
+      </if>
+      <if test="intelligentSetName != null">
+        intelligent_set_name = #{intelligentSetName,jdbcType=VARCHAR},
+      </if>
+      <if test="recordLocation != null">
+        record_location = #{recordLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="recordLocationName != null">
+        record_location_name = #{recordLocationName,jdbcType=VARCHAR},
+      </if>
+      <if test="ptzController != null">
+        ptz_controller = #{ptzController,jdbcType=SMALLINT},
+      </if>
+      <if test="ptzControllerName != null">
+        ptz_controller_name = #{ptzControllerName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceResourceType != null">
+        device_resource_type = #{deviceResourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceResourceTypeName != null">
+        device_resource_type_name = #{deviceResourceTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null">
+        channel_type = #{channelType,jdbcType=SMALLINT},
+      </if>
+      <if test="channelTypeName != null">
+        channel_type_name = #{channelTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null">
+        trans_type = #{transType,jdbcType=SMALLINT},
+      </if>
+      <if test="transTypeName != null">
+        trans_type_name = #{transTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIndexCode != null">
+        unit_index_code = #{unitIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="treatyType != null">
+        treaty_type = #{treatyType,jdbcType=VARCHAR},
+      </if>
+      <if test="treatyTypeName != null">
+        treaty_type_name = #{treatyTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        "status" = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="statusName != null">
+        status_name = #{statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="isScope != null">
+        is_scope = #{isScope,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        text_color = #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="crossId != null">
+        cross_id = #{crossId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="poleId != null">
+        pole_id = #{poleId,jdbcType=VARCHAR},
+      </if>
+        <if test="location != null">
+            location = #{location,jdbcType=VARCHAR},
+        </if>
+        <if test="manufacturer != null">
+            manufacturer = #{manufacturer,jdbcType=VARCHAR},
+        </if>
+        <if test="installationTime != null">
+            installation_time = #{installationTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="datum != null">
+            datum = #{datum,jdbcType=VARCHAR},
+        </if>
+        <if test="deviceCode != null">
+            device_code = #{deviceCode,jdbcType=VARCHAR},
+        </if>
+        <if test="deviceType != null">
+            device_type = #{deviceType,jdbcType=BIGINT},
+        </if>
+        <if test="collStatus != null">
+            coll_status = #{collStatus,jdbcType=BIGINT},
+        </if>
+        <if test="infoSource != null">
+            info_source = #{infoSource,jdbcType=BIGINT},
+        </if>
+        <if test="collLocation != null">
+            coll_location = #{collLocation,jdbcType=VARCHAR},
+        </if>
+        <if test="modifyTime != null">
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="modifyPerson != null">
+            modify_person = #{modifyPerson,jdbcType=BIGINT},
+        </if>
+        <if test="pitch != null">
+            pitch = #{pitch,jdbcType=DOUBLE},
+        </if>
+        <if test="roll != null">
+            roll = #{roll,jdbcType=DOUBLE},
+        </if>
+        <if test="heading != null">
+            heading = #{heading,jdbcType=DOUBLE},
+        </if>
+    </set>
+    where camera_index_code = #{cameraIndexCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtHikCameras">
+    update nt_hik_cameras
+    set gb_index_code = #{gbIndexCode,jdbcType=VARCHAR},
+      "name" = #{name,jdbcType=VARCHAR},
+      device_index_code = #{deviceIndexCode,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      altitude = #{altitude,jdbcType=VARCHAR},
+      pixel = #{pixel,jdbcType=INTEGER},
+      camera_type = #{cameraType,jdbcType=SMALLINT},
+      camera_type_name = #{cameraTypeName,jdbcType=VARCHAR},
+      install_place = #{installPlace,jdbcType=VARCHAR},
+      matrix_code = #{matrixCode,jdbcType=VARCHAR},
+      chan_num = #{chanNum,jdbcType=SMALLINT},
+      viewshed = #{viewshed,jdbcType=VARCHAR},
+      capability_set = #{capabilitySet,jdbcType=VARCHAR},
+      capability_set_name = #{capabilitySetName,jdbcType=VARCHAR},
+      intelligent_set = #{intelligentSet,jdbcType=VARCHAR},
+      intelligent_set_name = #{intelligentSetName,jdbcType=VARCHAR},
+      record_location = #{recordLocation,jdbcType=VARCHAR},
+      record_location_name = #{recordLocationName,jdbcType=VARCHAR},
+      ptz_controller = #{ptzController,jdbcType=SMALLINT},
+      ptz_controller_name = #{ptzControllerName,jdbcType=VARCHAR},
+      device_resource_type = #{deviceResourceType,jdbcType=VARCHAR},
+      device_resource_type_name = #{deviceResourceTypeName,jdbcType=VARCHAR},
+      channel_type = #{channelType,jdbcType=SMALLINT},
+      channel_type_name = #{channelTypeName,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=SMALLINT},
+      trans_type_name = #{transTypeName,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      unit_index_code = #{unitIndexCode,jdbcType=VARCHAR},
+      treaty_type = #{treatyType,jdbcType=VARCHAR},
+      treaty_type_name = #{treatyTypeName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      "status" = #{status,jdbcType=SMALLINT},
+      status_name = #{statusName,jdbcType=VARCHAR},
+      is_scope = #{isScope,jdbcType=VARCHAR},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      text_color = #{textColor,jdbcType=VARCHAR},
+      "desc" = #{desc,jdbcType=VARCHAR}
+    where camera_index_code = #{cameraIndexCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

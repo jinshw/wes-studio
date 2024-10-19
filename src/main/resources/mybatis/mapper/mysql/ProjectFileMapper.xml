@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.site.mountain.dao.mysql.ProjectFileDao">
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.site.mountain.entity.ProjectFile">
+        <result column="id" property="id"/>
+        <result column="file_name" property="fileName"/>
+        <result column="size" property="size"/>
+        <result column="type" property="type"/>
+        <result column="path" property="path"/>
+        <result column="store_name" property="storeName"/>
+        <result column="master_id" property="masterId"/>
+        <result column="master_type" property="masterType"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modify" property="gmtModify"/>
+    </resultMap>
+
+    <sql id="all_column">
+        "id",
+        "file_name",
+        "size",
+        "type",
+        "path",
+        "store_name",
+        "master_id",
+        "master_type",
+        "is_delete",
+        "gmt_create",
+        "gmt_modify"
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="com.site.mountain.entity.ProjectFile" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from biz_file
+        WHERE id = #{pojo.id}
+    </select>
+
+    <select id="findListByMasterId" parameterType="com.site.mountain.entity.ProjectFile" resultMap="AllColumnMap">
+        select
+        <include refid="all_column"/>
+        from biz_file
+        <where>
+            <if test="1==1">
+                AND is_delete =0
+            </if>
+            <if test="masterId!=null and masterId != ''">
+                AND master_id =#{masterId}
+            </if>
+            <if test="masterType!=null and masterType != ''">
+                AND master_type =#{masterType}
+            </if>
+        </where>
+        order by gmt_create desc
+    </select>
+
+    <select id="selectFileListByMasterId" resultType="com.site.mountain.entity.ProjectFile">
+        select
+        fl.id,
+        fl.file_name,
+        fl.size,
+        fl.type,
+        fl.path,
+        fl.store_name,
+        fl.master_id,
+        fl.master_type,
+        fl.is_delete,
+        CONCAT(f.url, fl.master_type,'/',fl.store_name) as accessPath
+        from biz_file fl,nt_file_proxy_dict f
+        where fl.is_delete ='0' and f.code='imgUrl' AND fl.master_id =#{deviceId}
+        order by fl.gmt_create desc
+    </select>
+
+    <delete id="delete" parameterType="com.site.mountain.entity.ProjectFile">
+        UPDATE biz_file
+        <set>
+            <if test="pojo.isDelete!=null">"is_delete" = -1</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </delete>
+
+    <delete id="deleteIs" parameterType="com.site.mountain.entity.ProjectFile">
+        UPDATE biz_file
+        <set>
+            "is_delete" = -1
+        </set>
+        WHERE id = #{pojo.id}
+    </delete>
+
+    <insert id="insert" parameterType="com.site.mountain.entity.ProjectFile">
+        INSERT INTO biz_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">"id",</if>
+            <if test="pojo.fileName!=null">"file_name",</if>
+            <if test="pojo.size!=null">"size",</if>
+            <if test="pojo.type!=null">"type",</if>
+            <if test="pojo.path!=null">"path",</if>
+            <if test="pojo.storeName!=null">"store_name",</if>
+            <if test="pojo.masterId!=null">"master_id",</if>
+            <if test="pojo.masterType!=null">"master_type",</if>
+            <if test="pojo.isDelete!=null">"is_delete",</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id!=null">#{pojo.id},</if>
+            <if test="pojo.fileName!=null">#{pojo.fileName},</if>
+            <if test="pojo.size!=null">#{pojo.size},</if>
+            <if test="pojo.type!=null">#{pojo.type},</if>
+            <if test="pojo.path!=null">#{pojo.path},</if>
+            <if test="pojo.storeName!=null">#{pojo.storeName},</if>
+            <if test="pojo.masterId!=null">#{pojo.masterId},</if>
+            <if test="pojo.masterType!=null">#{pojo.masterType},</if>
+            <if test="pojo.isDelete!=null">#{pojo.isDelete},</if>
+        </trim>
+    </insert>
+
+    <insert id="insert-bak" useGeneratedKeys="true" keyProperty="id" parameterType="com.site.mountain.entity.ProjectFile">
+        INSERT INTO biz_file
+        (file_name,size,type,path,store_name,master_id,master_type,is_delete,gmt_create,gmt_modify)
+        VALUES
+        (#{fileName},#{size},#{type},#{path},#{storeName},#{masterId},#{masterType},'0',now(),now())
+    </insert>
+
+    <update id="update" parameterType="com.site.mountain.entity.ProjectFile">
+        UPDATE biz_file
+        <set>
+            <if test="pojo.fileName!=null">"file_name" = #{pojo.fileName},</if>
+            <if test="pojo.size!=null"> "size" = #{pojo.size},</if>
+            <if test="pojo.type!=null"> "type" = #{pojo.type},</if>
+            <if test="pojo.path!=null"> "path" = #{pojo.path},</if>
+            <if test="pojo.storeName!=null">"store_name" = #{pojo.storeName},</if>
+            <if test="pojo.masterId!=null"> "master_id" = #{pojo.masterId},</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+</mapper>
+

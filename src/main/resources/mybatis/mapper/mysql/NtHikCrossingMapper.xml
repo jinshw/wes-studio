@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtHikCrossingMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtHikCrossing">
+    <id column="index_code" jdbcType="VARCHAR" property="indexCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="unit_index_code" jdbcType="VARCHAR" property="unitIndexCode" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="altitude" jdbcType="VARCHAR" property="altitude" />
+    <result column="crossing_type" jdbcType="VARCHAR" property="crossingType" />
+    <result column="crossing_type_name" jdbcType="VARCHAR" property="crossingTypeName" />
+    <result column="intercity_type" jdbcType="SMALLINT" property="intercityType" />
+    <result column="intercity_type_name" jdbcType="VARCHAR" property="intercityTypeName" />
+    <result column="cascade_code" jdbcType="VARCHAR" property="cascadeCode" />
+    <result column="external_index_code" jdbcType="VARCHAR" property="externalIndexCode" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="text_color" jdbcType="VARCHAR" property="textColor" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    index_code, "name", unit_index_code, longitude, latitude, altitude, crossing_type, 
+    crossing_type_name, intercity_type, intercity_type_name, cascade_code, external_index_code, icon_url, text_color, "desc"
+  </sql>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtHikCrossing" resultType="com.site.mountain.entity.NtHikCrossing">
+    select
+    <include refid="Base_Column_List" />
+    from nt_hik_crossing
+    <where>
+      <if test="indexCode != null and indexCode != ''">
+        and index_code = #{indexCode}
+      </if>
+    </where>
+  </select>
+
+  <insert id="replaceSelectiveBatch" parameterType="list">
+    <if test="records != null and records.size() > 0">
+      <foreach collection="records" item="item" index="index" open="" close="" separator=";">
+        insert into nt_hik_crossing (index_code, "name", unit_index_code,
+        longitude, latitude, altitude,
+        crossing_type, crossing_type_name, intercity_type,
+        intercity_type_name, cascade_code, external_index_code
+        )
+        values (#{item.indexCode,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.unitIndexCode,jdbcType=VARCHAR},
+        #{item.longitude,jdbcType=VARCHAR}, #{item.latitude,jdbcType=VARCHAR}, #{item.altitude,jdbcType=VARCHAR},
+        #{item.crossingType,jdbcType=VARCHAR}, #{item.crossingTypeName,jdbcType=VARCHAR}, #{item.intercityType,jdbcType=SMALLINT},
+        #{item.intercityTypeName,jdbcType=VARCHAR}, #{item.cascadeCode,jdbcType=VARCHAR}, #{item.externalIndexCode,jdbcType=VARCHAR}
+        )
+        ON conflict (index_code) do update set
+        "name" = #{item.name,jdbcType=VARCHAR},
+        unit_index_code = #{item.unitIndexCode,jdbcType=VARCHAR},
+        longitude = #{item.longitude,jdbcType=VARCHAR},
+        latitude = #{item.latitude,jdbcType=VARCHAR},
+        altitude = #{item.altitude,jdbcType=VARCHAR},
+        crossing_type = #{item.crossingType,jdbcType=VARCHAR},
+        crossing_type_name = #{item.crossingTypeName,jdbcType=VARCHAR},
+        intercity_type = #{item.intercityType,jdbcType=SMALLINT},
+        intercity_type_name = #{item.intercityTypeName,jdbcType=VARCHAR},
+        cascade_code = #{item.cascadeCode,jdbcType=VARCHAR},
+        external_index_code = #{item.externalIndexCode,jdbcType=VARCHAR}
+      </foreach>
+    </if>
+  </insert>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_hik_crossing
+    where index_code = #{indexCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_hik_crossing
+    where index_code = #{indexCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtHikCrossing">
+    insert into nt_hik_crossing (index_code, "name", unit_index_code, 
+      longitude, latitude, altitude, 
+      crossing_type, crossing_type_name, intercity_type, 
+      intercity_type_name, cascade_code, external_index_code, icon_url, text_color, "desc"
+      )
+    values (#{indexCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{unitIndexCode,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{altitude,jdbcType=VARCHAR}, 
+      #{crossingType,jdbcType=VARCHAR}, #{crossingTypeName,jdbcType=VARCHAR}, #{intercityType,jdbcType=SMALLINT}, 
+      #{intercityTypeName,jdbcType=VARCHAR}, #{cascadeCode,jdbcType=VARCHAR}, #{externalIndexCode,jdbcType=VARCHAR},#{iconUrl,jdbcType=VARCHAR},#{textColor,jdbcType=VARCHAR},#{desc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtHikCrossing">
+    insert into nt_hik_crossing
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="indexCode != null">
+        index_code,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="unitIndexCode != null">
+        unit_index_code,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="altitude != null">
+        altitude,
+      </if>
+      <if test="crossingType != null">
+        crossing_type,
+      </if>
+      <if test="crossingTypeName != null">
+        crossing_type_name,
+      </if>
+      <if test="intercityType != null">
+        intercity_type,
+      </if>
+      <if test="intercityTypeName != null">
+        intercity_type_name,
+      </if>
+      <if test="cascadeCode != null">
+        cascade_code,
+      </if>
+      <if test="externalIndexCode != null">
+        external_index_code,
+      </if>
+      <if test="iconUrl != null">
+        icon_url,
+      </if>
+      <if test="textColor != null">
+        text_color,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="indexCode != null">
+        #{indexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIndexCode != null">
+        #{unitIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="crossingType != null">
+        #{crossingType,jdbcType=VARCHAR},
+      </if>
+      <if test="crossingTypeName != null">
+        #{crossingTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="intercityType != null">
+        #{intercityType,jdbcType=SMALLINT},
+      </if>
+      <if test="intercityTypeName != null">
+        #{intercityTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="cascadeCode != null">
+        #{cascadeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="externalIndexCode != null">
+        #{externalIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtHikCrossing">
+    update nt_hik_crossing
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIndexCode != null">
+        unit_index_code = #{unitIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="altitude != null">
+        altitude = #{altitude,jdbcType=VARCHAR},
+      </if>
+      <if test="crossingType != null">
+        crossing_type = #{crossingType,jdbcType=VARCHAR},
+      </if>
+      <if test="crossingTypeName != null">
+        crossing_type_name = #{crossingTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="intercityType != null">
+        intercity_type = #{intercityType,jdbcType=SMALLINT},
+      </if>
+      <if test="intercityTypeName != null">
+        intercity_type_name = #{intercityTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="cascadeCode != null">
+        cascade_code = #{cascadeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="externalIndexCode != null">
+        external_index_code = #{externalIndexCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="textColor != null">
+        text_color = #{textColor,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where index_code = #{indexCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtHikCrossing">
+    update nt_hik_crossing
+    set "name" = #{name,jdbcType=VARCHAR},
+      unit_index_code = #{unitIndexCode,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      altitude = #{altitude,jdbcType=VARCHAR},
+      crossing_type = #{crossingType,jdbcType=VARCHAR},
+      crossing_type_name = #{crossingTypeName,jdbcType=VARCHAR},
+      intercity_type = #{intercityType,jdbcType=SMALLINT},
+      intercity_type_name = #{intercityTypeName,jdbcType=VARCHAR},
+      cascade_code = #{cascadeCode,jdbcType=VARCHAR},
+      external_index_code = #{externalIndexCode,jdbcType=VARCHAR},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      text_color = #{textColor,jdbcType=VARCHAR},
+      "desc" = #{desc,jdbcType=VARCHAR}
+    where index_code = #{indexCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

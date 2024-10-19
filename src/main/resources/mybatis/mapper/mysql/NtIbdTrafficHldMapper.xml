@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtIbdTrafficHldMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtIbdTrafficHld">
+    <id column="light_id" jdbcType="VARCHAR" property="lightId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="light_code" jdbcType="VARCHAR" property="lightCode" />
+    <result column="light_type" jdbcType="VARCHAR" property="lightType" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="is_del" jdbcType="VARCHAR" property="isDel" />
+    <result column="opt_person" jdbcType="BIGINT" property="optPerson" />
+    <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="direction" jdbcType="VARCHAR" property="direction" />
+    <result column="lon" jdbcType="DOUBLE" property="lon" />
+    <result column="lat" jdbcType="DOUBLE" property="lat" />
+    <result column="alt" jdbcType="DOUBLE" property="alt" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="installation_time" jdbcType="TIMESTAMP" property="installationTime" />
+    <result column="is_status" jdbcType="VARCHAR" property="isStatus" />
+    <result column="datum" jdbcType="VARCHAR" property="datum" />
+    <result column="light_code" jdbcType="VARCHAR" property="deviceCode" />
+    <result column="section_id" jdbcType="VARCHAR" property="sectionId" />
+    <result column="pole_id" jdbcType="VARCHAR" property="poleId" />
+    <result column="light_id" jdbcType="VARCHAR" property="id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    light_id, "name", light_code, light_type, num, is_del, opt_person, opt_time, create_time, 
+    "desc", direction, lon, lat, alt, "location", manufacturer, installation_time, is_status, 
+    datum, section_id, pole_id
+  </sql>
+  <select id="selectListByPoleId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_traffic_hld
+    where is_del = '1' and light_type ='1' and pole_id = #{poleId}
+    order by num asc
+  </select>
+  <select id="selectList" parameterType="com.site.mountain.entity.NtIbdTrafficHld" resultType="com.site.mountain.entity.NtIbdTrafficHld">
+    select
+    d.light_id, d."name", d.light_code, d.light_type, d.num, d.is_del, d.opt_person, d.opt_time, d.create_time,
+    d."desc", d.direction, d.lon, d.lat, d.alt, d."location", d.manufacturer, d.installation_time, d.is_status,
+    d.datum, d.section_id, d.pole_id,p.device_id as deviceId,d.light_id as id,r.name as crossName,(select dt.type_code from nt_location_asset_dict dt where dt."type"='2') as typeCode
+    from nt_ibd_traffic_hld d
+    left join nt_ibd_traffic_pole p on p.pole_id=d.pole_id
+    left join nt_ibd_crossing_data r  on p.cross_id=r.cross_id
+    <where>
+      d.is_del = '1'
+      <if test="poleId != null and poleId != ''">
+        and d.pole_id = #{poleId}
+      </if>
+      <if test="name != null and name != ''">
+        <bind name="pattern" value="'%' + name + '%'"/>
+        AND d."name" LIKE #{pattern}
+      </if>
+      <if test="sectionId != null and sectionId != ''">
+        and d.section_id = #{sectionId}
+      </if>
+      order by d.num asc
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_ibd_traffic_hld
+    where light_id = #{lightId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_ibd_traffic_hld
+    where light_id = #{lightId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtIbdTrafficHld">
+    insert into nt_ibd_traffic_hld (light_id, "name", light_code, 
+      light_type, num, is_del, 
+      opt_person, opt_time, create_time, 
+      "desc", direction, lon, 
+      lat, alt, "location", manufacturer, 
+      installation_time, is_status, datum, 
+      section_id, pole_id)
+    values (#{lightId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{lightCode,jdbcType=VARCHAR}, 
+      #{lightType,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{isDel,jdbcType=VARCHAR}, 
+      #{optPerson,jdbcType=BIGINT}, #{optTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{desc,jdbcType=VARCHAR}, #{direction,jdbcType=VARCHAR}, #{lon,jdbcType=DOUBLE}, 
+      #{lat,jdbcType=DOUBLE}, #{alt,jdbcType=DOUBLE}, #{location,jdbcType=VARCHAR}, #{manufacturer,jdbcType=VARCHAR}, 
+      #{installationTime,jdbcType=TIMESTAMP}, #{isStatus,jdbcType=VARCHAR}, #{datum,jdbcType=VARCHAR}, 
+      #{sectionId,jdbcType=VARCHAR}, #{poleId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtIbdTrafficHld">
+    insert into nt_ibd_traffic_hld
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lightId != null">
+        light_id,
+      </if>
+      <if test="name != null">
+        "name",
+      </if>
+      <if test="lightCode != null">
+        light_code,
+      </if>
+      <if test="lightType != null">
+        light_type,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="optPerson != null">
+        opt_person,
+      </if>
+      <if test="optTime != null">
+        opt_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="desc != null">
+        "desc",
+      </if>
+      <if test="direction != null">
+        direction,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="location != null">
+        "location",
+      </if>
+      <if test="manufacturer != null">
+        manufacturer,
+      </if>
+      <if test="installationTime != null">
+        installation_time,
+      </if>
+      <if test="isStatus != null">
+        is_status,
+      </if>
+      <if test="datum != null">
+        datum,
+      </if>
+      <if test="sectionId != null">
+        section_id,
+      </if>
+      <if test="poleId != null">
+        pole_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lightId != null">
+        #{lightId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="lightCode != null">
+        #{lightCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lightType != null">
+        #{lightType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="direction != null">
+        #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null">
+        #{installationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        #{isStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="datum != null">
+        #{datum,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="poleId != null">
+        #{poleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtIbdTrafficHld">
+    update nt_ibd_traffic_hld
+    <set>
+      <if test="name != null">
+        "name" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="lightCode != null">
+        light_code = #{lightCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lightType != null">
+        light_type = #{lightType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="optPerson != null">
+        opt_person = #{optPerson,jdbcType=BIGINT},
+      </if>
+      <if test="optTime != null">
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="desc != null">
+        "desc" = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="direction != null">
+        direction = #{direction,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=DOUBLE},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="alt != null">
+        alt = #{alt,jdbcType=DOUBLE},
+      </if>
+      <if test="location != null">
+        "location" = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null">
+        manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null">
+        installation_time = #{installationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        is_status = #{isStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="datum != null">
+        datum = #{datum,jdbcType=VARCHAR},
+      </if>
+      <if test="sectionId != null">
+        section_id = #{sectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="poleId != null">
+        pole_id = #{poleId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where light_id = #{lightId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtIbdTrafficHld">
+    update nt_ibd_traffic_hld
+    set "name" = #{name,jdbcType=VARCHAR},
+      light_code = #{lightCode,jdbcType=VARCHAR},
+      light_type = #{lightType,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=VARCHAR},
+      opt_person = #{optPerson,jdbcType=BIGINT},
+      opt_time = #{optTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      "desc" = #{desc,jdbcType=VARCHAR},
+      direction = #{direction,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=DOUBLE},
+      lat = #{lat,jdbcType=DOUBLE},
+      alt = #{alt,jdbcType=DOUBLE},
+      "location" = #{location,jdbcType=VARCHAR},
+      manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      installation_time = #{installationTime,jdbcType=TIMESTAMP},
+      is_status = #{isStatus,jdbcType=VARCHAR},
+      datum = #{datum,jdbcType=VARCHAR},
+      section_id = #{sectionId,jdbcType=VARCHAR},
+      pole_id = #{poleId,jdbcType=VARCHAR}
+    where light_id = #{lightId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateIsDelByPrimaryKey" parameterType="java.lang.String">
+    update nt_ibd_traffic_hld
+    set is_del = '2'
+    where light_id = #{lightId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mountain.dao.mysql.NtIbdFactorDataMapper">
+  <resultMap id="BaseResultMap" type="com.site.mountain.entity.NtIbdFactorData">
+    <id column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="geometry" jdbcType="VARCHAR" property="geometry" />
+    <result column="shape_points" jdbcType="VARCHAR" property="shapePoints" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify" />
+    <result column="user_create" jdbcType="VARCHAR" property="userCreate" />
+    <result column="user_modify" jdbcType="VARCHAR" property="userModify" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    guid, pid, geometry, shape_points, gmt_create, gmt_modify, user_create, user_modify
+  </sql>
+
+  <select id="selectList" parameterType="com.site.mountain.entity.NtIbdFactorData" resultType="com.site.mountain.entity.NtIbdFactorData">
+    select
+    <include refid="Base_Column_List" />
+    from nt_ibd_factor_data
+    <where>
+      <if test="guid != null and guid != ''">
+        and guid = #{guid}
+      </if>
+      <if test="pid != null and pid != ''">
+        and pid = #{pid}
+      </if>
+    </where>
+    order by gmt_create desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from nt_ibd_factor_data
+    where guid = #{guid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from nt_ibd_factor_data
+    where guid = #{guid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.site.mountain.entity.NtIbdFactorData">
+    insert into nt_ibd_factor_data (guid, pid, geometry, 
+      shape_points, gmt_create, gmt_modify, 
+      user_create, user_modify)
+    values (#{guid,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{geometry,jdbcType=VARCHAR}, 
+      #{shapePoints,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModify,jdbcType=TIMESTAMP}, 
+      #{userCreate,jdbcType=VARCHAR}, #{userModify,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="replaceSelectiveBatch" parameterType="com.site.mountain.entity.NtIbdFactorData">
+    insert into nt_ibd_factor_data (guid, pid, geometry,shape_points, gmt_create, gmt_modify,user_create, user_modify)
+    values
+    <foreach collection="records" item="t" index="index" close="" separator=",">
+      (#{t.guid,jdbcType=VARCHAR}, #{t.pid,jdbcType=INTEGER}, #{t.geometry,jdbcType=VARCHAR},
+      #{t.shapePoints,jdbcType=VARCHAR}, #{t.gmtCreate,jdbcType=TIMESTAMP}, #{t.gmtModify,jdbcType=TIMESTAMP},
+      #{t.userCreate,jdbcType=VARCHAR}, #{t.userModify,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <!--ON CONFLICT (guid) DO update-->
+  <insert id="replaceSelectiveBatch_bak1" parameterType="com.site.mountain.entity.NtIbdFactorData">
+    insert into nt_ibd_factor_data (guid, pid, geometry,shape_points, gmt_create, gmt_modify,user_create, user_modify)
+    values
+    <foreach collection="records" item="t" index="index" close=";" separator=",">
+      (#{t.guid,jdbcType=VARCHAR}, #{t.pid,jdbcType=INTEGER}, #{t.geometry,jdbcType=VARCHAR},
+      #{t.shapePoints,jdbcType=VARCHAR}, #{t.gmtCreate,jdbcType=TIMESTAMP}, #{t.gmtModify,jdbcType=TIMESTAMP},
+      #{t.userCreate,jdbcType=VARCHAR}, #{t.userModify,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.site.mountain.entity.NtIbdFactorData">
+    insert into nt_ibd_factor_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="guid != null">
+        guid,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="geometry != null">
+        geometry,
+      </if>
+      <if test="shapePoints != null">
+        shape_points,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify,
+      </if>
+      <if test="userCreate != null">
+        user_create,
+      </if>
+      <if test="userModify != null">
+        user_modify,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="guid != null">
+        #{guid,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="geometry != null">
+        #{geometry,jdbcType=VARCHAR},
+      </if>
+      <if test="shapePoints != null">
+        #{shapePoints,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModify != null">
+        #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userCreate != null">
+        #{userCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="userModify != null">
+        #{userModify,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.site.mountain.entity.NtIbdFactorData">
+    update nt_ibd_factor_data
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="geometry != null">
+        geometry = #{geometry,jdbcType=VARCHAR},
+      </if>
+      <if test="shapePoints != null">
+        shape_points = #{shapePoints,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userCreate != null">
+        user_create = #{userCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="userModify != null">
+        user_modify = #{userModify,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where guid = #{guid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.site.mountain.entity.NtIbdFactorData">
+    update nt_ibd_factor_data
+    set pid = #{pid,jdbcType=INTEGER},
+      geometry = #{geometry,jdbcType=VARCHAR},
+      shape_points = #{shapePoints,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      user_create = #{userCreate,jdbcType=VARCHAR},
+      user_modify = #{userModify,jdbcType=VARCHAR}
+    where guid = #{guid,jdbcType=VARCHAR}
+  </update>
+</mapper>
